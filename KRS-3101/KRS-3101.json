@@ -1,0 +1,39 @@
+{
+    "system": {
+        "name": "KRS-3101",
+        "code_folder_path": "src",
+        "code_entry_file": "main.py",
+        "layout_folder_path": "layout",
+        "sound_folder_path": "sound",
+        "rfile_folder_path": "rfile",
+        "irfile_folder_path": "ir",
+        "system_id": "1717",
+        "author": {
+            "name": "Pieter Nauwelaerts",
+            "email": "pnauwela@ucsc.edu"
+        },
+        "version": "0.0.1",
+        "primary_device_alias": "KRS-3101-IPCP"
+    },
+    "devices": [
+        {
+            "name": "IPCP Pro 355MQ xi : 10.10.2.10",
+            "part_number": "60-1919-01",
+            "alias": "KRS-3101-IPCP",
+            "network": {
+                "host_network_type": "AVLAN",
+                "interfaces": [
+                    {
+                        "address": "10.10.2.10",
+                        "type": "AVLAN"
+                    },
+                    {
+                        "address": "128.114.x.x",
+                        "type": "LAN"
+                    }
+                ]
+            }
+        }
+    ],
+    "schemaVersion": "1.0.0"
+}
