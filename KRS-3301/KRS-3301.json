@@ -35,7 +35,7 @@
             }
         },
         {
-            "name": "TLP Pro 1025T : 10.10.2.30",
+            "name": "TLP Pro 1025T : 10.10.2.20",
             "part_number": "60-1565-02",
             "alias": "KRS-3301-TLP",
             "extron_control_web_id": "fbf2d3ed-e8ad-441c-8ad7-d354678dcd0d",
@@ -43,7 +43,7 @@
                 "host_network_type": "AVLAN",
                 "interfaces": [
                     {
-                        "address": "10.10.2.30",
+                        "address": "10.10.2.20",
                         "type": "LAN"
                     }
                 ]

@@ -35,7 +35,7 @@
             }
         },
         {
-            "name": "KRS-3101-TLP : 10.10.2.30",
+            "name": "KRS-3101-TLP : 10.10.2.20",
             "part_number": "60-1565-02",
             "alias": "KRS-3101-TLP",
             "extron_control_web_id": "9069ac78-cbef-43d1-bd5e-f93b001d843b",
@@ -43,7 +43,7 @@
                 "host_network_type": "AVLAN",
                 "interfaces": [
                     {
-                        "address": "10.10.2.30",
+                        "address": "10.10.2.20",
                         "type": "AVLAN"
                     }
                 ]
