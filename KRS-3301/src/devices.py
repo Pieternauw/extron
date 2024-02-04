@@ -24,7 +24,7 @@ dvTLP = UIDevice('KRS-3301-TLP')
 #connecting the devices to eachother
 
 #TODO - figure out connection through DTP device
-dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Model='IN1806')
+dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Model='IN1808 IPCP Q MA')
 
 
 dvPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='CB-L630U') # Figure out numbers needed for this device connection
