@@ -43,15 +43,18 @@ for Button_IDs in range(141, 151):
     PadButtons.append(Button(dvTLP, Button_IDs))
     
 LblPadString = Label(dvTLP, 140)
+LblString = ''
 PadString = ''
 
 @event(PadButtons, ButtonEventList)
 def PadButtonPressed(button, state):
     global PadString 
+    global LblString
     if state == 'Pressed':
         button.SetState(1)
         PadString += button.Name
-        LblPadString.SetText(PadString)
+        LblString += '*'
+        LblPadString.SetText(LblString)
     elif state == 'Released':
         button.SetState(0)
 
@@ -60,15 +63,18 @@ btn_passcodeEnter = Button(dvTLP, 152)
 @event(btn_passcodeEnter, ButtonEventList)
 def BtnEnterPasscode(button, state):
     global PadString 
+    global LblString
     if state == 'Pressed':
         button.SetState(1)
         if PadString == '2748' or PadString == passcode:      #whatever the current passcode is
             PadString = ''
-            LblPadString.SetText(PadString)
+            LblString = ''
+            LblPadString.SetText(LblString)
             dvTLP.ShowPage('Main Page')
         else:
             PadString = ''
-            LblPadString.SetText(PadString)
+            LblString = ''
+            LblPadString.SetText(LblString)
     elif state == 'Released':
         button.SetState(0)
 
@@ -79,7 +85,8 @@ def BtnClearPad(button, state):
     if state == 'Pressed':
         button.SetState(1)
         PadString = ''
-        LblPadString.SetText(PadString)
+        LblString = ''
+        LblPadString.SetText(LblString)
     elif state == 'Released':
         button.SetState(0)
         
@@ -304,14 +311,17 @@ for Button_IDs in range(107, 117):
     
 LblTechString = Label(dvTLP, 20)
 techstr = ''
+techlblstr = ''
 
 @event(TechButtons, ButtonEventList)
 def TechButtonPressed(button, state):
     global techstr 
+    global techlblstr
     if state == 'Pressed':
         button.SetState(1)
         techstr += button.Name
-        LblTechString.SetText(techstr)
+        techlblstr += '*'
+        LblTechString.SetText(techlblstr)
     elif state == 'Released':
         button.SetState(0)
 
@@ -319,10 +329,12 @@ btn_techClear = Button(dvTLP, 117)
 @event(btn_techClear, ButtonEventList)
 def BtnClearTech(button, state):
     global techstr 
+    global techlblstr
     if state == 'Pressed':
         button.SetState(1)
         techstr = ''
-        LblTechString.SetText(techstr)
+        techlblstr = ''
+        LblTechString.SetText(techlblstr)
     elif state == 'Released':
         button.SetState(0)
         
@@ -330,15 +342,18 @@ btn_techEnter = Button(dvTLP, 118)
 @event(btn_passcodeClear, ButtonEventList)
 def BtnEnterTech(button, state):
     global techstr 
+    global techlblstr
     if state == 'Pressed':
         button.SetState(1)
         if techstr == '2748':
             techstr = '' 
-            LblTechString.SetText(techstr)
+            techlblstr = ''
+            LblTechString.SetText(techlblstr)
             dvTLP.ShowPopup('Audio Mix popup')
         else:
             techstr = ''
-            LblTechString.SetText(techstr)
+            techlblstr = ''
+            LblTechString.SetText(techlblstr)
     elif state == 'Released':
         button.SetState(0)
 
