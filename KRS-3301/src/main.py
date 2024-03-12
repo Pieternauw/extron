@@ -9,6 +9,7 @@ The main program entrance file.  The contents of this should be:
 
 # Extron Library Imports
 from extronlib import Platform, Version
+from extronlib.system import Wait
 
 print('ControlScript', Platform(), Version())
 
@@ -19,4 +20,11 @@ import ui.tlp
 import control.av
 import system
 
+
 system.Initialize()
+
+#Wait for devices to be connected and ready before calling ui initialize
+Wait(10, ui.tlp.Initialize())
+
+
+

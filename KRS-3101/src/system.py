@@ -12,11 +12,12 @@ Examples of items in the system file:
 # Python imports
 
 # Extron Library imports
+import devices
 
 # Project imports
 
 def Initialize():
     # Connect all devices
-
+    devices.Initialize()
     # Finish Initialize() with a print()
     print('System Initialized')

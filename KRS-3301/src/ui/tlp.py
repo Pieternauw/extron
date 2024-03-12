@@ -9,13 +9,13 @@ mirrored panels should be in the same file.
 
 # Extron Library imports
 from extronlib import event
-from extronlib.system import MESet
+from extronlib.system import MESet, Wait
 from extronlib.ui import Button, Level, Slider, Label
 
 # Project imports
-import variables
+from variables import mic_val, prog_val
 from modules.helper.ModuleSupport import eventEx
-from devices import dvTLP, dvIPCP, dvScalar, dvPRJ
+from devices import dvTLP, dvIPCP, dvBluray, dvScalar, dvPRJ
 #bring in variables here for defaults (audio level, default source and what not)
 
 # Define UI Objects
@@ -101,25 +101,25 @@ input_set.SetCurrent(None)
 @eventEx(input_set.Objects, 'Pressed')
 def SwitchInput(button, state):
     if button is  btn_sourceHDMI: # TODO setup for GetCurrent() - not neccessary since that seems to be live update which I don't need I only need on trigger of event
-        dvScalar.Set('Input', '2', {'Type': 'Audio/Visual'})
+        dvScalar.SetInput('2', {'Type': 'Audio/Visual'})
         dvTLP.HideAllPopups()
         dvTLP.ShowPopup("Laptop Connected popup")
     elif button is btn_sourceWireless:
-        dvScalar.Set('Input', '3', {'Type': 'Audio/Visual'})
+        dvScalar.SetInput('3', {'Type': 'Audio/Visual'})
         dvTLP.HideAllPopups()
         dvTLP.ShowPopup("Wireless instruction popup")
     elif button is btn_sourceDocCam:
-        dvScalar.Set('Input', '4', {'Type': 'Audio/Visual'})
+        dvScalar.SetInput('4', {'Type': 'Audio/Visual'})
         dvTLP.HideAllPopups()
         dvTLP.ShowPopup("Document camera instruction popup")
     elif button is btn_sourceBluray:
-        dvScalar.Set('Input', '5', {'Type': 'Audio/Visual'})      #need to activate com1 if using bluray controls (maybe not)
+        dvScalar.SetInput('5', {'Type': 'Audio/Visual'})      #need to activate com1 if using bluray controls (maybe not)
         dvTLP.HideAllPopups()
         dvTLP.ShowPopup("BluRay control popup")
         
     #turning on projector if it's off
     if dvPRJ.Update('Power') == 'Off':
-        dvPRJ.Set('Power', 'On')
+        dvPRJ.SetPower('On')
         #check to see if I need to do something with warming status 
     
     input_set.SetCurrent(button)
@@ -134,10 +134,8 @@ btn_progAudioMute = Button(dvTLP, 82)
 lvl_prog = Level(dvTLP, 18)
 lvl_prog.SetRange(-100, 12, 2)     #In steps of 2
 
-prog_val = -18
-
 lvl_prog.SetLevel(prog_val)
-dvScalar.Set('GroupProgramVolume', prog_val)
+dvScalar.SetGroupProgramVolume(prog_val)
 
 @event(btn_progAudioUp, ButtonEventList)
 def ProgAudioUp(button, state):
@@ -148,7 +146,7 @@ def ProgAudioUp(button, state):
         lvl_prog.Inc()
         prog_val += 2
         #increment scalar audio with group program volume
-        dvScalar.Set('GroupProgramVolume', prog_val)
+        dvScalar.SetGroupProgramVolume(prog_val)
     elif state == 'Released':
         button.SetState(0)
 
@@ -161,17 +159,17 @@ def ProgAudioDown(button, state):
         lvl_prog.Dec()
         prog_val -= 2
 
-        dvScalar.Set('GroupProgramVolume', prog_val)
+        dvScalar.SetGroupProgramVolume(prog_val)
 
 @event(btn_progAudioMute, ButtonEventList)
 def ProgAudioMute(button, state):
     if state == 'Pressed':
-        if dvScalar.Update('GroupProgramMute') == 'Off':
+        if dvScalar.UpdateGroupProgramMute() == 'Off':
             button.SetState(1)
-            dvScalar.Set('GroupProgramMute', 'On') 
+            dvScalar.SetGroupProgramMute('On') 
         else:
             button.SetState(0)
-            dvScalar.Set('GroupProgramMute', 'Off')
+            dvScalar.SetGroupProgramMute('Off')
 
 #Microphone Audio
 btn_micAudioUp = Button(dvTLP, 87)
@@ -182,10 +180,8 @@ btn_micAudioMute = Button(dvTLP, 88)
 lvl_mic = Level(dvTLP, 85)
 lvl_mic.SetRange(-100, 12, 1)
 
-mic_val = -18
-
 lvl_mic.SetLevel(mic_val)
-dvScalar.Set('GroupMicVolume', mic_val)
+dvScalar.SetGroupMicVolume(mic_val)
 
 @event(btn_micAudioUp, ButtonEventList)
 def MicAudioUp(button, state):
@@ -196,7 +192,7 @@ def MicAudioUp(button, state):
         lvl_mic.Inc()
         mic_val += 1
         
-        dvScalar.Set('GroupMicVolume', mic_val)
+        dvScalar.SetGroupMicVolume(mic_val)
     elif state == 'Released':
         button.SetState(0)
 
@@ -209,17 +205,17 @@ def MicAudioDown(button, state):
         lvl_mic.Dec()
         mic_val -= 1
 
-        dvScalar.Set('GroupMicVolume', mic_val)
+        dvScalar.SetGroupMicVolume(mic_val)
 
 @event(btn_micAudioMute, ButtonEventList)
 def MicAudioMute(button, state):
     if state == 'Pressed':
-        if dvScalar.Update('GroupMicMute') == 'Off':
+        if dvScalar.UpdateGroupMicMute() == 'Off':
             button.SetState(1)
-            dvScalar.Set('GroupMicMute', 'On') 
+            dvScalar.SetGroupMicMute('On') 
         else:
             button.SetState(0)
-            dvScalar.Set('GroupMicMute', 'Off')
+            dvScalar.SetGroupMicMute('Off')
 
 
 #Help Button
@@ -232,12 +228,12 @@ btn_videoMute = Button(dvTLP, 17)
 @event(btn_videoMute, ButtonEventList)
 def VideoMute(button, state):
     if state == 'Pressed':
-        if dvScalar.Update('GlobalVideoMute') == 'Off':
-            dvScalar.Set('GlobalVideoMute', 'On')
+        if dvScalar.UpdateGlobalVideoMute() == 'Off':
+            dvScalar.SetGlobalVideoMute('On')
             button.SetState(1)
         else:
             button.SetState(0)
-            dvScalar.Set('GlobalVideoMute', 'Off')
+            dvScalar.SetGlobalVideoMute('Off')
 
 #advanced settings
 btn_advSettings = Button(dvTLP, 41)
@@ -268,8 +264,8 @@ def TurnOnProjector(button, state):
     if state == 'Pressed':
         button.SetState(1)
         #TODO - again same thing as with input selection, determine state of projector and do something 
-        if dvPRJ.Update('Power') == 'Off':
-            dvPRJ.Set('Power', 'On')
+        if dvPRJ.UpdatePower() == 'Off':
+            dvPRJ.SetPower('On')
     elif state == 'Released':
         button.SetState(0)
 
@@ -280,10 +276,13 @@ def TurnOnProjector(button, state):
         button.SetState(1)
         #TODO - again same thing as with input selection, determine state of projector and do something 
         input_set.SetCurrent(None)  #turn off all inputs. 
-        if dvPRJ.Update('Power') == 'On' or dvPRJ.Update('Power') == 'Warming':
-            dvPRJ.Set('Power', 'Off')
-            dvScalar.Set('Input', '1', {'Type': 'Audio/Visual'})
-            #TODO - determine if i have to wait for it to stop warming first
+        if dvPRJ.UpdatePower() == 'On':
+            dvPRJ.SetPower('Off')
+        elif dvPRJ.UpdatePower() == 'Warming':
+            Wait(10, dvPRJ.SetPower('Off'))
+            
+        dvScalar.SetInput('3', {'Type': 'Audio/Visual'})
+        
             
     elif state == 'Released':
         button.SetState(0)
@@ -293,10 +292,10 @@ btn_blankImg = Button(dvTLP, 21)
 def BlankImage(button, state):
     if state == 'Pressed':
         button.SetState(1)
-        if dvPRJ.Update('AVMute') == 'On':
-            dvPRJ.Set('AVMute', 'Off')
+        if dvPRJ.UpdateAVMute() == 'On':
+            dvPRJ.SetAVMute('On')
         else:
-            dvPRJ.Set('AVMute', 'On')
+            dvPRJ.SetAVMute('On')
 
 #Technician Access Code
 TechButtons = []
@@ -364,7 +363,7 @@ sld_lavMic.SetRange(-18, 80, 1)
 def LavSlider(slider, state, value):
     if state == 'Changed':
         slider.SetFill(value)
-        dvScalar.Set('MicLineInputGain', value, {'Input': '1'}) #TODO - Figure out if Lav is 1 or 2
+        dvScalar.SetMicLineInputGain(value, {'Input': '1'}) #TODO - Figure out if Lav is 1 or 2
 
 
 sld_handHeld = Slider(dvTLP, 28)
@@ -373,7 +372,7 @@ sld_handHeld.SetRange(-18, 80, 1)   #TODO Check these numbers
 def HandHeldSlider(slider, state, value):
     if state == 'Changed':
         slider.SetFill(value)
-        dvScalar.Set('MicLineInputGain', value, {'Input': '2'})
+        dvScalar.SetMicLineInputGain(value, {'Input': '2'})
 
 sld_laptop = Slider(dvTLP, 35)
 sld_laptop.SetRange(-18, 24, 0.5)     #TODO Check these numbers
@@ -381,7 +380,7 @@ sld_laptop.SetRange(-18, 24, 0.5)     #TODO Check these numbers
 def LaptopSlider(slider, state, value):
     if state == 'Changed':
         slider.SetFill(value)
-        dvScalar.Set('EmbeddedInputGain', value, {'Input': '1'})
+        dvScalar.SetEmbeddedInputGain(value, {'Input': '1'})
 
 sld_wireless = Slider(dvTLP, 39)
 sld_wireless.SetRange(-18, 24, 0.5)     #TODO Check numbers
@@ -389,7 +388,7 @@ sld_wireless.SetRange(-18, 24, 0.5)     #TODO Check numbers
 def WirelessSlider(slider, state, value):
     if state == 'Changed':
         slider.SetFill(value)
-        dvScalar.Set('EmbeddedInputGain', value, {'Input': '2'})
+        dvScalar.SetEmbeddedInputGain(value, {'Input': '2'})
 
 sld_bluray = Slider(dvTLP, 45)
 sld_bluray.SetRange(-18, 24, 0.5)     #TODO Check numbers
@@ -397,7 +396,7 @@ sld_bluray.SetRange(-18, 24, 0.5)     #TODO Check numbers
 def BluraySlider(slider, state, value):
     if state == 'Changed':
         slider.SetFill(value)
-        dvScalar.Set('EmbeddedInputGain', value, {'Input': '3'})
+        dvScalar.SetEmbeddedInputGain(value, {'Input': '3'})
 
 sld_ampLevelOut = Slider(dvTLP, 52)
 sld_ampLevelOut.SetRange(-100, 0, 1)
@@ -405,7 +404,7 @@ sld_ampLevelOut.SetRange(-100, 0, 1)
 def AmpLevelSlider(slider, state, value):
     if state == 'Changed':
         slider.SetFill(value)
-        dvScalar.Set('OutputAttenuation', value, {'Output': 'Amp Out'})
+        dvScalar.SetOutputAttenuation(value, {'Output': 'Amp Out'})
 
 btn_exitMix = Button(dvTLP, 76)
 @event(btn_exitMix, ButtonEventList)
@@ -417,7 +416,19 @@ def ExitAudioMix(button, state):
         button.SetState(0)
 
 
-"""HDMI Popup"""
+"""HDMI Popup
+
+TODO needs to be fixed so that when InputSignalStatus changes, the visual feedback changes"""
+#Connection Status Display
+btn_laptopConnectedFeedback = Button(dvTLP, 23)
+@event(dvScalar.UpdateInputSignalStatus({'Input': '2'}), ['0', '1'])      #TODO Check this stae changed call
+def LaptopConnectedFeedback(button, state):
+    if state == '1':
+        button.SetState(1)
+        #TODO add feedback for 'connected' or 'not connected' label names like in gcp
+    else:
+        button.SetState(0)
+
 #Help Buttons
 btn_macHelp = Button(dvTLP, 131)
 @event(btn_macHelp, ButtonEventList)
@@ -437,6 +448,176 @@ def ShowMacHelpPopup(button, state):
         dvTLP.ShowPopup("Windows Laptop Help popup")
     elif state == 'Released':
         button.SetState(0)
+        
+"""Bluray Popup"""
+"""Bluray Control Popup
+
+TODO - Wait for device module to comee before writing any of this since it's all new"""
+btn_blurayStop = Button(dvTLP, 51)
+@event(btn_blurayStop, ButtonEventList)
+def BlurayStop(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetTransport('Stop')
+    elif state == 'Released':
+        button.SetState(0)
+
+btn_blurayPlay = Button(dvTLP, 60)
+@event(btn_blurayPlay, ButtonEventList)
+def BlurayPlay(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetTransport('Play')
+    elif state == 'Released':
+        button.SetState(0)
+        
+btn_blurayPause = Button(dvTLP, 64)
+@event(btn_blurayPause, ButtonEventList)
+def BlurayPause(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetTransport('Play Pause')
+    elif state == 'Released':
+        button.SetState(0)
+        
+btn_blurayRTrack = Button(dvTLP, 63)
+@event(btn_blurayRTrack, ButtonEventList)
+def BlurayBackTrack(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetTransport('Track Skip Previous')
+    elif state == 'Released':
+        button.SetState(0)
+
+btn_blurayFTrack = Button(dvTLP, 67)
+@event(btn_blurayFTrack, ButtonEventList)
+def BlurayForwardTrack(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetTransport('Track Skip Next')
+    elif state == 'Released':
+        button.SetState(0)
+        
+btn_blurayRewind = Button(dvTLP, 49)
+@event(btn_blurayRewind, ButtonEventList)
+def BlurayRewind(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetTransport('Rewind')
+    elif state == 'Released':
+        button.SetState(0)
+        
+btn_blurayFForward = Button(dvTLP, 68)
+@event(btn_blurayFForward, ButtonEventList)
+def BlurayFastForward(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetTransport('Fast Forward')
+    elif state == 'Released':
+        button.SetState(0)
+        
+btn_blurayLeft = Button(dvTLP, 78)
+@event(btn_blurayLeft, ButtonEventList)
+def BlurayLeftSelect(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetMenu('Left')
+    elif state == 'Released':
+        button.SetState(0)
+        
+btn_blurayUp = Button(dvTLP, 80)
+@event(btn_blurayUp, ButtonEventList)
+def BlurayUpSelect(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetMenu('Up')
+    elif state == 'Released':
+        button.SetState(0)
+        
+btn_blurayDown = Button(dvTLP, 79)
+@event(btn_blurayDown, ButtonEventList)
+def BlurayDownSelect(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetMenu('Down')
+    elif state == 'Released':
+        button.SetState(0)
+
+btn_blurayRight = Button(dvTLP, 77)
+@event(btn_blurayRight, ButtonEventList)
+def BlurayRightSelect(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetMenu('Right')
+    elif state == 'Released':
+        button.SetState(0)
+
+btn_blurayEnter = Button(dvTLP, 154)
+@event(btn_blurayEnter, ButtonEventList)
+def BlurayEnter(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetMenu('Enter')
+    elif state == 'Released':
+        button.SetState(0)
+        
+btn_blurayReturn = Button(dvTLP, 38)
+@event(btn_blurayReturn, ButtonEventList)
+def BlurayReturn(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetMenu('Return')
+    elif state == 'Released':
+        button.SetState(0)
+        
+btn_blurayHome = Button(dvTLP, 70)
+@event(btn_blurayHome, ButtonEventList)
+def BlurayEnter(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetMenu('Home')
+    elif state == 'Released':
+        button.SetState(0)
+        
+btn_blurayOption = Button(dvTLP, 73)
+@event(btn_blurayOption, ButtonEventList)
+def BlurayEnter(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetMenu('Option Menu')
+    elif state == 'Released':
+        button.SetState(0)
+        
+btn_blurayMenu = Button(dvTLP, 71)
+@event(btn_blurayMenu, ButtonEventList)
+def BlurayEnter(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.SetMenu('Setup Menu')
+    elif state == 'Released':
+        button.SetState(0)
+    
+"""TODO Doesn't Exitst actually
+btn_bluraySub = Button(dvTLP, 74)   
+@event(btn_bluraySub, ButtonEventList)
+def BlurayEnter(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+    elif state == 'Released':
+        button.SetState(0)
+"""
+
+#TODO - Get rid of this stuff honestly
+"""
+btn_blurayEject = Button(dvTLP, 134)
+@event(btn_blurayEject, ButtonEventList)
+def BlurayEnter(button, state):
+    if state == 'Pressed':
+        button.SetState(1)
+        dvBluray.DiskTray(;Open)
+    elif state == 'Released':
+        button.SetState(0)
+"""
 
 """Mac Help Popup"""
 btn_exitMacHelp = Button(dvTLP, 58)
@@ -478,8 +659,11 @@ def ShutdownYes(button, state):
     
         #lock drawer with control? 
         #turn off projector
-        if dvPRJ.Update('Power') == 'On':
-            dvPRJ.Set('Power', 'Off')
+        if dvPRJ.UpdatePower() == 'On':
+            dvPRJ.SetPower('Off')
+        elif dvPRJ.UpdatePower() == 'Warming':
+            Wait(10, dvPRJ.SetPower('Off'))
+            
         
         #Set Audio levels back to defaults
         mic_val = -18
@@ -489,7 +673,7 @@ def ShutdownYes(button, state):
         lvl_prog.SetLevel(prog_val)
 
         #set Cynap as input
-        dvScalar.Set('Input', '3', {'Type': 'Audio/Visual'})
+        dvScalar.SetInput('3', {'Type': 'Audio/Visual'})
         
         #switch to start page
         dvTLP.ShowPage("Start Page")
