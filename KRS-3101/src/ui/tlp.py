@@ -465,9 +465,7 @@ def ShowMacHelpPopup(button, state):
         button.SetState(0)
         
 """Bluray Popup"""
-"""Bluray Control Popup
-
-TODO - Wait for device module to comee before writing any of this since it's all new"""
+"""Bluray Popup"""
 btn_blurayStop = Button(dvTLP, 51)
 @event(btn_blurayStop, ButtonEventList)
 def BlurayStop(button, state):
@@ -612,27 +610,26 @@ def BlurayEnter(button, state):
     elif state == 'Released':
         button.SetState(0)
     
-"""TODO Doesn't Exitst actually
+"""for eject and subtilte, these are direct commands I wrote so I'm not sure if they will actually work"""
 btn_bluraySub = Button(dvTLP, 74)   
 @event(btn_bluraySub, ButtonEventList)
 def BlurayEnter(button, state):
     if state == 'Pressed':
         button.SetState(1)
+        dvBluray.SetMenu('Subtitle')
     elif state == 'Released':
         button.SetState(0)
-"""
 
-#TODO - Get rid of this stuff honestly
-"""
 btn_blurayEject = Button(dvTLP, 134)
 @event(btn_blurayEject, ButtonEventList)
 def BlurayEnter(button, state):
     if state == 'Pressed':
-        button.SetState(1)
-        dvBluray.DiskTray(;Open)
+        if dvBluray.UpdateTray() == '!7MSTTO\r' or dvBluray.UpdateTray() == 'Open':
+            Wait(2, dvBluray.SetDiskTray('Close'))
+        elif dvBluray.UpdateTray() == '!7MSTTC\r' or dvBluray.UpdateTray() == 'Close':
+            Wait(2, dvBluray.SetDiskTray('Open'))
     elif state == 'Released':
         button.SetState(0)
-"""
 
 """Mac Help Popup"""
 btn_exitMacHelp = Button(dvTLP, 58)

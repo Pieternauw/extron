@@ -44,6 +44,7 @@ class DeviceClass:
             'Left': 'OSD1',
             'Right': 'OSD2',
             'Option Menu': 'OMN',
+            'Subtitle': 'SBT1',
         }
 
         if value in ValueStateValues:
@@ -108,9 +109,21 @@ class DeviceClass:
         else:
             self.Discard('Invalid Command for SetTransport')
 
+    def UpdateTray(self, value, qualifier):
+        TrayCmdString = '!7?MST\r'
+        self.__UpdateHelper('DiscTray', TrayCmdString, value, qualifier)
+
     def __SetHelper(self, command, commandstring, value, qualifier):
         
         self.Debug = True
+
+        self.Send(commandstring)
+
+    def __UpdateHelper(self, command, commandstring, value, qualifier):
+
+        if self.initializationChk:
+            self.OnConnected()
+            self.initializationChk = False
 
         self.Send(commandstring)
 
@@ -125,6 +138,13 @@ class DeviceClass:
             method(value, qualifier)
         else:
             raise AttributeError(command + 'does not support Set.')
+    
+    def Update(self, command, qualifier=None):
+        method = getattr(self, 'Update%s' % command, None)
+        if method is not None and callable(method):
+            method(None, qualifier)
+        else:
+            raise AttributeError(command + 'does not support Update.')
 
 class SerialClass(SerialInterface, DeviceClass):
 
