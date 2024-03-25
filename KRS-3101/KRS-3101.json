@@ -44,7 +44,7 @@
                 "interfaces": [
                     {
                         "address": "10.10.2.20",
-                        "type": "AVLAN"
+                        "type": "LAN"
                     }
                 ]
             },
