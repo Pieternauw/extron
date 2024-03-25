@@ -47,7 +47,8 @@ LblString = ''
 PadString = ''
 
 @event(PadButtons, ButtonEventList)
-def PadButtonPressed(button, state):
+def PadButtonPressed(button:Button, state):
+    print(button.Name, state)
     global PadString 
     global LblString
     if state == 'Pressed':
@@ -61,7 +62,8 @@ def PadButtonPressed(button, state):
 #enter and clear
 btn_passcodeEnter = Button(dvTLP, 152)
 @event(btn_passcodeEnter, ButtonEventList)
-def BtnEnterPasscode(button, state):
+def BtnEnterPasscode(button:Button, state):
+    print(button.Name, state)
     global PadString 
     global LblString
     if state == 'Pressed':
@@ -80,7 +82,8 @@ def BtnEnterPasscode(button, state):
 
 btn_passcodeClear = Button(dvTLP, 151)
 @event(btn_passcodeClear, ButtonEventList)
-def BtnClearPad(button, state):
+def BtnClearPad(button:Button, state):
+    print(button.Name, state)
     global PadString
     if state == 'Pressed':
         button.SetState(1)
@@ -106,7 +109,8 @@ input_set.SetCurrent(None)
     
 #TODO - set up statements to check projector status when input switched (if not on turn on)
 @eventEx(input_set.Objects, 'Pressed')
-def SwitchInput(button, state):
+def SwitchInput(button:Button, state):
+    print(button.Name, state)
     if button is  btn_sourceHDMI: # TODO setup for GetCurrent() - not neccessary since that seems to be live update which I don't need I only need on trigger of event
         dvScalar.SetInput('2', {'Type': 'Audio/Visual'})
         dvTLP.HideAllPopups()
@@ -145,7 +149,8 @@ lvl_prog.SetLevel(prog_val)
 dvScalar.SetGroupProgramVolume(prog_val)
 
 @event(btn_progAudioUp, ButtonEventList)
-def ProgAudioUp(button, state):
+def ProgAudioUp(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
         global prog_val
@@ -158,7 +163,8 @@ def ProgAudioUp(button, state):
         button.SetState(0)
 
 @event(btn_progAudioDown, ButtonEventList)
-def ProgAudioDown(button, state):
+def ProgAudioDown(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
         global prog_val 
@@ -169,7 +175,8 @@ def ProgAudioDown(button, state):
         dvScalar.SetGroupProgramVolume(prog_val)
 
 @event(btn_progAudioMute, ButtonEventList)
-def ProgAudioMute(button, state):
+def ProgAudioMute(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         if dvScalar.UpdateGroupProgramMute() == 'Off':
             button.SetState(1)
@@ -191,7 +198,8 @@ lvl_mic.SetLevel(mic_val)
 dvScalar.SetGroupMicVolume(mic_val)
 
 @event(btn_micAudioUp, ButtonEventList)
-def MicAudioUp(button, state):
+def MicAudioUp(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
         global mic_val
@@ -204,7 +212,8 @@ def MicAudioUp(button, state):
         button.SetState(0)
 
 @event(btn_micAudioDown, ButtonEventList)
-def MicAudioDown(button, state):
+def MicAudioDown(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
         global mic_val 
@@ -215,7 +224,8 @@ def MicAudioDown(button, state):
         dvScalar.SetGroupMicVolume(mic_val)
 
 @event(btn_micAudioMute, ButtonEventList)
-def MicAudioMute(button, state):
+def MicAudioMute(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         if dvScalar.UpdateGroupMicMute() == 'Off':
             button.SetState(1)
@@ -233,7 +243,8 @@ btn_help = Button(dvTLP, 90)
 #TODO - Global Video mute
 btn_videoMute = Button(dvTLP, 17)
 @event(btn_videoMute, ButtonEventList)
-def VideoMute(button, state):
+def VideoMute(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         if dvScalar.UpdateGlobalVideoMute() == 'Off':
             dvScalar.SetGlobalVideoMute('On')
@@ -245,7 +256,8 @@ def VideoMute(button, state):
 #advanced settings
 btn_advSettings = Button(dvTLP, 41)
 @event(btn_advSettings, ButtonEventList)
-def ShowAdvancedSettingsPopup(button, state):
+def ShowAdvancedSettingsPopup(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
         dvTLP.ShowPopup("Advanced settngs")
@@ -255,7 +267,8 @@ def ShowAdvancedSettingsPopup(button, state):
 #Activity Timeout
 btn_actTimeout = Button(dvTLP, 155)
 @event(btn_actTimeout, ButtonEventList)
-def DisableActivityTimeout(button, state):
+def DisableActivityTimeout(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
         #TODO - get timeout setup - do something with the system to disable said act timeout.
@@ -267,7 +280,8 @@ def DisableActivityTimeout(button, state):
 
 btn_projOn = Button(dvTLP, 24)
 @event(btn_projOn, ButtonEventList)
-def TurnOnProjector(button, state):
+def TurnOnProjector(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
         #TODO - again same thing as with input selection, determine state of projector and do something 
@@ -278,7 +292,8 @@ def TurnOnProjector(button, state):
 
 btn_projOff = Button(dvTLP, 25)
 @event(btn_projOff, ButtonEventList)
-def TurnOnProjector(button, state):
+def TurnOnProjector(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
         #TODO - again same thing as with input selection, determine state of projector and do something 
@@ -296,7 +311,8 @@ def TurnOnProjector(button, state):
 
 btn_blankImg = Button(dvTLP, 21)
 @event(btn_blankImg, ButtonEventList)
-def BlankImage(button, state):
+def BlankImage(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
         if dvPRJ.UpdateAVMute() == 'On':
@@ -314,7 +330,8 @@ techstr = ''
 techlblstr = ''
 
 @event(TechButtons, ButtonEventList)
-def TechButtonPressed(button, state):
+def TechButtonPressed(button:Button, state):
+    print(button.Name, state)
     global techstr 
     global techlblstr
     if state == 'Pressed':
@@ -327,7 +344,8 @@ def TechButtonPressed(button, state):
 
 btn_techClear = Button(dvTLP, 117)
 @event(btn_techClear, ButtonEventList)
-def BtnClearTech(button, state):
+def BtnClearTech(button:Button, state):
+    print(button.Name, state)
     global techstr 
     global techlblstr
     if state == 'Pressed':
@@ -340,7 +358,8 @@ def BtnClearTech(button, state):
         
 btn_techEnter = Button(dvTLP, 118)
 @event(btn_passcodeClear, ButtonEventList)
-def BtnEnterTech(button, state):
+def BtnEnterTech(button:Button, state):
+    print(button.Name, state)
     global techstr 
     global techlblstr
     if state == 'Pressed':
@@ -360,7 +379,8 @@ def BtnEnterTech(button, state):
 #Advanced Exit 
 btn_advSettingsExit = Button(dvTLP, 56)
 @event(btn_advSettingsExit, ButtonEventList)
-def ExitAdvancedSettingsPopup(button, state):
+def ExitAdvancedSettingsPopup(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         global techstr
         button.SetState(1)
@@ -423,7 +443,8 @@ def AmpLevelSlider(slider, state, value):
 
 btn_exitMix = Button(dvTLP, 76)
 @event(btn_exitMix, ButtonEventList)
-def ExitAudioMix(button, state):
+def ExitAudioMix(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
         dvTLP.HidePopup('Audio Mix popup')
@@ -437,7 +458,8 @@ TODO needs to be fixed so that when InputSignalStatus changes, the visual feedba
 #Connection Status Display
 btn_laptopConnectedFeedback = Button(dvTLP, 23)
 @event(dvScalar.UpdateInputSignalStatus({'Input': '2'}), ['0', '1'])      #TODO Check this stae changed call
-def LaptopConnectedFeedback(button, state):
+def LaptopConnectedFeedback(button:Button, state):
+    print(button.Name, state)
     if state == '1':
         button.SetState(1)
         #TODO add feedback for 'connected' or 'not connected' label names like in gcp
@@ -447,7 +469,8 @@ def LaptopConnectedFeedback(button, state):
 #Help Buttons
 btn_macHelp = Button(dvTLP, 131)
 @event(btn_macHelp, ButtonEventList)
-def ShowMacHelpPopup(button, state):
+def ShowMacHelpPopup(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
         dvTLP.ShowPopup("mac laptop & tablet help popup")
@@ -457,7 +480,8 @@ def ShowMacHelpPopup(button, state):
 
 btn_winHelp = Button(dvTLP, 130)
 @event(btn_winHelp, ButtonEventList)
-def ShowMacHelpPopup(button, state):
+def ShowMacHelpPopup(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
         dvTLP.ShowPopup("Windows Laptop Help popup")
@@ -468,7 +492,8 @@ def ShowMacHelpPopup(button, state):
 """Bluray Popup"""
 btn_blurayStop = Button(dvTLP, 51)
 @event(btn_blurayStop, ButtonEventList)
-def BlurayStop(button, state):
+def BlurayStop(button:Button, state):
+    print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
         dvBluray.SetTransport('Stop')
