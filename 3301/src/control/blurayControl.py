@@ -6,13 +6,13 @@ from extronlib.system import Wait
 from modules.helper.ModuleSupport import eventEx 
 
 transport_set = [tlp.btn_blurayStop, tlp.btn_blurayPlay, tlp.btn_blurayPause, 
-                 tlp.btn_blurayRTrack, tlp.btn_blurayFTrack]
+                 tlp.btn_blurayRTrack, tlp.btn_blurayFTrack, tlp.btn_blurayRewind, 
+                 tlp.btn_blurayFForward]
 
 menu_set = [tlp.btn_blurayDown, tlp.btn_blurayRight, tlp.btn_blurayUp, 
             tlp.btn_blurayLeft, tlp.btn_blurayEnter, tlp.btn_blurayReturn, 
             tlp.btn_blurayHome, tlp.btn_blurayOption, tlp.btn_blurayMenu]
 
-scan_set = [tlp.btn_blurayRewind, tlp.btn_blurayFForward]
 
 @eventEx([tlp.btn_blurayStop, tlp.btn_blurayPlay, tlp.btn_blurayPause, 
           tlp.btn_blurayRTrack, tlp.btn_blurayFTrack, tlp.btn_blurayDown, 
@@ -27,12 +27,9 @@ def TransportEvent(button:tlp.Button, state):
         dvBluray.SetTransport(button.Name, None)
     elif button in menu_set:
         dvBluray.SetMenuControl(button.Name, None)
-    elif button in scan_set:
-        dvBluray.SetScan('{}'.format(button.Name), {'Speed': 'Slow'})
     elif button is tlp.btn_bluraySub:
         dvBluray.SetSubtitle(None, None)
     elif button is tlp.btn_blurayEject:
-        #TODO -  Send bluray command - a receiveData event will be triggered and that's where I'll handle the control
         response = dvBluray.SendAndWait('!7?MST\r', 2)
         print(response)
         if response:
