@@ -14,11 +14,9 @@ from extronlib.device import ProcessorDevice, UIDevice
 from extronlib.system import Timer, ProgramLog
 from extronlib.interface import EthernetClientInterface
 # Project import
-import modules.device.atna_camera_AT_HDVS_CAM_v1_0_1_0 as BoardCam
 import modules.device.extr_Scaler_IN806_IN1808_Series_v1_1_6_0 as modScalar
-#import modules.device.epsn_vp_CB_EB_PowerLite_L630U_Series_v1_0_4_0 as Projector
-import modules.device.epsn_vp_Powerlite_EB_Lxxx_U_W_v1_0_1_0 as Projector
-import modules.device.tasc_bluray_BD_MP1_v1_2_0_0 as Bluray
+import modules.device.epsn_vp_CB_EB_PowerLite_L630U_Series_v1_0_4_0 as Projector
+import modules.device.tasc_bluray_BD_MP4K_v1_0_0_0 as Bluray
 
 from modules.helper.ConnectionHandler import GetConnectionHandler
 from modules.helper.ModuleSupport import eventEx
@@ -28,9 +26,6 @@ import variables as var
 dvIPCP = ProcessorDevice('ProcessorAlias')
 dvTLP = UIDevice('PanelAlias')
 
-"""TODO - Check IP numbers, get new command sheet for Projector in test system"""
-
-#TODO setup credentials file like in example code
 dvScalar = modScalar.SSHClass('10.10.2.30', 22023,  Credentials=('admin', 'wag2748'), Model='IN1806')
 dvScalar = GetConnectionHandler(dvScalar, 'Temperature', pollFrequency=30)         
 
@@ -48,7 +43,6 @@ def SwitcherConnectionHandler(client:EthernetClientInterface, state):
         dvScalar.SetGroupMicVolume(var.mic_val, None)
 
 dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP1')
-#dvBluray = GetConnectionHandler(Bluray.SerialOverEthernetClass('10.10.2.70', 2002, Model='BD-MP1'), '!7?SST\r')  #Cget something to check for response
 
 def ConnectBluray(timer:Timer, count):
     result = dvBluray.Connect(5)
@@ -70,15 +64,13 @@ def BlurayConnectionHandler(client:EthernetClientInterface, state):
         client.StopKeepAlive()
         BlurayConnectionTimer.Restart()
 
-#dvPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L510U')
-
-dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L510U'), 'Power')
+dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L630U'), 'Power')
 
 @eventEx(dvPRJ, ['Connected', 'Disconnected'])
 def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     print('Projector on IP {0} is {1}'.format(client.IPAddress, state))
     if state is 'Connected':
-        dvPRJ.Update('Power')       #Check if this will mean the state is always known or not - call them
+        dvPRJ.Update('Power')       
         dvPRJ.Update('AVMute')
 
         
