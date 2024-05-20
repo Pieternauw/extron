@@ -6,7 +6,7 @@ mirrored panels should be in the same file.
 """
 
 # Python imports
-from extronlib.system import MESet, Wait
+from extronlib.system import MESet, Clock
 # Project imports
 from modules.helper.ModuleSupport import eventEx
 from modules.helper.MirrorUI import Button
@@ -22,6 +22,26 @@ import ui.tlpMainPageAudio as tlpMainPageAudio
 
 BTNEVL = ['Pressed', 'Released', 'Tapped', 'Held']
 
+def ShutdownSystem(clock, dt):
+    
+    dvCenterPRJ.SetPower('Off', None)
+    dvRightPRJ.SetPower('Off', None)
+    dvLeftPRJ.SetPower('Off', None)
+    dvCenterPRJ.Update('Power')
+    dvRightPRJ.Update('Power')
+    dvLeftPRJ.Update('Power')
+
+    tlpMainPageAudio.lvl_cMic.SetLevel(-18)
+    tlpMainPageAudio.lvl_cProg.SetLevel(-18)
+    dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelSpeech', 'Channel': '1'})
+    dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelProgram', 'Channel': '1'})
+        
+    dvMatrix.SetMatrixTieCommand(None, {'Input': '3', 'Output': '9', 'Tie Type': 'Audio/Video'}) #Cynap
+    dvTLPMain.ShowPage('Start Page')
+    dvTLPMain.HideAllPopups()
+
+Shutdown = Clock(['23:00:00'], None, ShutdownSystem)
+Shutdown.Enable()
 
 
 """Main Page"""
@@ -129,12 +149,14 @@ def ShutdownConfirm(button:Button, state):
         dvCenterPRJ.SetPower('Off', None)
         dvRightPRJ.SetPower('Off', None)
         dvLeftPRJ.SetPower('Off', None)
+        dvCenterPRJ.Update('Power')
+        dvRightPRJ.Update('Power')
+        dvLeftPRJ.Update('Power')
 
         tlpMainPageAudio.lvl_cMic.SetLevel(-18)
         tlpMainPageAudio.lvl_cProg.SetLevel(-18)
         dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelSpeech', 'Channel': '1'})
         dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelProgram', 'Channel': '1'})
-        print(dvBiamp.ReadStatus('LevelControl', {'Instance Tag': 'LevelSpeech', 'Channel': '1'}))
         
         dvMatrix.SetMatrixTieCommand(None, {'Input': '3', 'Output': '9', 'Tie Type': 'Audio/Video'}) #Cynap
         dvTLPMain.ShowPage('Start Page')
@@ -153,17 +175,6 @@ def CancelShutdown(button:Button, state):
             dvTLPMain.ShowPage('C Projection')
     else:
         dvTLPMain.ShowPage('room mode select')
-
-
-"""Activity Timeout Cancel"""
-btn_continueActivity = Button(dvTLPMain, 215)
-@eventEx(btn_continueActivity, BTNEVL)
-def PreventExShutdown(button:Button, state):
-    print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        button.SetState(1)
-        dvTLPMain.HidePopup('inactivity popup')
-        
         
 #Help Buttons
 btn_macHelp = Button(dvTLPMain, 131)
