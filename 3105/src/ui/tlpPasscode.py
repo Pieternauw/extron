@@ -70,3 +70,12 @@ def BtnClearPad(button:Button, state):
         button.SetState(1)
     elif state == 'Released':
         button.SetState(0)
+
+btn_passcodeCancel = Button(dvTLPMain, 153)
+@eventEx(btn_passcodeCancel, ['Pressed', 'Released'])
+def CancelPasscode(button:Button, state):
+    button.SetState(1 if state == 'Pressed' else 0)
+    print(button.Name, state)
+    if state is 'Pressed':
+        dvTLPMain.ShowPage('Start Page')
+    

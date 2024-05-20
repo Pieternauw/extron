@@ -98,6 +98,8 @@ right_board_set.SetCurrent(None)
 
 """Video Mute"""    
 btn_cVideoMute = Button(dvTLPMain, 255)
+btn_lVideoMute = Button(dvTLPMain, 226)
+btn_rVideoMute = Button(dvTLPMain, 92)
 
 """NOTE Laptop Feedback"""
 btn_laptopConnectedFeedback = Button(dvTLPMain, 23)
@@ -119,6 +121,11 @@ input_total_list = [btn_cHDMI, btn_cWireless, btn_cMac, btn_cBluray, btn_cDoc1, 
                     btn_lHDMI, btn_lWireless, btn_lMac, btn_lDocCam1, btn_lDocCam2, btn_lBluray, btn_lBoardCams, 
                     btn_rHDMI, btn_rWireless, btn_rMac, btn_rBluray, btn_rDocCam1, btn_rDocCam2, btn_rBoardCams, 
                     btn_cBoard1, btn_cBoard2, btn_cBoard3]
+
+btn_leftSourceSound = Button(dvTLPMain, 228)
+btn_rightSourceSound = Button(dvTLPMain, 227)
+btn_leftSourceSound.SetVisible(False)
+btn_rightSourceSound.SetVisible(False)
 
 #TODO - Check MatrixTieeventEx call for list 
 @eventEx(input_total_list, 'Pressed')
@@ -148,6 +155,8 @@ def SwitchInput(button:Button, state):
         mode = 'Left'
         dvTLPMain.ShowPopup(popup_list[left_input_set.Objects.index(button)])
         left_input_set.SetCurrent(button)
+        btn_leftSourceSound.SetVisible(False)
+        btn_rightSourceSound.SetVisible(True)
 
     elif button in right_input_set.Objects:
         prj_select = 3
@@ -156,4 +165,6 @@ def SwitchInput(button:Button, state):
         mode = 'Right'  
         dvTLPMain.ShowPopup(popup_list[right_input_set.Objects.index(button)])
         right_input_set.SetCurrent(button)
+        btn_leftSourceSound.SetVisible(True)
+        btn_rightSourceSound.SetVisible(False)
         

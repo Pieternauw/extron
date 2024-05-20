@@ -23,16 +23,16 @@ def SourceSelection(button:Button, state):
     
     if button in [tlp.btn_lBoardCams, tlp.btn_rBoardCams]:
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.prj_select), 'Tie Type': 'Video'})
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.monitor_select), 'Tie Type': 'Video'})
+        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.monitor_select), 'Tie Type': 'Audio/Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.yuja_select), 'Tie Type': 'Audio/Video'})
     elif button in tlp.center_board_set.Objects:
         output = tlp.center_board_set.Objects.index(button) + 9
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.prj_select), 'Tie Type': 'Video'})
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.monitor_select), 'Tie Type': 'Video'})
+        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.monitor_select), 'Tie Type': 'Audio/Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.yuja_select), 'Tie Type': 'Audio/Video'})
     else:
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.prj_select), 'Tie Type': 'Video'})
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.monitor_select), 'Tie Type': 'Video'})
+        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.monitor_select), 'Tie Type': 'Audio/Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.yuja_select), 'Tie Type': 'Audio/Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '12', 'Tie Type': 'Audio/Video'})
         
@@ -40,19 +40,16 @@ def SourceSelection(button:Button, state):
         dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': '{}'.format(tlp.yuja_select), 'Tie Type': 'Audio/Vieo'})
 
 #Video Mute - TODO define left and right buttons 
-@eventEx([tlp.btn_cVideoMute] , 'Pressed')
+video_mute_list = [tlp.btn_lVideoMute, tlp.btn_cVideoMute, tlp.btn_rVideoMute]
+@eventEx(video_mute_list , 'Pressed')
 def VideoMuteControl(button:tlp.Button, state):
     print(button.Name, button.Host, state)
     if button.State == 0:
-        dvMatrix.SetGlobalVideoMute('On', None)
-        tlp.btn_cVideoMute.SetState(1)
-        #tlp.btn_lVideoMute.SetState(1)
-        #tlp.btn_rVideoMute.SetState(1)
+        dvMatrix.SetVideoMute('On', {'Output': '{}'.format(video_mute_list.index(button) + 1)})
+        button.SetState(1)
     else:
-        dvMatrix.SetGlobalVideoMute('Off', None)
-        tlp.btn_cVideoMute.SetState(0)
-        #tlp.btn_lVideoMute.SetState(0)
-        #tlp.btn_rVideoMute.SetState(0)
+        dvMatrix.SetVideoMute('Off', {'Output': '{}'.format(video_mute_list.index(button) + 1)})
+        button.SetState(0)
 
 #Laptop Feedback
 def LaptopConnectedFeedback(command, value, qualifier):
@@ -65,3 +62,19 @@ def LaptopConnectedFeedback(command, value, qualifier):
         tlp.lblLaptopConnected.SetText('Not Connected')
     
 dvMatrix.SubscribeStatus('InputSignalStatusEndpoint', {'Input': '1', 'Sub Input': '1'}, LaptopConnectedFeedback)
+
+@eventEx([tlp.btn_leftSourceSound, tlp.btn_rightSourceSound], 'Pressed')
+def SwitchSourceSound(button:Button, state):
+    print('Switching Audo Source')
+    if button is tlp.btn_leftSourceSound:
+        source = dvMatrix.ReadStatus('OutputTieStatus', {'Output': '1', 'Tie Type': 'Video'})
+        print(source)
+        dvMatrix.SetMatrixTieCommand(None, {'Input': source, 'Output': '12', 'Tie Type': 'Audio'})
+        button.SetVisible(False)
+        tlp.btn_rightSourceSound.SetVisible(True)
+    else:
+        source = dvMatrix.ReadStatus('OutputTieStatus', {'Output': '3', 'Tie Type': 'Video'})
+        print(source)
+        dvMatrix.SetMatrixTieCommand(None, {'Input': source, 'Output': '12', 'Tie Type': 'Audio'})
+        button.SetVisible(False)
+        tlp.btn_leftSourceSound.SetVisible(True)

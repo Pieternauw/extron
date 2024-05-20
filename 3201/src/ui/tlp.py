@@ -23,6 +23,7 @@ import ui.tlpMainPageAudio as tlpMainPageAudio
 BTNEVL = ['Pressed', 'Released', 'Tapped', 'Held']
 
 
+
 """Main Page"""
 btn_startScreen = Button(dvTLPMain, 19)
 @eventEx(btn_startScreen, BTNEVL)
@@ -34,45 +35,54 @@ def StartScreen(button:Button, state):
     elif state == 'Released':
         button.SetState(0)
 
+selected = False
+dual = False
+
 """Room Mode Selection Page"""
 btn_singleDisplay = Button(dvTLPMain, 30)
 @eventEx(btn_singleDisplay, BTNEVL)
 def SingleDisplay(button:Button, state):
+    global selected, dual
     print(button.Name, button.Host, state)
     if state == 'Pressed':
         button.SetState(1)
         dvTLPMain.ShowPage('C Projection')
         dvTLPMain.ShowPopup('center mode confirm')
+        selected = True
+        dual = False
     elif state == 'Released':
         button.SetState(0)
     
 btn_dualDisplay = Button(dvTLPMain, 31)
 @eventEx(btn_dualDisplay, BTNEVL)
 def DualDisplay(button:Button, state):
+    global selected, dual
     print(button.Name, button.Host, state)
     if state == 'Pressed':
         button.SetState(1)
         dvTLPMain.ShowPage('DualProjection')
         dvTLPMain.ShowPopup('dual mode confirm')
+        selected = True
+        dual = True
     elif state == 'Released':
         button.SetState(0)
 
 """confirmation button """
 btn_cConfirm = Button(dvTLPMain, 46)
-@eventEx(btn_cConfirm, BTNEVL)
+btn_dConfirm = Button(dvTLPMain, 17)
+@eventEx([btn_cConfirm, btn_dConfirm], BTNEVL)
 def CenterConfirm(button:Button, state):
     print(button.Name, button.Host, state)
     if state == 'Pressed':
         button.SetState(1)
         dvTLPMain.HideAllPopups()
         dvTLPMain.ShowPage('room mode select')
-
-
-      
-      
+        
 """Help Popup"""  
 btn_cHelpPopup = Button(dvTLPMain, 90)
-@eventEx(btn_cHelpPopup, BTNEVL)
+btn_dBottomHelp = Button(dvTLPMain, 57)
+btn_dTopHelp = Button(dvTLPMain, 11)
+@eventEx([btn_cHelpPopup, btn_dBottomHelp, btn_dTopHelp], BTNEVL)
 def CenterHelpButton(button:Button, state):
     print(button.Name, button.Host, state)
     if state == 'Pressed':
@@ -95,7 +105,8 @@ def ExitHelpPopup(button:Button, state):
 """Shutdown Screen"""
 btn_cShutdown = Button(dvTLPMain, 234)
 btn_dShutdown = Button(dvTLPMain, 8)
-@eventEx([btn_cShutdown, btn_dShutdown], BTNEVL)
+btn_roomSelectShutdown = Button(dvTLPMain, 12)
+@eventEx([btn_cShutdown, btn_dShutdown, btn_roomSelectShutdown], BTNEVL)
 def ShutdownPage(button:Button, state):
     print(button.Name, button.Host, state)
     if state == 'Pressed':
@@ -115,28 +126,34 @@ def ShutdownConfirm(button:Button, state):
         #shut off receivers
         #lock cabinet
         button.SetState(1)
-        if (dvLeftPRJ.ReadStatus('Power') == 'Warming') or (dvCenterPRJ.ReadStatus('Power') == 'Warming') or dvRightPRJ.ReadStatus('Power') == 'Warming':
-            @Wait(5)
-            def PrjWarming():
-                dvCenterPRJ.SetPower('Off', None)
-                dvRightPRJ.SetPower('Off', None)
-                dvLeftPRJ.SetPower('Off', None)
-        else:
-            dvCenterPRJ.SetPower('Off', None)
-            dvRightPRJ.SetPower('Off', None)
-            dvLeftPRJ.SetPower('Off', None)
+        dvCenterPRJ.SetPower('Off', None)
+        dvRightPRJ.SetPower('Off', None)
+        dvLeftPRJ.SetPower('Off', None)
 
         tlpMainPageAudio.lvl_cMic.SetLevel(-18)
         tlpMainPageAudio.lvl_cProg.SetLevel(-18)
-        for i in range(1, 7):  
-            dvBiamp.SetLevelControl(-18, {'Instance Tag': 'Level1', 'Channel': '{}'.format(i)})
-
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '3', 'Output': '9', 'TieType': 'Video'}) #Cynap
+        dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelSpeech', 'Channel': '1'})
+        dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelProgram', 'Channel': '1'})
+        print(dvBiamp.ReadStatus('LevelControl', {'Instance Tag': 'LevelSpeech', 'Channel': '1'}))
+        
+        dvMatrix.SetMatrixTieCommand(None, {'Input': '3', 'Output': '9', 'Tie Type': 'Audio/Video'}) #Cynap
         dvTLPMain.ShowPage('Start Page')
         dvTLPMain.HideAllPopups()
         
         
-btn_shutdownNo = Button(dvTLPMain, 6)
+btn_shutdownNo = Button(dvTLPMain, 7)
+@eventEx(btn_shutdownNo, 'Pressed')
+def CancelShutdown(button:Button, state):
+    print(button.Name, button.Host, state)
+    global selected, dual
+    if selected:
+        if dual:
+            dvTLPMain.ShowPage('DualProjection')
+        else:
+            dvTLPMain.ShowPage('C Projection')
+    else:
+        dvTLPMain.ShowPage('room mode select')
+
 
 """Activity Timeout Cancel"""
 btn_continueActivity = Button(dvTLPMain, 215)
@@ -146,7 +163,7 @@ def PreventExShutdown(button:Button, state):
     if state == 'Pressed':
         button.SetState(1)
         dvTLPMain.HidePopup('inactivity popup')
-        #TODO - Reset Activity timer
+        
         
 #Help Buttons
 btn_macHelp = Button(dvTLPMain, 131)
@@ -203,21 +220,12 @@ for button in wireless_set.Objects:
     wireless_set.SetStates(button, 0, 1)
     
 wireless_set.SetCurrent(None)
+
+wireless_popup_set = ['wireless mac os popup', 'wireless windows popup', 'wireless ios popup', 'wireless android popup']
     
 @eventEx(wireless_set.Objects, BTNEVL)
 def WirelessHelpSelect(button:Button, state):
     print(button.Name, button.Host, state)
     dvTLPMain.HideAllPopups()
-    if button is btn_wirelessMac:
-        dvTLPMain.ShowPopup('wireless mac os popup')
-    elif button is btn_wirelessWindows:
-        dvTLPMain.ShowPopup('wireless windows popup')
-    elif button is btn_wirelessIpadIphone:
-        dvTLPMain.ShowPopup('wireless ios popup')
-    elif button is btn_wirelessAndroid:
-        dvTLPMain.ShowPopup('wireless android popup')
-    
-    dvTLPMain.ShowPopup('Wireless select device')
     dvTLPMain.ShowPopup('Wireless instruction popup')
-        
-"""TODO FIgure out sleep """
+    dvTLPMain.ShowPopup(wireless_popup_set[wireless_set.Objects.index(button)])
