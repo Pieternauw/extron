@@ -122,7 +122,7 @@ def ExitHelpPopup(button:Button, state):
     print(button.Name, button.Host, state)
     if state == 'Pressed':
         button.SetState(1)
-        dvTLPMain.HideAllPopups()
+        dvTLPMain.HidePopup('help popup')
     elif state == 'Released':
         button.SetState(0)
     
