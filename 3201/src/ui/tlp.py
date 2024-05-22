@@ -37,6 +37,10 @@ def ShutdownSystem(clock, dt):
     dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelProgram', 'Channel': '1'})
         
     dvMatrix.SetMatrixTieCommand(None, {'Input': '3', 'Output': '9', 'Tie Type': 'Audio/Video'}) #Cynap
+    
+    for i in ['1', '2', '3', '4', '5', '12']:
+        dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': i, 'Tie Type': 'Audio/Video'}) 
+
     dvTLPMain.ShowPage('Start Page')
     dvTLPMain.HideAllPopups()
 
@@ -159,6 +163,10 @@ def ShutdownConfirm(button:Button, state):
         dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelProgram', 'Channel': '1'})
         
         dvMatrix.SetMatrixTieCommand(None, {'Input': '3', 'Output': '9', 'Tie Type': 'Audio/Video'}) #Cynap
+
+        for i in ['1', '2', '3', '4', '5', '12']:
+            dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': i, 'Tie Type': 'Audio/Video'}) 
+
         dvTLPMain.ShowPage('Start Page')
         dvTLPMain.HideAllPopups()
         
