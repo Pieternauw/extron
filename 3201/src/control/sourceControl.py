@@ -37,7 +37,7 @@ def SourceSelection(button:Button, state):
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '12', 'Tie Type': 'Audio/Video'})
         
     if button in [tlp.btn_cBluray, tlp.btn_lBluray, tlp.btn_rBluray]:
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': '{}'.format(tlp.yuja_select), 'Tie Type': 'Audio/Vieo'})
+        dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': '{}'.format(tlp.yuja_select), 'Tie Type': 'Audio/Video'})
 
 #Video Mute - TODO define left and right buttons 
 video_mute_list = [tlp.btn_lVideoMute, tlp.btn_cVideoMute, tlp.btn_rVideoMute]
