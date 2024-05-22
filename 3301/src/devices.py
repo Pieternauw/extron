@@ -34,13 +34,15 @@ def SwitcherConnectionHandler(client:EthernetClientInterface, state):
     print('Switcher on IP {0} is {1}'.format(client.IPAddress, state))
     if state is 'Connected':
         #Update Calls
-        dvScalar.Update('InputSignalStatus', {'Input': '2'})
-        dvScalar.Update('GroupProgramMute')
-        dvScalar.Update('GroupProgramVolume')
-        dvScalar.Update('GroupMicMute')
-        dvScalar.Update('GroupMicVolume')
-        dvScalar.SetGroupProgramVolume(var.prog_val, None)
-        dvScalar.SetGroupMicVolume(var.mic_val, None)
+        client.Update('InputSignalStatus', {'Input': '2'})
+        client.Update('GroupProgramMute')
+        client.Update('GroupProgramVolume')
+        client.Update('GroupMicMute')
+        client.Update('GroupMicVolume')
+        client.SetGroupProgramVolume(var.prog_val, None)
+        client.SetGroupMicVolume(var.mic_val, None)
+    else:
+        client.Connect(5)
 
 dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP1')
 
@@ -70,7 +72,9 @@ dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 200
 def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     print('Projector on IP {0} is {1}'.format(client.IPAddress, state))
     if state is 'Connected':
-        dvPRJ.Update('Power')       
-        dvPRJ.Update('AVMute')
+        client.Update('Power')       
+        client.Update('AVMute')
+    else:
+        client.Connect(5)
 
         

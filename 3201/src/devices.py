@@ -60,6 +60,8 @@ def MatricConnectionHandler(client:EthernetClientInterface, state):
         dvMatrix.Update('InputSignalStatusEndpoint', {'Input': '1', 'Sub Input': '1'})
         print(dvMatrix.ReadStatus('InputSignalStatusEndpoint', {'Input': '1', 'Sub Input': '1'}))
         #verify other update calls needed
+    else:
+        client.Connect(5)
 
 def ConnectBluray(timer:Timer, count):
     result = dvBluray.Connect(5)
@@ -90,15 +92,10 @@ dvRightPRJ = GetConnectionHandler(dvRightPRJ, 'Power', pollFrequency=30)
 def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     print('Projector on IP {0} is {1}'.format(client.IPAddress, state))
     if state is 'Connected':
-        if client is dvLeftPRJ:
-            dvLeftPRJ.Update('Power')
-            dvLeftPRJ.Update('AVMute') #subscribe status for the buttons
-        elif client is dvCenterPRJ:
-            dvCenterPRJ.Update('Power')
-            dvCenterPRJ.Update('AVMute') #subscribe status for the buttons
-        elif client is dvRightPRJ:
-            dvRightPRJ.Update('Power')
-            dvRightPRJ.Update('AVMute')
+        client.Update('Power')
+        client.Update('AVMute')
+    else:
+        client.Connect(5)
 
 dvBiamp = GetConnectionHandler(dvBiamp, 'MuteControl', keepAliveQueryQualifier={'Instance Tag': 'MuteProgram', 'Channel': '1'}, pollFrequency=30)
 
@@ -109,4 +106,5 @@ def BiampConnectionHandler(client:EthernetClientInterface, state):
         #these need to be called whenever - write an update function for whenever I need newest status in main code to return value
         dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
         dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
-
+    else:
+        client.Connect(5)

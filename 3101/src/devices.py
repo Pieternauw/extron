@@ -41,6 +41,8 @@ def SwitcherConnectionHandler(client:EthernetClientInterface, state):
         dvScalar.Update('GroupMicVolume')
         dvScalar.SetGroupProgramVolume(var.prog_val, None)
         dvScalar.SetGroupMicVolume(var.mic_val, None)
+    else:
+        client.Connect(10)
 
 dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP1')
 
@@ -72,5 +74,7 @@ def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     if state is 'Connected':
         dvPRJ.Update('Power')       
         dvPRJ.Update('AVMute')
+    else:
+        client.Connect(10)
 
         
