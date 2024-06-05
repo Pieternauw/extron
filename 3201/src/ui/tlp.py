@@ -111,7 +111,6 @@ def CenterHelpButton(button:Button, state):
     print(button.Name, button.Host, state)
     if state == 'Pressed':
         button.SetState(1)
-        dvTLPMain.HideAllPopups()
         dvTLPMain.ShowPopup('help popup')
     elif state == 'Released':
         button.SetState(0)
