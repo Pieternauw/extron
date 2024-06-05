@@ -16,7 +16,7 @@ import ui.tlpAdvanced
 import ui.tlpAudioMix
 import ui.tlpBluray
 import ui.tlpPasscode
-import ui.tlpSourceSelect
+import ui.tlpSourceSelect as tlpSourceSelect
 import ui.tlpMainPageAudio as tlpMainPageAudio
 # Define UI Objects
 
@@ -30,6 +30,11 @@ def ShutdownSystem(clock, dt):
     dvCenterPRJ.Update('Power')
     dvRightPRJ.Update('Power')
     dvLeftPRJ.Update('Power')
+
+    tlpSourceSelect.left_input_set.SetCurrent(None)
+    tlpSourceSelect.right_input_set.SetCurrent(None)
+    tlpSourceSelect.center_board_set.SetCurrent(None)
+    tlpSourceSelect.center_input_set.SetCurrent(None)
 
     tlpMainPageAudio.lvl_cMic.SetLevel(-18)
     tlpMainPageAudio.lvl_cProg.SetLevel(-18)
