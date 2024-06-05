@@ -2,7 +2,11 @@ from extronlib.ui import Button
 from modules.helper.ModuleSupport import eventEx
 from devices import dvTLP
 
-"""Bluray Popup"""
+"""
+Bluray Popup defines all of the UI buttons in the bluray popup.
+It uses one list to set state of buttons when pressed. Otherwise
+all control is handled in the blurayControl.py file.  
+"""
 
 btn_blurayStop = Button(dvTLP, 51)
 btn_blurayPlay = Button(dvTLP, 60)
@@ -33,9 +37,6 @@ button_set = [btn_blurayStop, btn_blurayPlay, btn_blurayPause, btn_blurayRTrack,
 @eventEx(button_set, ['Pressed', 'Released'])
 def ButtonPressedEvent(button:Button, state):
     print(button.Name, state)
-    if state == 'Pressed':
-        button.SetState(1)
-    elif state == 'Released':
-        button.SetState(0)
+    button.SetState(1 if state is 'Pressed' else 0)
     
     
