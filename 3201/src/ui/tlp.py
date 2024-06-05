@@ -160,7 +160,12 @@ def ShutdownConfirm(button:Button, state):
         dvLeftPRJ.SetPower('Off', None)
         dvCenterPRJ.Update('Power')
         dvRightPRJ.Update('Power')
-        dvLeftPRJ.Update('Power')
+        dvLeftPRJ.Update('Power') 
+
+        tlpSourceSelect.left_input_set.SetCurrent(None)
+        tlpSourceSelect.right_input_set.SetCurrent(None)
+        tlpSourceSelect.center_board_set.SetCurrent(None)
+        tlpSourceSelect.center_input_set.SetCurrent(None)
 
         tlpMainPageAudio.lvl_cMic.SetLevel(-18)
         tlpMainPageAudio.lvl_cProg.SetLevel(-18)

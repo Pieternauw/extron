@@ -40,3 +40,8 @@ def LaptopConnectedFeedback(command, value, qualifier):
     
 dvScalar.SubscribeStatus('InputSignalStatus', {'Input': '2'}, LaptopConnectedFeedback)
 
+@eventEx(tlp.btn_shdnYes, 'Pressed')
+def ShutdownControl(button:tlp.Button, state):
+    dvScalar.SetInput('3', {'Type': 'Audio/Video'})
+    dvPRJ.SetPower('Off', None)
+    tlp.input_set.SetCurrent(None)

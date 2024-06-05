@@ -125,18 +125,13 @@ def ShutdownYes(button:Button, state):
     
         #lock drawer with control? 
         #turn off projector
-        dvPRJ.Set('Power', 'Off')
         #Set Audio levels back to defaults
-
         MainAudio.lvl_mic.SetLevel(var.mic_val)
         dvScalar.SetGroupMicVolume(var.mic_val, None)
 
         MainAudio.lvl_prog.SetLevel(var.prog_val)
         dvScalar.SetGroupProgramVolume(var.prog_val, None)
 
-        #set Cynap as input
-        dvScalar.SetInput('3', {'Type': 'Audio/Video'})
-        
         #switch to start page
         dvTLP.ShowPage("Start Page")
         dvTLP.HideAllPopups()
