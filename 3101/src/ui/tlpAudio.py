@@ -2,6 +2,14 @@ from modules.helper.ModuleSupport import eventEx
 from extronlib.ui import Button, Slider
 from devices import dvTLP
 
+"""
+The audio mix popup only contains the UI element design. It doesn't include any control.
+Control is determined by the level of the slider when it gets changed. When the user 
+slides up or down, the control responds by setting the volume level in the 1808 switcher
+to wherever the user left the level. 
+"""
+
+
 """Audio Mix Popup"""
 #Sliders
 sld_lavMic = Slider(dvTLP, 22)

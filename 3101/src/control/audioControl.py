@@ -1,3 +1,10 @@
+"""
+This file defines the control for the advanced settings sliders. Depending on which slider gets changed, 
+the scalar gets told the value it was changed to. The user moves the slider where they want it and that 
+value is passed in the set function. On startup, default values are set and the sliders are filled to 
+a certain level. 
+"""
+
 from modules.helper.ModuleSupport import eventEx
 import ui.tlpAudio as tlp 
 from devices import dvScalar 
@@ -11,13 +18,10 @@ def SliderChanged(slider:tlp.Slider, state, value):
     print(slider.Name, 'Control')
     if slider in mic_slider_list:
         dvScalar.SetMicLineInputGain(value, {'Input': '{}'.format(mic_slider_list.index(slider) + 1)})  #TODO check these input numbers
-        var.mic_sld = value
     elif slider in prg_slider_list:
         dvScalar.SetEmbeddedInputGain(value, {'Input': '{}'.format(prg_slider_list.index(slider)+ 1)})
-        var.prg_sld = value
     elif slider is tlp.sld_ampLevelOut:
         dvScalar.SetOutputAttenuation(value, {'Output': 'Amp Out'})
-        var.amp_sld = value
     
 def Startup():
     tlp.sld_lavMic.SetFill(var.lav_mic_sld)

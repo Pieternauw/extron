@@ -1,3 +1,25 @@
+"""
+This control file handles the response for the up, down, and mute buttons for both program and microphone.
+It utilizes the SubscribeStatus() method to keep track of states for volume mute and level. 
+
+The basic idea is that when a button is pressed, for example the mute program button, the touchpanel 
+queries the switcher for the current value. The switcher returns either 'On' or 'Off'. If the value 
+is 'On' the program sets it to 'Off' and vice versa. If the command sends successfully, the switcher 
+sees there's a change in the value state and calls the SubscribeStatus feedback handler which is defined 
+in this file. This feedback handler sets the visual feedback of the button pressed dependent on the value 
+passed by the SubscribeStatus command. 
+
+Visual feedback done in this way means it stays consistent with the device state rather than with the 
+user input. If the user presses the button but the device doesn't change state, then the button doesn't 
+represent the changed state, it remains in the current state. This does add a slight delay on press
+but the delay is very short. 
+
+For volume control the inc() and dec() methods are used. This steps the level bar up and then sends the value
+of the level bar to the device. There is a recorrection if the bar steps past where the last device value was
+received. If the user enters commands too fast for the device to respond sometimes it won't get every inc() or
+dec() command so the bar will adjust to the devices value when stabalized. 
+"""
+
 from devices import dvScalar
 from modules.helper.ModuleSupport import eventEx
 
@@ -10,30 +32,19 @@ tlp.lvl_mic.SetRange(-100, 12, 1)
 def MuteButtonPressed(button:tlp.Button, state):
     if button is tlp.btn_progAudioMute:
         CurrentMute = dvScalar.ReadStatus('GroupProgramMute')
-        if CurrentMute is 'Off':
-            dvScalar.SetGroupProgramMute('On', None)
-        else:
-            dvScalar.SetGroupProgramMute('Off', None)
+        dvScalar.SetGroupProgramMute('Off' if CurrentMute is 'On' else 'Off')
     else:
         CurrentMute = dvScalar.ReadStatus('GroupMicMute')
-        if CurrentMute is 'On':
-            dvScalar.SetGroupMicMute('Off', None)
-        else:
-            dvScalar.SetGroupMicMute('On', None)
+        dvScalar.SetGroupMicMute('Off' if CurrentMute is 'On' else 'Off', None)
             
 def MicMuteChanged(command, value, qualifier=None):
     print(command, value, qualifier)
-    if value == 'Off':
-        tlp.btn_micAudioMute.SetState(0)
-    else:
-        tlp.btn_micAudioMute.SetState(1)
+    tlp.btn_micAudioMute.SetState(1 if value is 'On' else 0)
         
 def ProgMuteChanged(command, value, qualifier=None):
     print(command, value, qualifier)
-    if value == 'Off':
-        tlp.btn_progAudioMute.SetState(0)
-    else:
-        tlp.btn_progAudioMute.SetState(1)
+    tlp.btn_progAudioMute.SetState(1 if value is 'On' else 0)
+
         
 dvScalar.SubscribeStatus('GroupMicMute', None, MicMuteChanged)
 dvScalar.SubscribeStatus('GroupProgramMute', None, ProgMuteChanged)
