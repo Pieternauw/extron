@@ -1,12 +1,9 @@
 {
     "system": {
-        "name": "3105",
+        "name": "KRS 3105",
         "code_folder_path": "src",
         "code_entry_file": "main.py",
         "layout_folder_path": "layout",
-        "sound_folder_path": "sound",
-        "rfile_folder_path": "rfile",
-        "irfile_folder_path": "ir",
         "system_id": "6268",
         "author": {
             "name": "Pieter Nauwelaerts",

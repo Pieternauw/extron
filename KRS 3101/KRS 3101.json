@@ -1,14 +1,10 @@
 {
     "system": {
-        "name": "KRS 3301 Project",
+        "name": "KRS 3101",
         "code_folder_path": "src",
         "code_entry_file": "main.py",
         "layout_folder_path": "layout",
-        "sound_folder_path": "sound",
-        "rfile_folder_path": "rfile",
-        "irfile_folder_path": "ir",
         "system_id": "8293",
-        "data_file_path": "data.json",
         "author": {
             "name": "Pieter Nauwelaerts",
             "email": "pnauwela@ucsc.edu"
