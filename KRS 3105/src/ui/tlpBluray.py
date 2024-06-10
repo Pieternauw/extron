@@ -1,3 +1,8 @@
+"""
+This file only creates every button object and assigns the basic feedback on 
+press and release to every button. 
+"""
+
 from modules.helper.MirrorUI import Button 
 from modules.helper.ModuleSupport import eventEx
 from devices import dvTLPMain
@@ -33,9 +38,5 @@ button_set = [btn_blurayStop, btn_blurayPlay, btn_blurayPause, btn_blurayRTrack,
 @eventEx(button_set, ['Pressed', 'Released'])
 def ButtonPressedEvent(button:Button, state):
     print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        button.SetState(1)
-    elif state == 'Released':
-        button.SetState(0)
-    
+    button.SetState(1 if state is 'Pressed' else 0)
     

@@ -1,3 +1,14 @@
+"""
+The main passcode has two possible codes that work. The first is the hard-coded MSE passcode.
+The second is the passcode located on the IPCP itself. This passcode is changed quarterly so
+reading it off of a file means it can be changed without needing to change any of the code itself. 
+The number pad numbers have their UI names set as the number the represent. When a number button 
+gets pressed, that name gets appended to a comparison string. When the user presses enter that
+string gets compared to both passcodes and if it matches, it's cleared and the main page is shown.
+If it's wrong, the clear routine gets called where both the visual feedback (string of * representing
+numbers entered) gets refreshed as well as the comparison string. 
+"""
+
 from modules.helper.ModuleSupport import eventEx
 from modules.helper.MirrorUI import Button, Label
 

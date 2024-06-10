@@ -1,3 +1,22 @@
+"""
+This file is the definiton of every source selection button. It includes both center, left, and right 
+input sets and uses the MESet class to combine them all. With the MESet, only one of the groups buttons
+can be selected at a time. This allows for visual feedback to acurately represent the current selcted 
+source. 
+
+The final piece of this is the event when any button is pressed. Depending on which set its in, different 
+variables are set for the control file. The variables include:
+1. prj_select -> referneces which projector to tie inputs too. Also determines wich to turn on and what set 
+to pull the button index from for source selection
+2. monitor_select -> refers to the confidence monitor on the podium. Center and left use the same monitor
+3. yuja_select -> refers to which yuja input gets tied to the input source. Center and left use the same 
+number. Also used for board camera selection as of rev 1.0.0
+
+These numbers are used in the control file matching this one. This method simplifies the logic needed in 
+switching sources and allows me to treat all input buttons as one big set of buttons. That way only one 
+method is needed to control any input button selection. 
+"""
+
 from devices import dvTLPMain
 from modules.helper.ModuleSupport import eventEx
 from modules.helper.MirrorUI import Button, Label
@@ -141,7 +160,6 @@ def SwitchInput(button:Button, state):
         prj_select = 2
         monitor_select = 4
         yuja_select = 9
-        mode = 'Center'
         dvTLPMain.ShowPopup(popup_list[center_input_set.Objects.index(button)])
         center_input_set.SetCurrent(button)
     elif button is btn_cBoardCams:
@@ -152,7 +170,6 @@ def SwitchInput(button:Button, state):
         prj_select = 1
         monitor_select = 4
         yuja_select = 9
-        mode = 'Left'
         dvTLPMain.ShowPopup(popup_list[left_input_set.Objects.index(button)])
         left_input_set.SetCurrent(button)
         btn_leftSourceSound.SetVisible(False)
@@ -162,7 +179,6 @@ def SwitchInput(button:Button, state):
         prj_select = 3
         monitor_select = 5
         yuja_select = 10
-        mode = 'Right'  
         dvTLPMain.ShowPopup(popup_list[right_input_set.Objects.index(button)])
         right_input_set.SetCurrent(button)
         btn_leftSourceSound.SetVisible(True)

@@ -1,3 +1,10 @@
+"""
+This is the advanced settings page. It contains the references to the 3 projector control buttons
+as well as the number pad to access the advanced audio sliders page. Projector buttons are defined 
+in the control file matching this one. The subscribe status method is used to keep the visual 
+feedback consistent throughout the whole UI. 
+"""
+
 #Extron Imports 
 from modules.helper.ModuleSupport import eventEx
 from modules.helper.MirrorUI import Button, Label
@@ -15,24 +22,9 @@ def ShowAdvancedSettingsPopup(button:Button, state):
         dvTLPMain.ShowPopup("Advanced Settings")
     elif state == 'Released':
         button.SetState(0)
-"""
-#Activity Timeout
-btn_actTimeout = Button(dvTLPMain, 155)
-@eventEx(btn_actTimeout, ['Pressed', 'Released'])
-def DisableActivityTimeout(button:Button, state):
-    print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        button.SetState(1)
-        #TODO - get timeout setup - do something with the system to disable said act timeout.
-        print("something to disable errors\n") 
-    elif state == 'Released':
-        button.SetState(0)
-"""
-#Projector
-"""TODO might want to do a subscribe status to keep visual feedback consistent
-        also might want to make these all combined since this is a bit messy
 
-Center Projector"""
+#Projector
+"""Center Projector"""
 btn_projOn = Button(dvTLPMain, 24)
 btn_projOff = Button(dvTLPMain, 25)
 

@@ -1,3 +1,9 @@
+"""
+These are the sliders used to control the audio levels of every device and mic in the system. 
+The control of the biamp is located in the matching control file. This file only handles the 
+visual feedback and definition of the UI objects. 
+"""
+
 from modules.helper.MirrorUI import Slider, Button
 from modules.helper.ModuleSupport import eventEx
 
@@ -5,10 +11,6 @@ from devices import dvTLPMain
 
       
 """Audio Mix"""
-
-"""TODO - This hasn't been implemented in any of it so I have no idea how to code it
-        - Check with Scott or Tosh about how they want this to work
-        - Most likely something to do with the Biamp"""
 
 sld_lavMic = Slider(dvTLPMain, 22)
 sld_lavMic.SetRange(-18, 80, 1)
