@@ -1,8 +1,8 @@
 """
-This is the place to put the modules for each UI in the system.  One module for each unique ui --
-mirrored panels should be in the same file.
-* UI object definition
-* UI navigation
+The main file for the project. This file includes a lot of main page buttons such as the shutdown buttons,
+the advanced settings button, and help buttons. It also includes the shutdown routine which in rev 1.0.1 will 
+be moved to a control file. This is the collection point for all other touch panels as well. Any file that's 
+created seperately needs to be imported into this one for the compiler to recognize it. 
 """
 
 # Python imports

@@ -1,3 +1,9 @@
+"""
+This is the advanced settings page. It contains the references to the 3 projector control buttons
+as well as the number pad to access the advanced audio sliders page. Projector buttons are defined 
+in the control file matching this one. The subscribe status method is used to keep the visual 
+feedback consistent throughout the whole UI. 
+"""
 #Extron Imports 
 from modules.helper.ModuleSupport import eventEx
 from modules.helper.MirrorUI import Button, Label

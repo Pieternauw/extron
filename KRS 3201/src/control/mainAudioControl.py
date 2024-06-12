@@ -1,3 +1,18 @@
+"""
+This file is the biamp interfacing for the main page audio control. The up or down arrows will increment the level 
+and the mute buttons mute it. The Biamp code has everything grouped together so only channel 1 needs to be affected. 
+The instance tag refers to which type in the biamp program it is. For this code we use "MuteProgram" for program 
+and "MuteSpeech" for speech reinforcement. The up or down arrows change "LevelProgram" and 
+"LevelSpeech" in the biamp code. 
+
+Using SubscribeStatus() keeps the consistency of the visual feedback. If the program is still 
+muted after the user presses the button, the visual feedback will still display muted. The command 
+to mute or unmute is sent on press, and the commands to change the state are handled by the 
+feedback handler of the subscribe status call. There is no need to call update on press because 
+this module handles updating its dictionary on its own. 
+"""
+
+
 from devices import dvBiamp
 from modules.helper.ModuleSupport import eventEx
 

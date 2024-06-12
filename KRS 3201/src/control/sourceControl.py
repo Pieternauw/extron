@@ -1,3 +1,21 @@
+"""
+This file takes in the variables assigned values in the previous tlp file and makes all of the matrix tie commands.
+The structure is as follows:
+1. turn on the correct projector. Update the state for visual feedback in advanced settings. Output variable is the 
+corresponding index of the button pressed from within the left right or center set. + 1 is added because index 0 
+represents input 1 on the matrix. 
+2. If the left or right board cams were selected, tie yuja (9 for left 10 for right) to projector, monitor, and yuja.
+Yuja is used because left cam is on input 9 and right is on input 10
+3. If the button is one of the center board cam set, add 9 to the index (0 or 1) and tie it to the same things
+4. Otherwise it's one of the other inputs. Tie the output assigned to the projector, monitor, yuja, and surround sound
+5. Finally, if the button is a bluray button, tie yuja to input 0 to handle errors caused by trying to send HDCP 
+content to the yuja device. 
+
+There is also the laptop connected feedback which is a SubscribeStatus() method call following the enpoint status 
+of input 1. This changes the button to green and the text to connected when there's a connection made at the 
+winder cable. Sub input 1 refers to input 1 on the transmitter box which is where the HDMI cable is plugged in. 
+"""
+
 from devices import dvMatrix, dvCenterPRJ, dvRightPRJ, dvLeftPRJ
 
 from modules.helper.ModuleSupport import eventEx 

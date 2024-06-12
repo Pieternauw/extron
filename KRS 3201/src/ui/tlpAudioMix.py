@@ -1,3 +1,9 @@
+"""
+These are the sliders used to control the audio levels of every device and mic in the system. 
+The control of the biamp is located in the matching control file. This file only handles the 
+visual feedback and definition of the UI objects. 
+"""
+
 from modules.helper.MirrorUI import Slider, Button
 from modules.helper.ModuleSupport import eventEx
 
