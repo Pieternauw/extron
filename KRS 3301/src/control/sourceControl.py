@@ -12,8 +12,11 @@ In the next revision there will be relay commands on shutdown to handle the mic 
 #extron Import
 from modules.helper.ModuleSupport import eventEx 
 
+from extronlib.system import Wait
+
 #Project Import 
 import ui.tlp as tlp 
+import variables as var
 
 #Device Imports
 from devices import dvScalar, dvPRJ
@@ -25,10 +28,13 @@ input_popup_list = ['Laptop Connected popup', 'Wireless insturction popup',
 def ControlInput(button:tlp.Button, state):
     print(button.Name, state, 'Control')
     dvScalar.SetInput('{}'.format(tlp.input_set.Objects.index(button) + 2), {'Type': 'Audio/Video'})
-    dvPRJ.Set('Power', 'On') 
+    dvPRJ.SetPower('On', None) 
     tlp.dvTLP.HideAllPopups()
     tlp.dvTLP.ShowPopup(input_popup_list[tlp.input_set.Objects.index(button)])
     tlp.input_set.SetCurrent(button)
+    def updateRepsone():
+        dvPRJ.Update('Power')
+    updatePower = Wait(5, updateRepsone)
     
 @eventEx(tlp.btn_videoMute, 'Pressed')
 def VideoMuteControl(button:tlp.Button, state):
@@ -54,5 +60,8 @@ dvScalar.SubscribeStatus('InputSignalStatus', {'Input': '2'}, LaptopConnectedFee
 @eventEx(tlp.btn_shdnYes, 'Pressed')
 def ShutdownControl(button:tlp.Button, state):
     tlp.input_set.SetCurrent(None)
-    dvPRJ.SetPower('Off')
+    dvPRJ.SetPower('Off', None)
+    dvPRJ.Update('Power')
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})
+    dvScalar.SetGroupProgramVolume(var.prog_val, None)
+    dvScalar.SetGroupMicVolume(var.mic_val, None)

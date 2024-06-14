@@ -32,10 +32,10 @@ tlp.lvl_mic.SetRange(-100, 12, 1)
 def MuteButtonPressed(button:tlp.Button, state):
     if button is tlp.btn_progAudioMute:
         CurrentMute = dvScalar.ReadStatus('GroupProgramMute')
-        dvScalar.SetGroupProgramMute('Off' if CurrentMute is 'On' else 'Off')
+        dvScalar.SetGroupProgramMute('Off' if CurrentMute is 'On' else 'On', None)
     else:
         CurrentMute = dvScalar.ReadStatus('GroupMicMute')
-        dvScalar.SetGroupMicMute('Off' if CurrentMute is 'On' else 'Off', None)
+        dvScalar.SetGroupMicMute('Off' if CurrentMute is 'On' else 'On', None)
             
 def MicMuteChanged(command, value, qualifier=None):
     print(command, value, qualifier)

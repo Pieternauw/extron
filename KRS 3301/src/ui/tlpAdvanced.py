@@ -44,27 +44,7 @@ btn_actTimeout.SetVisible(False)
 btn_projOn = Button(dvTLP, 24)
 btn_projOff = Button(dvTLP, 25)
 
-prj_set = MESet([btn_projOn, btn_projOff])
-
-@eventEx(prj_set.Objects, 'Pressed')
-def ProjectorOnOff(button:Button, state):
-    print(button, state)
-    prj_set.SetCurrent(button)
-    if button is btn_projOn:
-        dvPRJ.Set('Power', 'On')
-    else:
-        dvPRJ.Set('Power', 'Off')
-
 btn_blankImg = Button(dvTLP, 21)
-@eventEx(btn_blankImg, 'Pressed')
-def BlankImage(button:Button, state):
-    print(button.Name, state)    
-    if button.State == 1:
-        button.SetState(0)
-        dvPRJ.Set('AVMute', 'Off')
-    else:
-        button.SetState(1)
-        dvPRJ.Set('AVMute', 'On')
 
 """ Technician Access Code takes only 1 password. It again uses a set of buttons with the names 0-9 to append to a string for comparison
     A dictionary could be used with the original button names, but because the names don't need to be unique I can have mutltiple buttons

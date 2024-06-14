@@ -14,6 +14,7 @@ from modules.helper.ModuleSupport import eventEx
 
 #Project Import 
 import ui.tlp as tlp 
+import variables as var
 
 #Device Imports
 from devices import dvScalar, dvPRJ
@@ -51,8 +52,13 @@ def LaptopConnectedFeedback(command, value, qualifier):
     
 dvScalar.SubscribeStatus('InputSignalStatus', {'Input': '2'}, LaptopConnectedFeedback)
 
+
 @eventEx(tlp.btn_shdnYes, 'Pressed')
 def ShutdownControl(button:tlp.Button, state):
     tlp.input_set.SetCurrent(None)
-    dvPRJ.SetPower('Off')
+    dvPRJ.SetPower('Off', None)
+    dvPRJ.Update('Power')
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})
+    dvScalar.SetGroupProgramVolume(var.prog_val, None)
+    dvScalar.SetGroupMicVolume(var.mic_val, None)
+

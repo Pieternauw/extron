@@ -25,7 +25,7 @@
                         "type": "AVLAN"
                     },
                     {
-                        "address": "128.114.159.xxx",
+                        "address": "128.114.159.229",
                         "type": "LAN"
                     }
                 ]

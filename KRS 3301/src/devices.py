@@ -12,7 +12,7 @@ Note: This is for definition only.  Connection and logic defined in system.py (s
 # Extron Library imports
 from extronlib.device import ProcessorDevice, UIDevice
 from extronlib.system import Timer, ProgramLog
-from extronlib.interface import EthernetClientInterface
+from extronlib.interface import EthernetClientInterface, RelayInterface
 # Project import
 import modules.device.extr_Scaler_IN806_IN1808_Series_v1_1_6_0 as modScalar
 import modules.device.epsn_vp_CB_EB_PowerLite_L630U_Series_v1_0_4_0 as Projector
@@ -25,6 +25,8 @@ import variables as var
 # Define devices
 dvIPCP = ProcessorDevice('ProcessorAlias')
 dvTLP = UIDevice('PanelAlias')
+
+dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
 dvScalar = modScalar.SSHClass('10.10.2.30', 22023,  Credentials=('admin', 'wag2748'), Model='IN1806')
 dvScalar = GetConnectionHandler(dvScalar, 'Temperature', pollFrequency=30)         
@@ -53,6 +55,7 @@ def ConnectBluray(timer:Timer, count):
         timer.Stop()
     else:
         ProgramLog('Bluray connection failure {}'.format(result), 'warning')
+        timer.Restart()
 
 BlurayConnectionTimer = Timer(5, ConnectBluray)
 BlurayConnectionTimer.Stop()

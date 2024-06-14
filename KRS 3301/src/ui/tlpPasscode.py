@@ -21,7 +21,7 @@ from modules.helper.ModuleSupport import eventEx
 from extronlib.ui import Button, Label
 from extronlib.system import File
 
-from devices import dvTLP
+from devices import dvTLP, dvRelay
 from variables import ButtonEventList
 
 btn_startScreen = Button(dvTLP, 19)
@@ -72,6 +72,7 @@ def BtnEnterPasscode(button:Button, state):
         button.SetState(1)
         if (PadString == '2748') or (PadString == passcode):      #whatever the current passcode is
             dvTLP.ShowPage('Main Page')
+            dvRelay.SetState('Close')
             
         PadString = ''
         LblString = ''
@@ -90,3 +91,12 @@ def BtnClearPad(button:Button, state):
     if state == 'Pressed': LblPadString.SetText(LblString)
     button.SetState(1 if state is 'Pressed' else 0)
         
+btn_passcodeCancel = Button(dvTLP, 153)
+@eventEx(btn_passcodeCancel, ['Pressed', 'Released'])
+def CancelPasscode(button:Button, state):
+    print(button.Name, state)
+    global PadString, LblString
+    PadString = LblPadString = ''
+    if state == 'Pressed': LblPadString.SetText('')
+    button.SetState(1 if 'Pressed' else 0)
+    dvTLP.ShowPage('Start Page')

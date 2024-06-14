@@ -39,7 +39,7 @@ from extronlib.ui import Button, Label
 from modules.helper.ModuleSupport import eventEx
 
 #Project Imports
-from devices import dvTLP, dvScalar
+from devices import dvTLP, dvScalar, dvRelay
 from variables import ButtonEventList
 
 #Linking Files
@@ -125,21 +125,13 @@ def ShutdownYes(button:Button, state):
     print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
-    
-        #lock drawer with control? 
-        #turn off projector
-        #Set Audio levels back to defaults
 
         MainAudio.lvl_mic.SetLevel(var.mic_val)
-        dvScalar.SetGroupMicVolume(var.mic_val, None)
-
         MainAudio.lvl_prog.SetLevel(var.prog_val)
-        dvScalar.SetGroupProgramVolume(var.prog_val, None)
-
-        #set Cynap as input
         
         #switch to start page
         dvTLP.ShowPage("Start Page")
+        dvRelay.SetState('Open')
         dvTLP.HideAllPopups()
         
     elif state == 'Released':
@@ -150,28 +142,6 @@ btn_shdnNo = Button(dvTLP, 7)
 def ShutdownNo(button:Button, state):
     print(button.Name, state)
     dvTLP.ShowPage("Main Page")
-
-
-        
-#Sleep timer
-"""TODO The sleep timer seems to be related to a button press. I don't want to 
-        sleep on a buton press I want an inactivity timeout. 
-        
-        When innactive for certain time - check page we're on. If it's the start page 
-        then trigger sleep event. """
-
-#change sleep state event 
-"""TODO I don't know if this routine will work properly on a tap if it's off. 
-        I think I still need a sleep timer which should go above here
-@eventEx(dvTLP, 'SleepChanged')
-def HandleSleepChange(tlp, state):
-    if state is 'Awake':
-        tlp.Wake()
-        tlp.ShowPage('Start Page')
-    else:
-        tlp.Sleep()
-""" #Commented out for now
-# Define UI Object Events
 
     
 
