@@ -324,6 +324,9 @@ class DeviceClass:
                 value = ValueStateValues[valueMatch.group(1)]
                 self.WriteStatus('Power', value, qualifier)
             except (KeyError, IndexError, AttributeError):
+                print("Key Error", KeyError)
+                print("Index", IndexError)
+                print("Attribute Error", AttributeError)
                 self.Error(['Power: Invalid/unexpected response'])
 
     def SetVolume(self, value, qualifier):
