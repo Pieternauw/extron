@@ -195,6 +195,7 @@ class DeviceClass:
 
         InputCmdString = 'SOURCE?\r'
         res = self.__UpdateHelper('Input', InputCmdString, value, qualifier)
+        print(res)
         if res:
             try:
                 ValueStateValues = {
