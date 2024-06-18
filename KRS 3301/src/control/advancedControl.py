@@ -25,4 +25,4 @@ def ProjectorOnOff(button:tlp.Button, state):
 def BlankImage(button:tlp.Button, state):
     print(button.Name, state)    
     button.SetState(0 if button.State is 1 else 1)
-    dvPRJ.Set('AVMute', 'Off' if button.State is 1 else 0)
+    dvPRJ.Set('AVMute', 'Off' if button.State is 1 else 'On')

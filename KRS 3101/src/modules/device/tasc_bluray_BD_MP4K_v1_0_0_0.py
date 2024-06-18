@@ -112,6 +112,11 @@ class DeviceClass:
     def UpdateTray(self, value, qualifier):
         TrayCmdString = '!7?MST\r'
         self.__UpdateHelper('DiscTray', TrayCmdString, value, qualifier)
+    
+    def SetSubtitle(self, value, qualifier):
+
+        SubtitleCmdString = '!7SBT1\r'
+        self.__SetHelper('Subtitle', SubtitleCmdString, value, qualifier)
 
     def __SetHelper(self, command, commandstring, value, qualifier):
         

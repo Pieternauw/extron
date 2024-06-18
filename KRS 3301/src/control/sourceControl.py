@@ -32,9 +32,7 @@ def ControlInput(button:tlp.Button, state):
     tlp.dvTLP.HideAllPopups()
     tlp.dvTLP.ShowPopup(input_popup_list[tlp.input_set.Objects.index(button)])
     tlp.input_set.SetCurrent(button)
-    def updateRepsone():
-        dvPRJ.Update('Power')
-    updatePower = Wait(5, updateRepsone)
+    dvPRJ.Update('Power')
     
 @eventEx(tlp.btn_videoMute, 'Pressed')
 def VideoMuteControl(button:tlp.Button, state):

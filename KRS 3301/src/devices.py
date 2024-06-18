@@ -29,7 +29,7 @@ dvTLP = UIDevice('PanelAlias')
 dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
 dvScalar = modScalar.SSHClass('10.10.2.30', 22023,  Credentials=('admin', 'wag2748'), Model='IN1806')
-dvScalar = GetConnectionHandler(dvScalar, 'Temperature', pollFrequency=30)         
+dvScalar = GetConnectionHandler(dvScalar, 'Temperature', pollFrequency=10)         
 
 @eventEx(dvScalar, ['Connected', 'Disconnected'])
 def SwitcherConnectionHandler(client:EthernetClientInterface, state):
@@ -64,20 +64,17 @@ BlurayConnectionTimer.Stop()
 def BlurayConnectionHandler(client:EthernetClientInterface, state):
     print('Bluray on IP {0} is {1}'.format(client.IPAddress, state))
     if state is 'Connected':
-        client.StartKeepAlive(30, '!7?SST\r')
+        client.StartKeepAlive(10, '!7?SST\r')
     else:
         client.StopKeepAlive()
         BlurayConnectionTimer.Restart()
 
-dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L630U'), 'Power')
+dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L630U'), 'Power', pollFrequency=10)
 
 @eventEx(dvPRJ, ['Connected', 'Disconnected'])
 def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     print('Projector on IP {0} is {1}'.format(client.IPAddress, state))
-    if state is 'Connected':
-        client.Update('Power')       
-        client.Update('AVMute')
-    else:
+    if state is not 'Connected':
         client.Connect(5)
 
         
