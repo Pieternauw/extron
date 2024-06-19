@@ -69,7 +69,7 @@ def BlurayConnectionHandler(client:EthernetClientInterface, state):
         client.StopKeepAlive()
         BlurayConnectionTimer.Restart()
 
-dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L630U'), 'Power')
+dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L630U'), 'Power', pollFrequency=30)
 
 @eventEx(dvPRJ, ['Connected', 'Disconnected'])
 def ProjectorConnectionHandler(client:EthernetClientInterface, state):
