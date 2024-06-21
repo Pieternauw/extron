@@ -53,6 +53,8 @@ def LaptopConnectedFeedback(command, value, qualifier):
     
 dvScalar.SubscribeStatus('InputSignalStatus', {'Input': '2'}, LaptopConnectedFeedback)
 
+tlp.btn_laptopConnectedFeedback.SetState(1 if dvScalar.ReadStatus('InputSignalStatus', {'Inpt': '1'}) is 'Active' else 0)
+tlp.lblLaptopConnected.SetText('Connected' if dvScalar.ReadStatus('InputSignalStatus', {'Inpt': '1'}) is 'Active' else 'Not Connected')
 
 @eventEx(tlp.btn_shdnYes, 'Pressed')
 def ShutdownControl(button:tlp.Button, state):
