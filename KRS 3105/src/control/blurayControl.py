@@ -44,7 +44,7 @@ def TransportEvent(button:tlp.Button, state):
     if button in transport_set:
         dvBluray.SetTransport(button.Name, None)
     elif button in menu_set:
-        dvBluray.SetMenuControl(button.Name, None)
+        dvBluray.SetMenu(button.Name, None)
     elif button is tlp.btn_bluraySub:
         dvBluray.SetSubtitle(None, None)
     elif button is tlp.btn_blurayEject:
@@ -53,6 +53,6 @@ def TransportEvent(button:tlp.Button, state):
         if response:
             blurayResp = response.decode()
             if 'TTO' in blurayResp:
-                dvBluray.SetDiscTray('Close', None)
+                dvBluray.SetDiskTray('Close', None)
             else:
-                dvBluray.SetDiscTray('Open',None)
+                dvBluray.SetDiskTray('Open', None)
