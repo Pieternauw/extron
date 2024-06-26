@@ -49,13 +49,7 @@ def SwitcherConnectionHandler(client:EthernetClientInterface, state):
 dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP1')
 
 def ConnectBluray(timer:Timer, count):
-    result = dvBluray.Connect(5)
-    print('Connection attempt result', result)
-    if result in ['Connected', 'ConnectedAlready']:
-        timer.Stop()
-    else:
-        ProgramLog('Bluray connection failure {}'.format(result), 'warning')
-        timer.Restart()
+    dvBluray.Connect(5)
 
 BlurayConnectionTimer = Timer(5, ConnectBluray)
 BlurayConnectionTimer.Stop()
