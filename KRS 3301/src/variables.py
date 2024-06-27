@@ -3,8 +3,8 @@ The variables file is for data that will be used throughout the project.  This c
 dynamic data.  After being initial loaded by main.py, it can be imported and used in any module
 throughout the system.
 """
-prog_val = -18 
-mic_val = -18
+prog_val = -10 
+mic_val = -10
 
 ButtonEventList = ['Pressed', 'Released', 'Held', 'Repeated', 'Tapped']
 

@@ -10,6 +10,7 @@ prj_set = MESet([tlp.btn_projOn, tlp.btn_projOff])
 prj_set.SetCurrent(tlp.btn_projOn if dvPRJ.ReadStatus('Power') is 'On' else tlp.btn_projOff)
 
 def PowerChanged(command, value, qualifier):
+    print(value)
     if value is 'On':
         prj_set.SetCurrent(tlp.btn_projOn)
         PRJStatusTimer.Stop()
@@ -17,10 +18,8 @@ def PowerChanged(command, value, qualifier):
         prj_set.SetCurrent(tlp.btn_projOff)
         PRJStatusTimer.Stop()
     else:
-        if value is 'Warming':
-            tlp.btn_projOn.SetBlinking('Medium', [0, 1])
-        elif value is 'Cooling':
-            tlp.btn_projOff.SetBlinking('Medium', [0, 1])
+        tlp.btn_projOff.SetBlinking('Slow', [0, 1])
+        tlp.btn_projOn.SetBlinking('Slow', [0, 1])
         PRJStatusTimer.Restart()
 
 
@@ -28,7 +27,7 @@ def PowerTimer(timer:Timer, count):
     print("Timer started")
     dvPRJ.Update('Power')
 
-PRJStatusTimer = Timer(2, PowerTimer)
+PRJStatusTimer = Timer(5, PowerTimer)
 PRJStatusTimer.Stop()
 
 
@@ -45,4 +44,4 @@ def ProjectorOnOff(button:tlp.Button, state):
 def BlankImage(button:tlp.Button, state):
     print(button.Name, state)    
     button.SetState(0 if button.State is 1 else 1)
-    dvPRJ.Set('AVMute', 'Off' if button.State is 1 else 'On')
+    dvPRJ.Set('AVMute', 'Off' if button.State is 0 else 'On')

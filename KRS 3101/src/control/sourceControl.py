@@ -12,9 +12,12 @@ In the next revision there will be relay commands on shutdown to handle the mic 
 #extron Import
 from modules.helper.ModuleSupport import eventEx 
 
+from extronlib.system import Wait
+
 #Project Import 
 import ui.tlp as tlp 
 import variables as var
+import control.advancedControl as adv
 
 #Device Imports
 from devices import dvScalar, dvPRJ
@@ -26,11 +29,11 @@ input_popup_list = ['Laptop Connected popup', 'Wireless insturction popup',
 def ControlInput(button:tlp.Button, state):
     print(button.Name, state, 'Control')
     dvScalar.SetInput('{}'.format(tlp.input_set.Objects.index(button) + 2), {'Type': 'Audio/Video'})
-    dvPRJ.Set('Power', 'On') 
+    dvPRJ.SetPower('On', None) 
     tlp.dvTLP.HideAllPopups()
     tlp.dvTLP.ShowPopup(input_popup_list[tlp.input_set.Objects.index(button)])
     tlp.input_set.SetCurrent(button)
-    dvPRJ.Update('Power')
+    adv.PRJStatusTimer.Restart()
     
 @eventEx(tlp.btn_videoMute, 'Pressed')
 def VideoMuteControl(button:tlp.Button, state):
@@ -49,19 +52,17 @@ def LaptopConnectedFeedback(command, value, qualifier):
     else:
         tlp.btn_laptopConnectedFeedback.SetState(0)
         tlp.lblLaptopConnected.SetText('Not Connected')
-        
-    
-dvScalar.SubscribeStatus('InputSignalStatus', {'Input': '2'}, LaptopConnectedFeedback)
 
 tlp.btn_laptopConnectedFeedback.SetState(1 if dvScalar.ReadStatus('InputSignalStatus', {'Inpt': '1'}) is 'Active' else 0)
 tlp.lblLaptopConnected.SetText('Connected' if dvScalar.ReadStatus('InputSignalStatus', {'Inpt': '1'}) is 'Active' else 'Not Connected')
+        
+dvScalar.SubscribeStatus('InputSignalStatus', {'Input': '2'}, LaptopConnectedFeedback)
 
 @eventEx(tlp.btn_shdnYes, 'Pressed')
 def ShutdownControl(button:tlp.Button, state):
     tlp.input_set.SetCurrent(None)
     dvPRJ.SetPower('Off', None)
-    dvPRJ.Update('Power')
+    adv.PRJStatusTimer.Restart()
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})
     dvScalar.SetGroupProgramVolume(var.prog_val, None)
     dvScalar.SetGroupMicVolume(var.mic_val, None)
-

@@ -17,6 +17,7 @@ from extronlib.system import Wait
 #Project Import 
 import ui.tlp as tlp 
 import variables as var
+import control.advancedControl as adv
 
 #Device Imports
 from devices import dvScalar, dvPRJ
@@ -32,7 +33,7 @@ def ControlInput(button:tlp.Button, state):
     tlp.dvTLP.HideAllPopups()
     tlp.dvTLP.ShowPopup(input_popup_list[tlp.input_set.Objects.index(button)])
     tlp.input_set.SetCurrent(button)
-    dvPRJ.Update('Power')
+    adv.PRJStatusTimer.Restart()
     
 @eventEx(tlp.btn_videoMute, 'Pressed')
 def VideoMuteControl(button:tlp.Button, state):
@@ -61,7 +62,7 @@ dvScalar.SubscribeStatus('InputSignalStatus', {'Input': '2'}, LaptopConnectedFee
 def ShutdownControl(button:tlp.Button, state):
     tlp.input_set.SetCurrent(None)
     dvPRJ.SetPower('Off', None)
-    dvPRJ.Update('Power')
+    adv.PRJStatusTimer.Restart()
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})
     dvScalar.SetGroupProgramVolume(var.prog_val, None)
     dvScalar.SetGroupMicVolume(var.mic_val, None)
