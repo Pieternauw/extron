@@ -12,8 +12,6 @@ In the next revision there will be relay commands on shutdown to handle the mic 
 #extron Import
 from modules.helper.ModuleSupport import eventEx 
 
-from extronlib.system import Wait
-
 #Project Import 
 import ui.tlp as tlp 
 import variables as var

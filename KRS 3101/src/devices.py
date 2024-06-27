@@ -49,13 +49,7 @@ def SwitcherConnectionHandler(client:EthernetClientInterface, state):
 dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP1')
 
 def ConnectBluray(timer:Timer, count):
-    result = dvBluray.Connect(5)
-    print('Connection attempt result', result)
-    if result in ['Connected', 'ConnectedAlready']:
-        timer.Stop()
-    else:
-        ProgramLog('Bluray connection failure {}'.format(result), 'warning')
-        timer.Restart()
+    dvBluray.Connect(5)
 
 BlurayConnectionTimer = Timer(5, ConnectBluray)
 BlurayConnectionTimer.Stop()
@@ -74,10 +68,7 @@ dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 200
 @eventEx(dvPRJ, ['Connected', 'Disconnected'])
 def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     print('Projector on IP {0} is {1}'.format(client.IPAddress, state))
-    if state is 'Connected':
-        client.Update('Power')       
-        client.Update('AVMute')
-    else:
+    if state is not 'Connected':
         client.Connect(5)
 
         

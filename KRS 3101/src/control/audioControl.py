@@ -10,7 +10,7 @@ import ui.tlpAudio as tlp
 from devices import dvScalar 
 
 mic_slider_list = [tlp.sld_lavMic, tlp.sld_handHeld]
-prg_slider_list = [tlp.sld_laptop, tlp.sld_wireless, tlp.sld_bluray]
+prg_slider_list = [tlp.sld_wireless, tlp.sld_laptop, tlp.sld_bluray]
 
 @eventEx([tlp.sld_lavMic, tlp.sld_handHeld, tlp.sld_laptop, tlp.sld_wireless, tlp.sld_bluray, tlp.sld_ampLevelOut], 'Changed')
 def SliderChanged(slider:tlp.Slider, state, value):

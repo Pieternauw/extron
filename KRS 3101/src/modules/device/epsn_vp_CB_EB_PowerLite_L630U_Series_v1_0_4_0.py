@@ -195,6 +195,7 @@ class DeviceClass:
 
         InputCmdString = 'SOURCE?\r'
         res = self.__UpdateHelper('Input', InputCmdString, value, qualifier)
+        print(res)
         if res:
             try:
                 ValueStateValues = {
@@ -313,9 +314,9 @@ class DeviceClass:
                 ValueStateValues = {
                     '01': 'On',             # Lamp ON
                     '00': 'Off',            # Standby Mode (Network OFF)
-                    '04': 'Off',            # Standby Mode (Network ON)
                     '02': 'Warming Up',     # Warmup
                     '03': 'Cooling Down',   # Cooldown
+                    '04': 'Off',            # Standby Mode (Network ON)
                     '05': 'Off',            # Abnormality standby
                     '09': 'Off'             # A/V standby
                     }
