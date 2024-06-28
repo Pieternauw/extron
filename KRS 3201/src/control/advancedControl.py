@@ -13,7 +13,7 @@ from devices import dvCenterPRJ, dvRightPRJ, dvLeftPRJ
 
 import ui.tlpAdvanced as tlp
 
-from extronlib.system import MESet
+from extronlib.system import MESet, Timer
 
 from modules.helper.MirrorUI import Button
 from modules.helper.ModuleSupport import eventEx 
@@ -29,17 +29,50 @@ r_prj_set = MESet([tlp.btn_rPrjOn, tlp.btn_rPrjOff])
 r_prj_set.SetCurrent(tlp.btn_rPrjOn if dvRightPRJ.ReadStatus('Power') is 'On' else tlp.btn_rPrjOff)
 
 def CenterPowerChanged(command, value, qualifier):
-    prj_set.SetCurrent(tlp.btn_projOn if value == 'On' else tlp.btn_projOff)
+    if value is 'On' or value is 'Off':
+        prj_set.SetCurrent(tlp.btn_projOn if value == 'On' else tlp.btn_projOff)
+    else:
+        tlp.btn_projOn.SetBlinking('Medium', [0, 1])
+        CenterPRJTimer.Restart()
+
+def CenterTimer(timer:Timer, count):
+    print("Center Timer started")
+    dvCenterPRJ.Update('Power')
+
+CenterPRJTimer = Timer(5, CenterTimer)
+CenterPRJTimer.Stop()
 
 dvCenterPRJ.SubscribeStatus('Power', None, CenterPowerChanged)
 
 def LeftPowerChanged(command, value, qualifier):
-    l_prj_set.SetCurrent(tlp.btn_lPrjOn if value == 'On' else tlp.btn_lPrjOff)
+    if value is 'On' or value is 'Off':
+        l_prj_set.SetCurrent(tlp.btn_lPrjOn if value == 'On' else tlp.btn_lPrjOff)
+    else:
+        tlp.btn_lPrjOn.SetBlinking('Medium', [0, 1])
+        LeftPRJTimer.Restart()
+
+def LeftTimer(timer:Timer, count):
+    print("Center Timer started")
+    dvLeftPRJ.Update('Power')
+
+LeftPRJTimer = Timer(5, LeftTimer)
+LeftPRJTimer.Stop()
 
 dvLeftPRJ.SubscribeStatus('Power', None, LeftPowerChanged)
 
 def RightPowerChanged(command, value, qualifier):
-    r_prj_set.SetCurrent(tlp.btn_rPrjOn if value == 'On' else tlp.btn_rPrjOff)
+    if value is 'On' or value is 'Off':
+        r_prj_set.SetCurrent(tlp.btn_rPrjOn if value == 'On' else tlp.btn_rPrjOff)
+    else:
+        tlp.btn_rPrjOn.SetBlinking('Medium', [0, 1])
+        RightPRJTimer.Restart()
+
+def RightTimer(timer:Timer, count):
+    print("Center Timer started")
+    dvRightPRJ.Update('Power')
+
+RightPRJTimer = Timer(5, RightTimer)
+RightPRJTimer.Stop()
 
 dvRightPRJ.SubscribeStatus('Power', None, RightPowerChanged)
 

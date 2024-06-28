@@ -18,7 +18,6 @@ def PowerChanged(command, value, qualifier):
         prj_set.SetCurrent(tlp.btn_projOff)
         PRJStatusTimer.Stop()
     else:
-        tlp.btn_projOff.SetBlinking('Slow', [0, 1])
         tlp.btn_projOn.SetBlinking('Slow', [0, 1])
         PRJStatusTimer.Restart()
 
