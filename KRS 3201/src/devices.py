@@ -64,12 +64,7 @@ def MatricConnectionHandler(client:EthernetClientInterface, state):
         client.Connect(5)
 
 def ConnectBluray(timer:Timer, count):
-    result = dvBluray.Connect(5)
-    print('Connection attempt result', result)
-    if result in ['Connected', 'ConnectedAlready']:
-        timer.Stop()
-    else:
-        ProgramLog('Bluray connection failure {}'.format(result), 'warning')
+    dvBluray.Connect(5)
 
 BlurayConnectionTimer = Timer(5, ConnectBluray)
 BlurayConnectionTimer.Stop()
