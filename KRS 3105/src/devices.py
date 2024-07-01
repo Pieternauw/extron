@@ -12,7 +12,7 @@ Note: This is for definition only.  Connection and logic defined in system.py (s
 # Extron Library imports
 from extronlib.device import ProcessorDevice, UIDevice
 from extronlib.system import Timer, ProgramLog
-from extronlib.interface import EthernetClientInterface
+from extronlib.interface import EthernetClientInterface, RelayInterface
 
 # Project imports
 from modules.device import extr_matrix_XTPIICrossPointSeries_v1_12_0_1 as Matrix
@@ -28,6 +28,8 @@ from modules.helper.MirrorUI import MirrorUIDevice
 dvIPCP = ProcessorDevice('ProcessorAlias')
 dvTLPFront = UIDevice('MainPanel')
 dvTLPBooth = UIDevice('MirroredPanel')
+
+dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
 dvTLPMain = MirrorUIDevice([dvTLPFront, dvTLPBooth])
 #TODO figure out how mirrored panels take their TLP code 
@@ -62,12 +64,7 @@ def MatricConnectionHandler(client:EthernetClientInterface, state):
         client.Connect(5)
 
 def ConnectBluray(timer:Timer, count):
-    result = dvBluray.Connect(5)
-    print('Connection attempt result', result)
-    if result in ['Connected', 'ConnectedAlready']:
-        timer.Stop()
-    else:
-        ProgramLog('Bluray connection failure {}'.format(result), 'warning')
+    dvBluray.Connect(5)
 
 BlurayConnectionTimer = Timer(5, ConnectBluray)
 BlurayConnectionTimer.Stop()

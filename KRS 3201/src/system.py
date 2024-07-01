@@ -19,8 +19,8 @@ def Initialize():
     # Connect all devices
     devices.dvMatrix.Connect()
     print('connecting matrix')
-    #devices.dvLeftPRJ.Connect()
-    #devices.dvRightPRJ.Connect()
+    devices.dvLeftPRJ.Connect()
+    devices.dvRightPRJ.Connect()
     devices.dvCenterPRJ.Connect()
     print('connecting prj')
     devices.dvBluray.Connect()

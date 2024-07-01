@@ -12,7 +12,7 @@ Note: This is for definition only.  Connection and logic defined in system.py (s
 # Extron Library imports
 from extronlib.device import ProcessorDevice, UIDevice
 from extronlib.system import Timer, ProgramLog
-from extronlib.interface import EthernetClientInterface
+from extronlib.interface import EthernetClientInterface, RelayInterface
 
 # Project imports
 from modules.device import extr_matrix_XTPIICrossPointSeries_v1_12_0_1 as Matrix
@@ -30,6 +30,8 @@ dvIPCP = ProcessorDevice('ProcessorAlias')
 dvTLPFront = UIDevice('MainPanel')
 dvTLPBooth = UIDevice('MirroredPanel')
 
+dvRelay = RelayInterface(dvIPCP, 'RLY1')
+
 dvTLPMain = MirrorUIDevice([dvTLPFront, dvTLPBooth])
 #TODO figure out how mirrored panels take their TLP code 
 
@@ -38,7 +40,7 @@ dvMatrix = Matrix.EthernetClass('10.10.2.30', 23, Model='XTP II CrossPoint 1600'
 dvBiamp = Biamp.SSHClass('10.10.2.40', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', 'wag2748'))   #TODO Credentials
 
 #TODO - Change to ethernet
-dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MPK') #4k in room
+dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP4K') #4k in room
 
 #dvBoardCam1 = BoardCam.SerialClass(dvIPCP, 'COM2', Model='AT-HDVS-CAM')
 #dvBoardCam2 = BoardCam.SerialClass(dvIPCP, 'COM1', Model='AT-HDVS-CAM')

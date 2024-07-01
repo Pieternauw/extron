@@ -46,7 +46,7 @@ def SwitcherConnectionHandler(client:EthernetClientInterface, state):
     else:
         client.Connect(5)
 
-dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP1')
+dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP4K')
 
 def ConnectBluray(timer:Timer, count):
     dvBluray.Connect(5)

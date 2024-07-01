@@ -9,7 +9,7 @@
             "name": "Pieter Nauwelaerts",
             "email": "pnauwela@ucsc.edu"
         },
-        "version": "1.0.0",
+        "version": "1.1.0",
         "primary_device_alias": "ProcessorAlias"
     },
     "devices": [
@@ -32,10 +32,10 @@
             }
         }, 
         {
-            "name": "TLP Pro 1025T : 10.10.2.20",
-            "part_number": "60-1565-02",
+            "name": "TLP Pro 1025M : 10.10.2.20",
+            "part_number": "60-1566-02",
             "alias": "MainPanel",
-            "extron_control_web_id": "fac0df9f-43c2-40da-9f97-05ea3e5a851c",
+            "extron_control_web_id": "f57b8df9-88f6-41b2-a5a0-38659fc933e4",
             "network": {
                 "host_network_type": "AVLAN",
                 "interfaces": [
@@ -52,12 +52,12 @@
                 "thumb_change_report_interval": 0.1,
                 "thumb_to_fill_sync_time": 0.5
             }
-        }, 
+        },
         {
-            "name": "TLP Pro 1025T: 10.10.2.25",
-            "part_number": "60-1565-02",
+            "name": "TLP Pro 1025M : 10.10.2.25",
+            "part_number": "60-1566-02",
             "alias": "MirroredPanel",
-            "extron_control_web_id": "f24080b6-c520-4e9a-ac3c-fd99ed6a0b34",
+            "extron_control_web_id": "f202de68-5cb3-4bbc-bd21-35bb243fced1",
             "network": {
                 "host_network_type": "AVLAN",
                 "interfaces": [

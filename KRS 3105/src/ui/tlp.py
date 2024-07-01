@@ -10,7 +10,7 @@ from extronlib.system import MESet, Clock
 # Project imports
 from modules.helper.ModuleSupport import eventEx
 from modules.helper.MirrorUI import Button
-from devices import dvTLPMain, dvMatrix, dvBiamp, dvLeftPRJ, dvCenterPRJ, dvRightPRJ
+from devices import dvTLPMain, dvMatrix, dvBiamp, dvLeftPRJ, dvCenterPRJ, dvRightPRJ, dvRelay
 
 import ui.tlpAdvanced
 import ui.tlpAudioMix
@@ -35,6 +35,8 @@ def ShutdownSystem(clock, dt):
     tlpSourceSelect.right_input_set.SetCurrent(None)
     tlpSourceSelect.center_board_set.SetCurrent(None)
     tlpSourceSelect.center_input_set.SetCurrent(None)
+
+    dvRelay.SetState('Open')
 
     tlpMainPageAudio.lvl_cMic.SetLevel(-18)
     tlpMainPageAudio.lvl_cProg.SetLevel(-18)
@@ -79,6 +81,7 @@ def SingleDisplay(button:Button, state):
         dvTLPMain.ShowPopup('center mode confirm')
         selected = True
         dual = False
+        dvRelay.SetState('Closed')
     elif state == 'Released':
         button.SetState(0)
     
@@ -93,6 +96,7 @@ def DualDisplay(button:Button, state):
         dvTLPMain.ShowPopup('dual mode confirm')
         selected = True
         dual = True
+        dvRelay.SetState('Closed')
     elif state == 'Released':
         button.SetState(0)
 
@@ -159,8 +163,8 @@ def ShutdownConfirm(button:Button, state):
         dvLeftPRJ.SetPower('Off', None)
         dvCenterPRJ.Update('Power')
         dvRightPRJ.Update('Power')
-        dvLeftPRJ.Update('Power')
-        
+        dvLeftPRJ.Update('Power') 
+
         tlpSourceSelect.left_input_set.SetCurrent(None)
         tlpSourceSelect.right_input_set.SetCurrent(None)
         tlpSourceSelect.center_board_set.SetCurrent(None)

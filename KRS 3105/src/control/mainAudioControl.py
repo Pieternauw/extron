@@ -17,8 +17,8 @@ from modules.helper.ModuleSupport import eventEx
 
 import ui.tlpMainPageAudio as tlp
 
-tlp.lvl_cMic.SetRange(-100, 12, 1)      #check these range numbers, might want to be smaller as well
-tlp.lvl_cProg.SetRange(-100, 12, 2)
+tlp.lvl_cMic.SetRange(-40, 12, 1)      #check these range numbers, might want to be smaller as well
+tlp.lvl_cProg.SetRange(-40, 12, 2)
 
 @eventEx([tlp.btn_cProgMute, tlp.btn_cMicMute], 'Pressed')
 def MuteButtonPressed(button:tlp.Button, state):
