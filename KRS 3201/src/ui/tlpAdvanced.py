@@ -123,3 +123,6 @@ def ExitAdvancedSettingsPopup(button:Button, state):
         dvTLPMain.HidePopup("Advanced Settings")
     elif state == 'Released':
         button.SetState(0)
+
+btn_Inactivity = Button(dvTLPMain, 155)
+btn_Inactivity.SetVisible(False)

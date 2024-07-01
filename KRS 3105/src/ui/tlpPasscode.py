@@ -1,12 +1,20 @@
 """
-The main passcode has two possible codes that work. The first is the hard-coded MSE passcode.
-The second is the passcode located on the IPCP itself. This passcode is changed quarterly so
-reading it off of a file means it can be changed without needing to change any of the code itself. 
-The number pad numbers have their UI names set as the number the represent. When a number button 
-gets pressed, that name gets appended to a comparison string. When the user presses enter that
-string gets compared to both passcodes and if it matches, it's cleared and the main page is shown.
-If it's wrong, the clear routine gets called where both the visual feedback (string of * representing
-numbers entered) gets refreshed as well as the comparison string. 
+This file is the definiton of every source selection button. It includes both center, left, and right 
+input sets and uses the MESet class to combine them all. With the MESet, only one of the groups buttons
+can be selected at a time. This allows for visual feedback to acurately represent the current selcted 
+source. 
+
+The final piece of this is the event when any button is pressed. Depending on which set its in, different 
+variables are set for the control file. The variables include:
+1. prj_select -> referneces which projector to tie inputs too. Also determines wich to turn on and what set 
+to pull the button index from for source selection
+2. monitor_select -> refers to the confidence monitor on the podium. Center and left use the same monitor
+3. yuja_select -> refers to which yuja input gets tied to the input source. Center and left use the same 
+number. Also used for board camera selection as of rev 1.0.0
+
+These numbers are used in the control file matching this one. This method simplifies the logic needed in 
+switching sources and allows me to treat all input buttons as one big set of buttons. That way only one 
+method is needed to control any input button selection. 
 """
 
 from modules.helper.ModuleSupport import eventEx
@@ -14,7 +22,7 @@ from modules.helper.MirrorUI import Button, Label
 
 from extronlib.system import File
 
-from devices import dvTLPMain  
+from devices import dvTLPMain, dvMatrix
 
 btn_startScreen = Button(dvTLPMain, 19)
 
@@ -61,6 +69,7 @@ def BtnEnterPasscode(button:Button, state):
         button.SetState(1)
         if (PadString == '2748') or (PadString == passcode):      #whatever the current passcode is
             dvTLPMain.ShowPage('room mode select')
+            dvMatrix.Set('Relay', 'Close', {'Output': '4', 'Relay': '1'})
             
         PadString = ''
         LblString = ''

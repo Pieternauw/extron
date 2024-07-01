@@ -10,7 +10,7 @@ from extronlib.system import MESet, Clock
 # Project imports
 from modules.helper.ModuleSupport import eventEx
 from modules.helper.MirrorUI import Button
-from devices import dvTLPMain, dvMatrix, dvBiamp, dvLeftPRJ, dvCenterPRJ, dvRightPRJ, dvRelay
+from devices import dvTLPMain, dvMatrix, dvBiamp, dvLeftPRJ, dvCenterPRJ, dvRightPRJ
 
 import ui.tlpAdvanced
 import ui.tlpAudioMix
@@ -21,38 +21,6 @@ import ui.tlpMainPageAudio as tlpMainPageAudio
 # Define UI Objects
 
 BTNEVL = ['Pressed', 'Released', 'Tapped', 'Held']
-
-def ShutdownSystem(clock, dt):
-    
-    dvCenterPRJ.SetPower('Off', None)
-    dvRightPRJ.SetPower('Off', None)
-    dvLeftPRJ.SetPower('Off', None)
-    dvCenterPRJ.Update('Power')
-    dvRightPRJ.Update('Power')
-    dvLeftPRJ.Update('Power')
-
-    tlpSourceSelect.left_input_set.SetCurrent(None)
-    tlpSourceSelect.right_input_set.SetCurrent(None)
-    tlpSourceSelect.center_board_set.SetCurrent(None)
-    tlpSourceSelect.center_input_set.SetCurrent(None)
-
-    dvRelay.SetState('Open')
-
-    tlpMainPageAudio.lvl_cMic.SetLevel(-18)
-    tlpMainPageAudio.lvl_cProg.SetLevel(-18)
-    dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelSpeech', 'Channel': '1'})
-    dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelProgram', 'Channel': '1'})
-        
-    dvMatrix.SetMatrixTieCommand(None, {'Input': '3', 'Output': '9', 'Tie Type': 'Audio/Video'}) #Cynap
-    
-    for i in ['1', '2', '3', '4', '5', '12']:
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': i, 'Tie Type': 'Audio/Video'}) 
-
-    dvTLPMain.ShowPage('Start Page')
-    dvTLPMain.HideAllPopups()
-
-Shutdown = Clock(['23:00:00'], None, ShutdownSystem)
-Shutdown.Enable()
 
 
 """Main Page"""
@@ -81,7 +49,6 @@ def SingleDisplay(button:Button, state):
         dvTLPMain.ShowPopup('center mode confirm')
         selected = True
         dual = False
-        dvRelay.SetState('Closed')
     elif state == 'Released':
         button.SetState(0)
     
@@ -96,7 +63,6 @@ def DualDisplay(button:Button, state):
         dvTLPMain.ShowPopup('dual mode confirm')
         selected = True
         dual = True
-        dvRelay.SetState('Closed')
     elif state == 'Released':
         button.SetState(0)
 
@@ -150,39 +116,6 @@ def ShutdownPage(button:Button, state):
 
         
 btn_shutdownYes = Button(dvTLPMain, 6)
-@eventEx(btn_shutdownYes, BTNEVL)
-def ShutdownConfirm(button:Button, state):
-    print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        #shut off projectors
-        #shut off receivers
-        #lock cabinet
-        button.SetState(1)
-        dvCenterPRJ.SetPower('Off', None)
-        dvRightPRJ.SetPower('Off', None)
-        dvLeftPRJ.SetPower('Off', None)
-        dvCenterPRJ.Update('Power')
-        dvRightPRJ.Update('Power')
-        dvLeftPRJ.Update('Power') 
-
-        tlpSourceSelect.left_input_set.SetCurrent(None)
-        tlpSourceSelect.right_input_set.SetCurrent(None)
-        tlpSourceSelect.center_board_set.SetCurrent(None)
-        tlpSourceSelect.center_input_set.SetCurrent(None)
-
-        tlpMainPageAudio.lvl_cMic.SetLevel(-18)
-        tlpMainPageAudio.lvl_cProg.SetLevel(-18)
-        dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelSpeech', 'Channel': '1'})
-        dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelProgram', 'Channel': '1'})
-        
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '3', 'Output': '9', 'Tie Type': 'Audio/Video'}) #Cynap
-
-        for i in ['1', '2', '3', '4', '5', '12']:
-            dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': i, 'Tie Type': 'Audio/Video'}) 
-
-        dvTLPMain.ShowPage('Start Page')
-        dvTLPMain.HideAllPopups()
-        
         
 btn_shutdownNo = Button(dvTLPMain, 7)
 @eventEx(btn_shutdownNo, 'Pressed')

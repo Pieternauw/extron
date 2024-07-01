@@ -11,8 +11,8 @@ Note: This is for definition only.  Connection and logic defined in system.py (s
 
 # Extron Library imports
 from extronlib.device import ProcessorDevice, UIDevice
-from extronlib.system import Timer, ProgramLog
-from extronlib.interface import EthernetClientInterface, RelayInterface
+from extronlib.system import Timer
+from extronlib.interface import EthernetClientInterface
 
 # Project imports
 from modules.device import extr_matrix_XTPIICrossPointSeries_v1_12_0_1 as Matrix
@@ -29,8 +29,6 @@ from modules.helper.MirrorUI import MirrorUIDevice
 dvIPCP = ProcessorDevice('ProcessorAlias')
 dvTLPFront = UIDevice('MainPanel')
 dvTLPBooth = UIDevice('MirroredPanel')
-
-dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
 dvTLPMain = MirrorUIDevice([dvTLPFront, dvTLPBooth])
 #TODO figure out how mirrored panels take their TLP code 

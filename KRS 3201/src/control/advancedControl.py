@@ -58,7 +58,7 @@ def LeftPowerChanged(command, value, qualifier):
         LeftPRJTimer.Restart()
 
 def LeftTimer(timer:Timer, count):
-    print("Center Timer started")
+    print("Left Timer started")
     dvLeftPRJ.Update('Power')
 
 LeftPRJTimer = Timer(5, LeftTimer)
@@ -77,7 +77,7 @@ def RightPowerChanged(command, value, qualifier):
         RightPRJTimer.Restart()
 
 def RightTimer(timer:Timer, count):
-    print("Center Timer started")
+    print("Right Timer started")
     dvRightPRJ.Update('Power')
 
 RightPRJTimer = Timer(5, RightTimer)
@@ -117,15 +117,15 @@ def RightAVMuteChanged(command, value, qualifier):
 dvRightPRJ.SubscribeStatus('AVMute', None, RightAVMuteChanged)
 
 
-@eventEx(tlp.btn_blankImg, 'Pressed')
+@eventEx([tlp.btn_blankImg, tlp.btn_lBlankImg, tlp.btn_rBlankImg], 'Pressed')
 def BlankImage(button:Button, state):
     print(button.Name, button.Host, state)
     if button is tlp.btn_blankImg:
-        dvCenterPRJ.Set('AVMute', 'Off' if button.State is 1 else 'On')
-        dvCenterPRJ.Update('AVMute')
+        button.SetState(0 if button.State is 1 else 1)
+        dvCenterPRJ.Set('AVMute', 'Off' if button.State is 0 else 'On')
     elif button is tlp.btn_lBlankImg:
-        dvLeftPRJ.Set('AVMute', 'Off' if button.State is 1 else 'On')
-        dvLeftPRJ.Update('AVMute')
+        button.SetState(0 if button.State is 1 else 1)
+        dvLeftPRJ.Set('AVMute', 'Off' if button.State is 0 else 'On')
     elif button is tlp.btn_rBlankImg:
-        dvRightPRJ.Set('AVMute', 'Off' if button.State is 1 else 'On')
-        dvRightPRJ.Update('AVMute')
+        button.SetState(0 if button.State is 1 else 1)
+        dvRightPRJ.Set('AVMute', 'Off' if button.State is 0 else 'On')
