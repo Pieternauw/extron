@@ -1,0 +1,61 @@
+{
+    "system": {
+        "name": "3401",
+        "code_folder_path": "src",
+        "code_entry_file": "main.py",
+        "layout_folder_path": "layout",
+        "sound_folder_path": "sound",
+        "rfile_folder_path": "rfile",
+        "irfile_folder_path": "ir",
+        "system_id": "7942",
+        "author": {
+            "name": "Your Name",
+            "email": "user@yourdomain.com"
+        },
+        "version": "0.0.1",
+        "primary_device_alias": "ProcessorAlias"
+    },
+    "devices": [
+        {
+            "name": "IPCP Pro 355MQ xi",
+            "part_number": "60-1919-01",
+            "alias": "ProcessorAlias",
+            "network": {
+                "host_network_type": "AVLAN",
+                "interfaces": [
+                    {
+                        "address": "128.114.159.xxx",
+                        "type": "LAN"
+                    },
+                    {
+                        "address": "10.10.2.10",
+                        "type": "AVLAN"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "TLP Pro 1025T",
+            "part_number": "60-1565-02",
+            "alias": "PanelAlias",
+            "extron_control_web_id": "b96430d7-b89f-4654-972a-86dd665c6dfc",
+            "network": {
+                "host_network_type": "AVLAN",
+                "interfaces": [
+                    {
+                        "address": "10.10.2.20",
+                        "type": "LAN"
+                    }
+                ]
+            },
+            "ui": {
+                "layout_file": "Lab.gdl",
+                "enable_click_sound": false,
+                "press_feedback": "none",
+                "thumb_change_report_interval": 0.1,
+                "thumb_to_fill_sync_time": 0.5
+            }
+        }
+    ],
+    "schemaVersion": "1.0.0"
+}
