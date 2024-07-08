@@ -17,3 +17,7 @@ Examples:
 # Extron Library imports
 
 # Project imports
+import control.sourceControl
+import control.audioControl
+import control.mainAudioControl
+import control.advancedControl
