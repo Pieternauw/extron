@@ -131,7 +131,6 @@ monitor_select = 4
 yuja_select = 9
 mode = 'Center'
 
-#TODO check names
 popup_list = ['Laptop Connected popup', 'Wireless instruction popup', 'Installed mac', 
               'Document camera instruction popup', 'Document camera instruction popup', 
               'BluRay control popup']
@@ -146,44 +145,54 @@ btn_rightSourceSound = Button(dvTLPMain, 227)
 btn_leftSourceSound.SetVisible(False)
 btn_rightSourceSound.SetVisible(False)
 
-#TODO - Check MatrixTieeventEx call for list 
+#every input button for left right and center is in the total list
 @eventEx(input_total_list, 'Pressed')
 def SwitchInput(button:Button, state):
+    #global variable definitions allow them to be used across multiple function and multiple files 
     global prj_select, monitor_select, yuja_select, mode
     print(button.Name, button.Host, state)
     dvTLPMain.HideAllPopups()
     btn_cBoardCams.SetState(0)
+    
+    #wireless has an additional popup that needs to be added when initially selected. Every other popup is in a list and shows up when button is selected
     if button in [btn_cWireless, btn_lWireless, btn_rWireless]:
         dvTLPMain.ShowPopup('Wireless select device')
     
+    #center set means center projector, left confidence and left yuja (only two yuja inputs and two confidence monitors)
     if button in center_input_set.Objects:
         prj_select = 2
         monitor_select = 4
         yuja_select = 9
         mode = 'Center'
+        #show popup corresponding to button pressed 
         dvTLPMain.ShowPopup(popup_list[center_input_set.Objects.index(button)])
+        #set visual status
         center_input_set.SetCurrent(button)
     elif button is btn_cBoardCams:
+        #board cams have a special case, need to show board cam selection page before continuing
         prj_select = 2; monitor_select = 4; yuja_select = 9; mode = 'Center'
         dvTLPMain.ShowPopup('Center board camera selection')
         button.SetState(1)
     elif button in left_input_set.Objects:
+        #set left projector, left yuja, left confidence
         prj_select = 1
         monitor_select = 4
         yuja_select = 9
         mode = 'Left'
         dvTLPMain.ShowPopup(popup_list[left_input_set.Objects.index(button)])
         left_input_set.SetCurrent(button)
+        #left source sound becomes active, switch to right source button now visible
         btn_leftSourceSound.SetVisible(False)
         btn_rightSourceSound.SetVisible(True)
 
     elif button in right_input_set.Objects:
+        #set right projector, right monitor, right yuja
         prj_select = 3
         monitor_select = 5
         yuja_select = 10
         mode = 'Right'  
         dvTLPMain.ShowPopup(popup_list[right_input_set.Objects.index(button)])
         right_input_set.SetCurrent(button)
+        #now sound is from right source, set left source sound button to visible
         btn_leftSourceSound.SetVisible(True)
         btn_rightSourceSound.SetVisible(False)
-        
