@@ -1,0 +1,58 @@
+{
+    "system": {
+        "name": "THI 001",
+        "code_folder_path": "src",
+        "code_entry_file": "main.py",
+        "layout_folder_path": "layout",
+        "system_id": "4032",
+        "author": {
+            "name": "Your Name",
+            "email": "user@yourdomain.com"
+        },
+        "version": "1.0.0",
+        "primary_device_alias": "ProcessorAlias"
+    },
+    "devices": [
+        {
+            "name": "IPCP Pro 255Q xi",
+            "part_number": "60-1914-01",
+            "alias": "ProcessorAlias",
+            "network": {
+                "host_network_type": "LAN",
+                "interfaces": [
+                    {
+                        "address": "192.168.253.250",
+                        "type": "LAN"
+                    },
+                    {
+                        "address": "10.10.2.10",
+                        "type": "AVLAN"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "TLP Pro 1025T",
+            "part_number": "60-1565-02",
+            "alias": "PanelAlias",
+            "extron_control_web_id": "d6f5daed-a352-4a09-a78d-47e3eb3d2a94",
+            "network": {
+                "host_network_type": "AVLAN",
+                "interfaces": [
+                    {
+                        "address": "10.10.2.20",
+                        "type": "LAN"
+                    }
+                ]
+            },
+            "ui": {
+                "layout_file": "layout.gdl",
+                "enable_click_sound": false,
+                "press_feedback": "none",
+                "thumb_change_report_interval": 0.1,
+                "thumb_to_fill_sync_time": 0.5
+            }
+        }
+    ],
+    "schemaVersion": "1.0.0"
+}

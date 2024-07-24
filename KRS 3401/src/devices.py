@@ -26,7 +26,7 @@ dvTLP = UIDevice('PanelAlias')
 
 dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
-dvScalar = modScalar.SSHClass('10.10.2.30', 22023,  Credentials=('admin', 'wag2748'), Model='IN1808 IPCP MA 70')
+dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Model='IN1808 IPCP MA 70')
 dvScalar = GetConnectionHandler(dvScalar, 'Temperature', pollFrequency=30)         
 
 @eventEx(dvScalar, ['Connected', 'Disconnected'])
