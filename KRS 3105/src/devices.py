@@ -19,6 +19,7 @@ from modules.device import extr_matrix_XTPIICrossPointSeries_v1_12_0_1 as Matrix
 from modules.device import biam_dsp_TesiraSeries_v1_15_1_0 as Biamp
 from modules.device import tasc_bluray_BD_MP4K_v1_0_0_0 as Bluray
 from modules.device import epsn_vp_CB_EB_PU_21xxW_22xxB_Series_v1_0_0_0 as Projector
+from modules.device import extr_dsp_SSP_200_v1_0_0_0 as SSP
 from modules.helper.ConnectionHandler import GetConnectionHandler
 from modules.helper.ModuleSupport import eventEx
 from modules.helper.MirrorUI import MirrorUIDevice
@@ -44,6 +45,8 @@ dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP4K') #4k in room
 dvLeftPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2033, Model='CB-PU2220B')       #for 150 and 600 there are two different models
 dvCenterPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2034, Model='CB-PU2220B')
 dvRightPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2035, Model='CB-PU2220B')
+
+dvSSP = SSP.SSHClass('10.10.2.42', 22023, Model='SSP 200')
 
 """NOTE Device Connections - Using my own written method for bluray. 
         Once completed test the projector updates and subscribe status for button feedbacks"""
@@ -100,3 +103,11 @@ def BiampConnectionHandler(client:EthernetClientInterface, state):
         dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
     else:
         client.Connect(5)
+
+dvSSP = GetConnectionHandler(dvSSP, 'Input', pollFrequency=30)
+
+@eventEx(dvSSP, ['Connected', 'Disconnected']) 
+def SSPConnectionHandler(client:EthernetClientInterface, state):
+    print('SSP on {0} is {1}'.format(client.IPAddress, state))
+    if state is 'Connected':
+        dvSSP.Update('SourceFormat')
