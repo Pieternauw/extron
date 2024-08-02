@@ -12,7 +12,7 @@
             "name": "Your Name",
             "email": "user@yourdomain.com"
         },
-        "version": "0.0.1",
+        "version": "1.0.0",
         "primary_device_alias": "ProcessorAlias"
     },
     "devices": [

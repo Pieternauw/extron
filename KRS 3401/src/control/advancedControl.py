@@ -1,4 +1,4 @@
-from devices import dvPRJFront, dvPRJBack
+from devices import dvPRJFront, dvPRJBack, GVEServer, PRJF_ID, PRJB_ID
 
 from extronlib.system import MESet, Timer
 
@@ -11,6 +11,8 @@ prj_set.SetCurrent(tlp.btn_projOn if dvPRJFront.ReadStatus('Power') is 'On' else
 
 def PowerChanged(command, value, qualifier):
     print(value)
+    GVEServer.SendStatus(PRJF_ID, 'Power', value)
+    GVEServer.SendStatus(PRJB_ID, 'Power', value)
     if value is 'On':
         prj_set.SetCurrent(tlp.btn_projOn)
         PRJStatusTimer.Stop()

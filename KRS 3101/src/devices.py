@@ -20,11 +20,17 @@ import modules.device.tasc_bluray_BD_MP4K_v1_0_0_0 as Bluray
 
 from modules.helper.ConnectionHandler import GetConnectionHandler
 from modules.helper.ModuleSupport import eventEx
+from modules.helper.gve_interface import gveClient
 
 import variables as var
 # Define devices
 dvIPCP = ProcessorDevice('ProcessorAlias')
 dvTLP = UIDevice('PanelAlias')
+
+#TODO - work in progress, test in a room if possible 
+GVEServer = gveClient('128.114.104.109', dvIPCP)
+
+TLP_ID = 'Touchpanel'; PRJ_ID = 'Projector'; SW_ID = 'Switcher'; BLU_ID = 'Bluray'; IPCP_ID = 'IPCP'
 
 dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
@@ -34,6 +40,7 @@ dvScalar = GetConnectionHandler(dvScalar, 'Temperature', pollFrequency=30)
 @eventEx(dvScalar, ['Connected', 'Disconnected'])
 def SwitcherConnectionHandler(client:EthernetClientInterface, state):
     print('Switcher on IP {0} is {1}'.format(client.IPAddress, state))
+    GVEServer.SendStatus(SW_ID, 'Connection', state)
     if state is 'Connected':
         #Update Calls
         client.Update('InputSignalStatus', {'Input': '2'})
@@ -57,6 +64,7 @@ BlurayConnectionTimer.Stop()
 @eventEx(dvBluray, ['Connected', 'Disconnected'])
 def BlurayConnectionHandler(client:EthernetClientInterface, state):
     print('Bluray on IP {0} is {1}'.format(client.IPAddress, state))
+    GVEServer.SendStatus(BLU_ID, 'Connection', state)
     if state is 'Connected':
         client.StartKeepAlive(30, '!7?SST\r')
     else:
@@ -68,7 +76,14 @@ dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 200
 @eventEx(dvPRJ, ['Connected', 'Disconnected'])
 def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     print('Projector on IP {0} is {1}'.format(client.IPAddress, state))
+    GVEServer.SendStatus(PRJ_ID, 'Connection', state)
     if state is not 'Connected':
         client.Connect(5)
 
         
+device_dict = {dvTLP: TLP_ID, dvIPCP: IPCP_ID}
+
+@eventEx([dvTLP, dvIPCP], ['Offline', 'Online'])
+def TLPOff(device, state):
+    GVEServer.SendStatus(device_dict[device], 'Connection', state)
+
