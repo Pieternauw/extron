@@ -55,12 +55,3 @@ tlp.btn_laptopConnectedFeedback.SetState(1 if dvScalar.ReadStatus('InputSignalSt
 tlp.lblLaptopConnected.SetText('Connected' if dvScalar.ReadStatus('InputSignalStatus', {'Inpt': '1'}) is 'Active' else 'Not Connected')
         
 dvScalar.SubscribeStatus('InputSignalStatus', {'Input': '2'}, LaptopConnectedFeedback)
-
-@eventEx(tlp.btn_shdnYes, 'Pressed')
-def ShutdownControl(button:tlp.Button, state):
-    tlp.input_set.SetCurrent(None)
-    dvPRJ.SetPower('Off', None)
-    adv.PRJStatusTimer.Restart()
-    dvScalar.SetInput('3', {'Type': 'Audio/Video'})
-    dvScalar.SetGroupProgramVolume(var.prog_val, None)
-    dvScalar.SetGroupMicVolume(var.mic_val, None)

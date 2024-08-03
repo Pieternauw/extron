@@ -29,6 +29,11 @@ This section also includes help popups from different selected sources and the o
 
 The nightly shutdown function will be included in revision 1.0.2
 
+Rev 1.2.1:
+-- Removed multiple shutdown functions
+-- Created one function called by both button press and nightly timer
+-- Implemented 11:00pm shu
+
 """
 
 # Python imports
@@ -120,22 +125,6 @@ def ShowShutdownPage(button:Button, state):
     if state is 'Pressed': dvTLP.ShowPage("Shutdown confirmation")
 
 btn_shdnYes = Button(dvTLP, 6)
-@eventEx(btn_shdnYes, ButtonEventList)
-def ShutdownYes(button:Button, state):
-    print(button.Name, state)
-    if state == 'Pressed':
-        button.SetState(1)
-
-        MainAudio.lvl_mic.SetLevel(var.mic_val)
-        MainAudio.lvl_prog.SetLevel(var.prog_val)
-        
-        #switch to start page
-        dvTLP.ShowPage("Start Page")
-        dvRelay.SetState('Open')
-        dvTLP.HideAllPopups()
-        
-    elif state == 'Released':
-        button.SetState(0)
 
 btn_shdnNo = Button(dvTLP, 7)
 @eventEx(btn_shdnNo, 'Pressed')
