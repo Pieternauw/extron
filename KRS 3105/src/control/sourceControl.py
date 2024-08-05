@@ -42,7 +42,7 @@ def SourceSelection(button:Button, state):
     
     #left and right board cams special case where input value is the same as yuja value (9 for left and center, 10 for right). can be hardcoded 
     if button in [tlp.btn_lBoardCams, tlp.btn_rBoardCams]:
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.prj_select), 'TieType': 'Video'})
+        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.prj_select), 'Tie Type': 'Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.monitor_select),'Tie Type': 'Audio/Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.yuja_select),'Tie Type': 'Audio/Video'})
         #no tie to output 12 since no audio comes through (reduce error chance)
@@ -50,13 +50,13 @@ def SourceSelection(button:Button, state):
         #center board cams have two buttons for either left or right camera, so button index + 9 (0 + 9, 1 + 9) 
         output = tlp.center_board_set.Objects.index(button) + 9
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.prj_select), 'Tie Type':'Video'})
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.monitor_select), 'TieType': 'Audio/Video'})
+        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.monitor_select), 'Tie Type': 'Audio/Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.yuja_select), 'Tie Type':'Audio/Video'})
         #no tie to output 12 since no audio comes through (reduce error chance)
     else:
         #button pressed was not a board camera. This code works for any button left right or center, setting the input to all of the correct projectors and outputs needed to be tied. 
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.prj_select), 'Tie Type':'Video'})
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.monitor_select), 'TieType': 'Audio/Video'})
+        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.monitor_select), 'Tie Type': 'Audio/Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.yuja_select), 'Tie Type':'Audio/Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '12', 'Tie Type': 'Audio/Video'})
         

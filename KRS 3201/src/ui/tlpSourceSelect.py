@@ -133,7 +133,7 @@ mode = 'Center'
 
 popup_list = ['Laptop Connected popup', 'Wireless instruction popup', 'Installed mac', 
               'Document camera instruction popup', 'Document camera instruction popup', 
-              'BluRay control popup']
+              'BluRay control popup', '']
 
 input_total_list = [btn_cHDMI, btn_cWireless, btn_cMac, btn_cBluray, btn_cDoc1, btn_cDoc2, 
                     btn_lHDMI, btn_lWireless, btn_lMac, btn_lDocCam1, btn_lDocCam2, btn_lBluray, btn_lBoardCams, 
