@@ -25,6 +25,8 @@ from extronlib.system import MESet
 
 BTNEVL = ['Pressed', 'Released', 'Tapped', 'Held']
 
+"""Board cams disabled for now until they get installed"""
+
 """Center Sets"""
 btn_cHDMI = Button(dvTLPMain, 247)
 btn_cWireless = Button(dvTLPMain, 250)
@@ -33,6 +35,7 @@ btn_cBluray = Button(dvTLPMain, 248)
 btn_cDoc1 = Button(dvTLPMain, 249)
 btn_cDoc2 = Button(dvTLPMain, 252)
 btn_cBoardCams = Button(dvTLPMain, 254)
+btn_cBoardCams.SetVisible(False)
 
 center_input_set = MESet([btn_cHDMI, btn_cWireless, btn_cMac, btn_cDoc1, btn_cDoc2, btn_cBluray])
 for button in center_input_set.Objects:
@@ -48,6 +51,7 @@ btn_lBluray = Button(dvTLPMain, 230)
 btn_lDocCam1 = Button(dvTLPMain, 231)
 btn_lDocCam2 = Button(dvTLPMain, 257)
 btn_lBoardCams = Button(dvTLPMain, 266)
+btn_lBoardCams.SetVisible(False)
 
 left_input_set = MESet([btn_lHDMI, btn_lWireless, btn_lMac, btn_lDocCam1, btn_lDocCam2, btn_lBluray, btn_lBoardCams])
 
@@ -64,6 +68,7 @@ btn_rBluray = Button(dvTLPMain, 260)
 btn_rDocCam1 = Button(dvTLPMain, 261)
 btn_rDocCam2 = Button(dvTLPMain, 264)
 btn_rBoardCams = Button(dvTLPMain, 267)
+btn_rBoardCams.SetVisible(False)
 
 right_input_set = MESet([btn_rHDMI, btn_rWireless, btn_rMac, btn_rDocCam1, btn_rDocCam2, btn_rBluray, btn_rBoardCams])
 
