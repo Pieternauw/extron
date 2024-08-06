@@ -33,8 +33,8 @@ def ShutdownRoutine():
         for i in ['1', '2', '3', '4', '5', '12']:
             dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': i, 'Tie Type': 'Audio/Video'}) 
 
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '3', 'Output': '9', 'Tie Type': 'Video'}) #Cynap to YuJa
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '3', 'Output': '10', 'Tie Type': 'Video'}) #Cynap to YuJa
+        dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '9', 'Tie Type': 'Video'}) #Cynap to YuJa
+        dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '10', 'Tie Type': 'Video'}) #Cynap to YuJa
 
         dvTLPMain.ShowPage('Start Page')
         dvTLPMain.HideAllPopups()
