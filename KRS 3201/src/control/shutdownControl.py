@@ -28,14 +28,13 @@ def ShutdownRoutine():
         tlp.tlpMainPageAudio.lvl_cMic.SetLevel(-18)
         tlp.tlpMainPageAudio.lvl_cProg.SetLevel(-18)
         dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelSpeech', 'Channel': '1'})
-        dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelProgram', 'Channel': '1'})
-        
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '3', 'Output': '9', 'Tie Type': 'Audio/Video'}) #Cynap to YuJa
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '3', 'Output': '10', 'Tie Type': 'Audio/Video'}) #Cynap to YuJa
-        
+        dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelProgram', 'Channel': '1'})        
 
         for i in ['1', '2', '3', '4', '5', '12']:
             dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': i, 'Tie Type': 'Audio/Video'}) 
+
+        dvMatrix.SetMatrixTieCommand(None, {'Input': '3', 'Output': '9', 'Tie Type': 'Video'}) #Cynap to YuJa
+        dvMatrix.SetMatrixTieCommand(None, {'Input': '3', 'Output': '10', 'Tie Type': 'Video'}) #Cynap to YuJa
 
         dvTLPMain.ShowPage('Start Page')
         dvTLPMain.HideAllPopups()

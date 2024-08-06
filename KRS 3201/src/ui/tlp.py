@@ -10,7 +10,7 @@ from extronlib.system import MESet, Clock
 # Project imports
 from modules.helper.ModuleSupport import eventEx
 from modules.helper.MirrorUI import Button
-from devices import dvTLPMain, dvMatrix, dvBiamp, dvLeftPRJ, dvCenterPRJ, dvRightPRJ
+from devices import dvTLPMain
 
 import ui.tlpAdvanced
 import ui.tlpAudioMix
