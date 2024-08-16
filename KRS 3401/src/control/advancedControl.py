@@ -43,6 +43,7 @@ def ProjectorOnOff(button:tlp.Button, state):
     dvPRJBack.SetPower('On' if button is tlp.btn_projOn else 'Off', None)
     dvPRJFront.Update('Power')
     dvPRJBack.Update('Power')
+    dvPRJFront.Update('LampUsage')
 
 @eventEx(tlp.btn_blankImg, 'Pressed')
 def BlankImage(button:tlp.Button, state):

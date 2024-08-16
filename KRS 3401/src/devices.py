@@ -55,7 +55,7 @@ dvPRJBack = GetConnectionHandler(Projector.SerialClass(dvIPCP, 'COM1', Model='Po
 
 prj_dict = {dvPRJFront: PRJF_ID, dvPRJBack: PRJB_ID}
 
-@eventEx([dvPRJFront, dvPRJBack], ['Connected', 'Disconnected'])
+@eventEx(dvPRJFront, ['Connected', 'Disconnected'])
 def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     print('Projector on IP {0} is {1}'.format(client.IPAddress, state))
     GVEServer.SendStatus(prj_dict[client], 'Connection', state)
