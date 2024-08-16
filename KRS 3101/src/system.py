@@ -27,6 +27,5 @@ def Initialize():
     dev.dvTLP.ShowPage('Start Page')
     tlp.lvl_mic.SetLevel(var.mic_val)
     tlp.lvl_prog.SetLevel(var.prog_val)
-    dev.GVEServer.Connect()
     # Finish Initialize() with a print()
     print('System Initialized')
