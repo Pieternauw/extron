@@ -97,7 +97,7 @@ btn_passcodeCancel = Button(dvTLP, 153)
 def CancelPasscode(button:Button, state):
     print(button.Name, state)
     global PadString, LblString
-    PadString = LblPadString = ''
+    PadString = LblString = ''
     if state == 'Pressed': LblPadString.SetText('')
     button.SetState(1 if 'Pressed' else 0)
     dvTLP.ShowPage('Start Page')
