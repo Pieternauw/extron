@@ -27,7 +27,7 @@ dvTLP = UIDevice('PanelAlias')
 
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
-TLP_ID = 'Touchpanel'; PRJF_ID = 'ProjectorFront'; PRJB_ID = 'ProjectorBack'; SW_ID = 'Switcher'; BLU_ID = 'Bluray'; IPCP_ID = 'IPCP'
+TLP_ID = 'Touchpanel'; PRJF_ID = 'ProjectorFront'; PRJB_ID = 'ProjectorBack'; SW_ID = 'Switcher'; IPCP_ID = 'IPCP'
 
 dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
@@ -61,6 +61,18 @@ def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     GVEServer.SendStatus(prj_dict[client], 'Connection', state)
     if state is not 'Connected':
         client.Connect(5) 
+
+def UpdatePRJFStatus(command, value, qualifier):
+    GVEServer.SendStatus(PRJF_ID, command, value)
+
+dvPRJFront.SubscribeStatus('Power', None, UpdatePRJFStatus)
+dvPRJFront.SubscribeStatus('LampUsage', None, UpdatePRJFStatus)
+
+def UpdatePRJBStatus(command, value, qualifier):
+    GVEServer.SendStatus(PRJB_ID, command, value)
+
+dvPRJBack.SubscribeStatus('Power', None, UpdatePRJBStatus)
+dvPRJBack.SubscribeStatus('LampUsage', None, UpdatePRJBStatus)
 
 device_dict = {dvTLP: TLP_ID, dvIPCP: IPCP_ID}
 
