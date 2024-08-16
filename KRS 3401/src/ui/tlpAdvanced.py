@@ -20,19 +20,19 @@ from extronlib.ui import Button, Label
 from devices import dvTLP
 
 #advanced settings
-btn_advSettings = Button(dvTLP, 47)
+btn_advSettings = Button(dvTLP, 41)
 @eventEx(btn_advSettings, ['Pressed', 'Released'])
 def ShowAdvancedSettingsPopup(button:Button, state):
     print(button.Name, state)
     if state == 'Pressed':
         button.SetState(1)
-        dvTLP.ShowPopup("Advanced Settings")
+        dvTLP.ShowPopup("Advanced settings")
     elif state == 'Released':
         button.SetState(0)
 
 #Activity Timeout
-btn_actTimeout = Button(dvTLP, 155)
-btn_actTimeout.SetVisible(False)
+"""btn_actTimeout = Button(dvTLP, 155)
+btn_actTimeout.SetVisible(False)"""
 
 """ Projector Control uses a mutual set to make sure only one button gets highlighted when the projector is on or off
     The new revision allows the button definition to set the state of the projector then call the update. Button feedback then 
@@ -127,6 +127,6 @@ def ExitAdvancedSettingsPopup(button:Button, state):
         techstr = ''
         techlblstr = ''
         LblTechString.SetText(techstr)          #clear the passcode before closing the page so it's empty when the user returns 
-        dvTLP.HidePopup("Advanced Settings")
+        dvTLP.HidePopup("Advanced settings")
     elif state == 'Released':
         button.SetState(0)

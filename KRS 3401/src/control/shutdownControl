@@ -1,4 +1,4 @@
-from devices import dvScalar, dvPRJ, dvTLP, dvRelay
+from devices import dvScalar, dvPRJBack, dvPRJFront, dvTLP, dvRelay
 
 from modules.helper.ModuleSupport import eventEx 
 
@@ -7,8 +7,9 @@ from extronlib.system import Clock
 import ui.tlp as tlp
 
 def ShutdownRoutine():
-    dvPRJ.SetPower('Off', None)
-    dvPRJ.Update('Power')
+    dvPRJBack.SetPower('Off', None)
+    dvPRJFront.SetPower('Off', None)
+    dvPRJFront.Update('Power')
     
     dvRelay.SetState('Open')
     
@@ -21,6 +22,7 @@ def ShutdownRoutine():
     dvScalar.SetGroupMicVolume(-18, None)
     
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})
+    
     dvTLP.ShowPage('Start Page')
     dvTLP.HideAllPopups()
     

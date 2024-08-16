@@ -44,7 +44,6 @@ from devices import dvTLP, dvRelay
 #Linking Files
 import ui.tlpAdvanced
 import ui.tlpAudio
-import ui.tlpPasscode
 import ui.tlpMainAudio as MainAudio
 import variables as var
 
@@ -53,6 +52,11 @@ import variables as var
 # Define UI Objects
 
 #Tap to start
+btn_start = Button(dvTLP, 19)
+@eventEx(btn_start, 'Pressed')
+def ShowMain(button:Button, state):
+    dvTLP.ShowPage('Main Page')
+    dvRelay.SetState('Close')
 
 """MAIN PAGE"""
 #Source Selection  
@@ -62,7 +66,7 @@ btn_sourceDocCam = Button(dvTLP, 14)
 btn_sourcePC = Button(dvTLP, 12)
 
 #mutually exclusive set for all inputs. only allows one to be selected at a time
-input_set = MESet([btn_sourceHDMI, btn_sourceWireless, btn_sourceDocCam, btn_sourcePC])
+input_set = MESet([btn_sourcePC, btn_sourceHDMI, btn_sourceWireless, btn_sourceDocCam])
 
 #assigns states to each button in the set
 for button in input_set.Objects:
@@ -118,22 +122,6 @@ def ShowShutdownPage(button:Button, state):
     if state is 'Pressed': dvTLP.ShowPage("Shutdown confirmation")
 
 btn_shdnYes = Button(dvTLP, 6)
-@eventEx(btn_shdnYes, ['Pressed', 'Released'])
-def ShutdownYes(button:Button, state):
-    print(button.Name, state)
-    if state == 'Pressed':
-        button.SetState(1)
-
-        MainAudio.lvl_mic.SetLevel(var.mic_val)
-        MainAudio.lvl_prog.SetLevel(var.prog_val)
-        
-        #switch to start page
-        dvTLP.ShowPage("Start Page")
-        dvRelay.SetState('Open')
-        dvTLP.HideAllPopups()
-        
-    elif state == 'Released':
-        button.SetState(0)
 
 btn_shdnNo = Button(dvTLP, 7)
 @eventEx(btn_shdnNo, 'Pressed')

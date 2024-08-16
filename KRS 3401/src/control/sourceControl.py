@@ -20,13 +20,13 @@ import control.advancedControl as adv
 #Device Imports
 from devices import dvScalar, dvPRJFront, dvPRJBack
 
-input_popup_list = ['Laptop Connected popup', 'Wireless insturction popup', 
-              'Document camera instruction popup', 'Instructor computer instructions']
+input_popup_list = ['Instructor computer instructions', 'Laptop Connected popup', 'Wireless insturction popup', 
+              'Document camera instruction popup']
 
 @eventEx(tlp.input_set.Objects, 'Pressed')
 def ControlInput(button:tlp.Button, state):
     print(button.Name, state, 'Control')
-    dvScalar.SetInput('{}'.format(tlp.input_set.Objects.index(button) + 2), {'Type': 'Audio/Video'})
+    dvScalar.SetInput('{}'.format(tlp.input_set.Objects.index(button) + 1), {'Type': 'Audio/Video'})
     dvPRJFront.SetPower('On', None) 
     dvPRJBack.SetPower('On', None) 
     tlp.dvTLP.HideAllPopups()
@@ -57,12 +57,3 @@ tlp.lblLaptopConnected.SetText('Connected' if dvScalar.ReadStatus('InputSignalSt
         
 dvScalar.SubscribeStatus('InputSignalStatus', {'Input': '2'}, LaptopConnectedFeedback)
 
-@eventEx(tlp.btn_shdnYes, 'Pressed')
-def ShutdownControl(button:tlp.Button, state):
-    tlp.input_set.SetCurrent(None)
-    dvPRJFront.SetPower('Off', None)
-    dvPRJBack.SetPower('Off', None)
-    adv.PRJStatusTimer.Restart()
-    dvScalar.SetInput('3', {'Type': 'Audio/Video'})
-    dvScalar.SetGroupProgramVolume(var.prog_val, None)
-    dvScalar.SetGroupMicVolume(var.mic_val, None)
