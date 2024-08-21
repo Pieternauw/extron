@@ -80,7 +80,6 @@ def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     if state is not 'Connected':
         client.Connect(5)
 
-        
 device_dict = {dvTLP: TLP_ID, dvIPCP: IPCP_ID}
 
 @eventEx([dvTLP, dvIPCP], ['Offline', 'Online'])
