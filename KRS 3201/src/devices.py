@@ -24,6 +24,7 @@ from modules.device import epsn_vp_CB_EB_PU100xx_PU2010x_Series_v1_0_2_0 as Proj
 from modules.helper.ConnectionHandler import GetConnectionHandler
 from modules.helper.ModuleSupport import eventEx
 from modules.helper.MirrorUI import MirrorUIDevice
+from modules.helper.gve_interface import gveClient
 
 # Define devices
 dvIPCP = ProcessorDevice('ProcessorAlias')
@@ -32,6 +33,10 @@ dvTLPBooth = UIDevice('MirroredPanel')
 
 dvTLPMain = MirrorUIDevice([dvTLPFront, dvTLPBooth])
 #TODO figure out how mirrored panels take their TLP code 
+
+GVEServer = gveClient('128.114.104.109', dvIPCP)
+
+TLPF_ID = 'TLPF'; TLPB_ID = 'TLPB'; PRJL_ID = 'PRJL'; PRJC_ID = 'PRJC'; PRJR_ID = 'PRJR'; BMP_ID = 'Biamp'; BLU_ID = 'Bluray'; SW_ID = 'Matrix'; IPCP_ID = 'IPCP'
 
 dvMatrix = Matrix.EthernetClass('10.10.2.30', 23, Model='XTP II CrossPoint 1600')
 
@@ -56,6 +61,7 @@ dvMatrix = GetConnectionHandler(dvMatrix, 'HDCPInputStatus', pollFrequency=30)
 @eventEx(dvMatrix, ['Connected', 'Disconnected'])
 def MatricConnectionHandler(client:EthernetClientInterface, state):
     print('Matrix on IP {0} is {1}'.format(client.IPAddress, state))
+    GVEServer.SendStatus(SW_ID, 'Connection', state)
     if state is 'Connected':
         dvMatrix.Update('InputSignalStatusEndpoint', {'Input': '1', 'Sub Input': '1'})
         print(dvMatrix.ReadStatus('InputSignalStatusEndpoint', {'Input': '1', 'Sub Input': '1'}))
@@ -72,6 +78,7 @@ BlurayConnectionTimer.Stop()
 @eventEx(dvBluray, ['Connected', 'Disconnected'])
 def BlurayConnectionHandler(client:EthernetClientInterface, state):
     print('Bluray on IP {0} is {1}'.format(client.IPAddress, state))
+    GVEServer.SendStatus(BLU_ID, 'Connection', state)
     if state is 'Connected':
         client.StartKeepAlive(30, '!7?SST\r')
     else:
@@ -82,10 +89,13 @@ dvLeftPRJ = GetConnectionHandler(dvLeftPRJ, 'Power', pollFrequency=30)
 dvCenterPRJ = GetConnectionHandler(dvCenterPRJ, 'Power', pollFrequency=10)
 dvRightPRJ = GetConnectionHandler(dvRightPRJ, 'Power', pollFrequency=30)
 
+PRJ_DICT = {dvLeftPRJ: PRJL_ID, dvCenterPRJ: PRJC_ID, dvRightPRJ: PRJR_ID}
+
 #check if I can do client.Update('Power') instead of casting each
 @eventEx([dvLeftPRJ, dvCenterPRJ, dvRightPRJ], ['Connected', 'Disconnected'])
 def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     print('Projector on IP {0} is {1}'.format(client.IPAddress, state))
+    GVEServer.SendStatus(PRJ_DICT[client], 'Connection', state)
     if state is 'Connected':
         client.Update('Power')
         client.Update('AVMute')
@@ -97,9 +107,16 @@ dvBiamp = GetConnectionHandler(dvBiamp, 'MuteControl', keepAliveQueryQualifier={
 @eventEx(dvBiamp, ['Connected', 'Disconnected'])
 def BiampConnectionHandler(client:EthernetClientInterface, state):
     print('Biamp on IP {0} is {1}'.format(client.IPAddress, state))
+    GVEServer.SendStatus(BMP_ID, 'Connection', state)
     if state is 'Connected':    
         #these need to be called whenever - write an update function for whenever I need newest status in main code to return value
         dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
         dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
     else:
         client.Connect(5)
+
+device_dict = {dvTLPFront: TLPF_ID, dvTLPBooth: TLPB_ID, dvIPCP: IPCP_ID}
+
+@eventEx([dvTLPFront, dvTLPBooth, dvIPCP], ['Offline', 'Online'])
+def TLPOff(device, state):
+    GVEServer.SendStatus(device_dict[device], 'Connection', state)
