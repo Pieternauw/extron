@@ -21,7 +21,6 @@ def ShutdownRoutine():
     dvScalar.SetGroupMicVolume(-18, None)
     
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})
-    
     dvTLP.ShowPage('Start Page')
     dvTLP.HideAllPopups()
     
@@ -32,5 +31,5 @@ def ShutdownControl(button:tlp.Button, state):
 def ShutdownSystem(clock, dt):
     ShutdownRoutine()
     
-Shutdown = Clock(['22:00:00'], None, ShutdownSystem)
+Shutdown = Clock(['23:00:00'], None, ShutdownSystem)
 Shutdown.Enable()

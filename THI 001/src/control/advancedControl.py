@@ -1,4 +1,4 @@
-from devices import dvPRJ
+from devices import dvPRJ, GVEServer, PRJ_ID
 
 from extronlib.system import MESet, Timer
 
@@ -14,6 +14,7 @@ prj_set.SetCurrent(tlp.btn_projOn if dvPRJ.ReadStatus('Power') is 'On' else tlp.
 #Define a repsonse function for subscribe status
 def PowerChanged(command, value, qualifier):
     print(value)
+    GVEServer.SendStatus(PRJ_ID, 'Power', value)
     #If SubscribeStatus calls function with value 'On', set button to on and stop timer. 
     if value is 'On':
         prj_set.SetCurrent(tlp.btn_projOn)

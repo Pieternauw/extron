@@ -83,6 +83,7 @@ def BlurayConnectionHandler(client:EthernetClientInterface, state):
         client.StartKeepAlive(30, '!7?SST\r')
     else:
         client.StopKeepAlive()
+        print('Bluray attempt reconnect')
         BlurayConnectionTimer.Restart()
 
 dvLeftPRJ = GetConnectionHandler(dvLeftPRJ, 'Power', pollFrequency=30)

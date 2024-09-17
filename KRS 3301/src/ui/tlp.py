@@ -44,7 +44,7 @@ from extronlib.ui import Button, Label
 from modules.helper.ModuleSupport import eventEx
 
 #Project Imports
-from devices import dvTLP, dvScalar, dvRelay
+from devices import dvTLP
 from variables import ButtonEventList
 
 #Linking Files
