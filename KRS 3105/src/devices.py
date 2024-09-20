@@ -34,7 +34,7 @@ dvTLPMain = MirrorUIDevice([dvTLPFront, dvTLPBooth])
 
 dvMatrix = Matrix.EthernetClass('10.10.2.30', 23, Model='XTP II CrossPoint 1600')
 
-dvBiamp = Biamp.SSHClass('10.10.2.40', 22, Model='TesiraFORTE DAN AI')
+dvBiamp = Biamp.SSHClass('10.10.2.40', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', 'wag2748'))
 
 #TODO - Change to ethernet
 dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP4K') #4k in room
@@ -46,7 +46,7 @@ dvLeftPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2033, Model='CB-PU22
 dvCenterPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2034, Model='CB-PU2220B')
 dvRightPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2035, Model='CB-PU2220B')
 
-dvSSP = SSP.SSHClass('10.10.2.42', 22023, Model='SSP 200')
+dvSSP = SSP.SSHClass('10.10.2.42', 22023, Model='SSP 200', Credentials=('admin', 'wag2748'))
 
 """NOTE Device Connections - Using my own written method for bluray. 
         Once completed test the projector updates and subscribe status for button feedbacks"""

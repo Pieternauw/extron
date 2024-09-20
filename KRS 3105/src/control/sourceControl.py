@@ -23,6 +23,13 @@ from modules.helper.MirrorUI import Button
 
 import ui.tlpSourceSelect as tlp
 
+@eventEx([tlp.btn_cBoard1, tlp.btn_cBoard2, tlp.btn_cBoard3], 'Pressed')
+def CenterBoardSelectInput(button:Button, state):
+    output = tlp.center_board_set.Objects.index(button) + 9
+    dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.prj_select), 'Tie Type':'Video'})
+    dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.monitor_select), 'Tie Type': 'Audio/Video'})
+    dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.yuja_select), 'Tie Type':'Audio/Video'})
+
 @eventEx(tlp.input_total_list, ['Pressed'])
 def SourceSelection(button:Button, state):
     print(button.Name, button.Host, state)
@@ -46,23 +53,17 @@ def SourceSelection(button:Button, state):
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.monitor_select),'Tie Type': 'Audio/Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.yuja_select),'Tie Type': 'Audio/Video'})
         #no tie to output 12 since no audio comes through (reduce error chance)
-    elif button in tlp.center_board_set.Objects:
-        #center board cams have two buttons for either left or right camera, so button index + 9 (0 + 9, 1 + 9) 
-        output = tlp.center_board_set.Objects.index(button) + 9
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.prj_select), 'Tie Type':'Video'})
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.monitor_select), 'Tie Type': 'Audio/Video'})
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.yuja_select), 'Tie Type':'Audio/Video'})
-        #no tie to output 12 since no audio comes through (reduce error chance)
     else:
         #button pressed was not a board camera. This code works for any button left right or center, setting the input to all of the correct projectors and outputs needed to be tied. 
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.prj_select), 'Tie Type':'Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.monitor_select), 'Tie Type': 'Audio/Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.yuja_select), 'Tie Type':'Audio/Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '12', 'Tie Type': 'Audio/Video'})
+        #for error prevention, tie yuja output from BluRay to a blank screen. HDCP content is not allowed to Yuja so needs to be not sent. 
+        if button in [tlp.btn_cBluray, tlp.btn_lBluray, tlp.btn_rBluray]:
+            dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': '{}'.format(tlp.yuja_select), 'Tie Type': 'Audio/Video'})
         
-    #for error prevention, tie yuja output from BluRay to a blank screen. HDCP content is not allowed to Yuja so needs to be not sent. 
-    if button in [tlp.btn_cBluray, tlp.btn_lBluray, tlp.btn_rBluray]:
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': '{}'.format(tlp.yuja_select), 'Tie Type': 'Audio/Video'})
+    
 
 
 video_mute_list = [tlp.btn_lVideoMute, tlp.btn_cVideoMute, tlp.btn_rVideoMute]

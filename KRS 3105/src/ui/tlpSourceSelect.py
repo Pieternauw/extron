@@ -80,7 +80,7 @@ btn_cBoard2 = Button(dvTLPMain, 185)
 btn_cBoard3 = Button(dvTLPMain, 184)
 btn_cBoard3.SetVisible(False)
 
-center_board_set = MESet([btn_cBoard1, btn_cBoard2, btn_cBoard3])
+center_board_set = MESet([btn_cBoard2, btn_cBoard1, btn_cBoard3])
 
 for button in center_board_set.Objects:
     center_board_set.SetStates(button, 0, 1)
@@ -133,17 +133,28 @@ mode = 'Center'
 
 popup_list = ['Laptop Connected popup', 'Wireless instruction popup', 'Installed mac', 
               'Document camera instruction popup', 'Document camera instruction popup', 
-              'BluRay control popup']
+              'BluRay control popup', None]
 
 input_total_list = [btn_cHDMI, btn_cWireless, btn_cMac, btn_cBluray, btn_cDoc1, btn_cDoc2, 
                     btn_lHDMI, btn_lWireless, btn_lMac, btn_lDocCam1, btn_lDocCam2, btn_lBluray, btn_lBoardCams, 
-                    btn_rHDMI, btn_rWireless, btn_rMac, btn_rBluray, btn_rDocCam1, btn_rDocCam2, btn_rBoardCams, 
-                    btn_cBoard1, btn_cBoard2, btn_cBoard3]
+                    btn_rHDMI, btn_rWireless, btn_rMac, btn_rBluray, btn_rDocCam1, btn_rDocCam2, btn_rBoardCams]
 
 btn_leftSourceSound = Button(dvTLPMain, 228)
 btn_rightSourceSound = Button(dvTLPMain, 227)
 btn_leftSourceSound.SetVisible(False)
 btn_rightSourceSound.SetVisible(False)
+
+@eventEx(btn_cBoardCams, 'Pressed')
+def CenterBoardCams(button:Button, state):   
+    global prj_select, monitor_select, yuja_select, mode
+    prj_select = 2; monitor_select = 4; yuja_select = 9; mode = ''
+    dvTLPMain.ShowPopup('center board camera selection')
+    center_input_set.SetCurrent(None)
+    button.SetState(1)
+    
+@eventEx([btn_cBoard1, btn_cBoard2, btn_cBoard3], 'Pressed')
+def CenterBoardInputs(button:Button, state):
+    center_board_set.SetCurrent(button)
 
 #every input button for left right and center is in the total list
 @eventEx(input_total_list, 'Pressed')
@@ -168,11 +179,6 @@ def SwitchInput(button:Button, state):
         dvTLPMain.ShowPopup(popup_list[center_input_set.Objects.index(button)])
         #set visual status
         center_input_set.SetCurrent(button)
-    elif button is btn_cBoardCams:
-        #board cams have a special case, need to show board cam selection page before continuing
-        prj_select = 2; monitor_select = 4; yuja_select = 9; mode = 'Center'
-        dvTLPMain.ShowPopup('Center board camera selection')
-        button.SetState(1)
     elif button in left_input_set.Objects:
         #set left projector, left yuja, left confidence
         prj_select = 1
@@ -184,7 +190,6 @@ def SwitchInput(button:Button, state):
         #left source sound becomes active, switch to right source button now visible
         btn_leftSourceSound.SetVisible(False)
         btn_rightSourceSound.SetVisible(True)
-
     elif button in right_input_set.Objects:
         #set right projector, right monitor, right yuja
         prj_select = 3
