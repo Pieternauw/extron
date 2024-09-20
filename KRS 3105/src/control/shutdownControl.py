@@ -7,7 +7,7 @@ from extronlib.system import Clock
 
 import ui.tlp as tlp
 
-def ShutdownRoutine():
+def StartupAndShutdown():
         #shut off projectors
         #lock cabinet
         #tie matrix and audio outputs
@@ -21,9 +21,6 @@ def ShutdownRoutine():
         dvCenterPRJ.Update('Power')
         dvRightPRJ.Update('Power')
         dvLeftPRJ.Update('Power') 
-        
-        
-        dvMatrix.Set('Relay', 'Open', {'Output': '4', 'Relay': '1'})
 
         tlp.tlpSourceSelect.left_input_set.SetCurrent(None)
         tlp.tlpSourceSelect.right_input_set.SetCurrent(None)
@@ -38,8 +35,8 @@ def ShutdownRoutine():
         for i in ['1', '2', '3', '4', '5', '12']:
             dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': i, 'Tie Type': 'Audio/Video'}) 
             
-        for i in ['1', '2', '3']:
-            dvMatrix.SetVideoMute('Off', {'Output': i})
+        for j in ['1', '2', '3']:
+            dvMatrix.SetVideoMute('Off', {'Output': j})
             
         tlp.tlpSourceSelect.btn_cVideoMute.SetState(0)
         tlp.tlpSourceSelect.btn_lVideoMute.SetState(0)
@@ -50,18 +47,21 @@ def ShutdownRoutine():
         
         dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '9', 'Tie Type': 'Audio/Video'}) #Cynap to YuJa
         dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '10', 'Tie Type': 'Audio/Video'}) #Cynap to YuJa
-
-        dvTLPMain.ShowPage('Start Page')
+        
         dvTLPMain.HideAllPopups()
+
 
 @eventEx(tlp.btn_shutdownYes, 'Pressed')
 def ShutdownConfirm(button:Button, state):
     print(button.Name, button.Host, state)
-    ShutdownRoutine()
-        
+    StartupAndShutdown()
+    dvMatrix.Set('Relay', 'Open', {'Output': '4', 'Relay': '1'})
+    dvTLPMain.ShowPage('Start Page')
         
 def ShutdownSystem(clock, dt):
-    ShutdownRoutine()
+    StartupAndShutdown()
+    dvMatrix.Set('Relay', 'Open', {'Output': '4', 'Relay': '1'})
+    dvTLPMain.ShowPage('Start Page')
 
 Shutdown = Clock(['23:00:00'], None, ShutdownSystem)
 Shutdown.Enable()

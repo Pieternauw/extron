@@ -6,12 +6,10 @@ from extronlib.system import Clock
 
 import ui.tlp as tlp
 
-def ShutdownRoutine():
+def StartupAndShutdown():
     dvPRJ.SetPower('Off', None)
     dvPRJ.Update('Power')
-    
-    dvRelay.SetState('Open')
-    
+        
     tlp.input_set.SetCurrent(None)
     
     tlp.MainAudio.lvl_mic.SetLevel(-18)
@@ -21,15 +19,18 @@ def ShutdownRoutine():
     dvScalar.SetGroupMicVolume(-18, None)
     
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})
-    dvTLP.ShowPage('Start Page')
     dvTLP.HideAllPopups()
     
 @eventEx(tlp.btn_shdnYes, 'Pressed')
 def ShutdownControl(button:tlp.Button, state):
-    ShutdownRoutine()
+    StartupAndShutdown()
+    dvTLP.ShowPage('Start Page')
+    dvRelay.SetState('Open')
     
 def ShutdownSystem(clock, dt):
-    ShutdownRoutine()
+    StartupAndShutdown()
+    dvTLP.ShowPage('Start Page')
+    dvRelay.SetState('Open')
     
 Shutdown = Clock(['23:00:00'], None, ShutdownSystem)
 Shutdown.Enable()

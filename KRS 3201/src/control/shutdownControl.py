@@ -7,7 +7,7 @@ from extronlib.system import Clock
 
 import ui.tlp as tlp
 
-def ShutdownRoutine():
+def StartupAndShutdown():
         #shut off projectors
         #lock cabinet
         #tie matrix and audio outputs
@@ -18,8 +18,6 @@ def ShutdownRoutine():
         dvRightPRJ.Update('Power')
         dvLeftPRJ.Update('Power') 
         
-        dvMatrix.Set('Relay', 'Open', {'Output': '4', 'Relay': '1'})
-
         tlp.tlpSourceSelect.left_input_set.SetCurrent(None)
         tlp.tlpSourceSelect.right_input_set.SetCurrent(None)
         tlp.tlpSourceSelect.center_board_set.SetCurrent(None)
@@ -42,11 +40,12 @@ def ShutdownRoutine():
 @eventEx(tlp.btn_shutdownYes, 'Pressed')
 def ShutdownConfirm(button:Button, state):
     print(button.Name, button.Host, state)
-    ShutdownRoutine()
-        
+    StartupAndShutdown()
+    dvMatrix.Set('Relay', 'Open', {'Output': '4', 'Relay': '1'})
+    
         
 def ShutdownSystem(clock, dt):
-    ShutdownRoutine()
+    StartupAndShutdown()
 
 Shutdown = Clock(['23:00:00'], None, ShutdownSystem)
 Shutdown.Enable()

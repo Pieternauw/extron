@@ -17,6 +17,7 @@ passcode of the quarter. This passcode gets read in and put in a varaible for co
 """
 
 from modules.helper.ModuleSupport import eventEx
+from control.shutdownControl import StartupAndShutdown
 
 from extronlib.ui import Button, Label
 from extronlib.system import File
@@ -74,6 +75,7 @@ def BtnEnterPasscode(button:Button, state):
         if (PadString == '2748') or (PadString == passcode):      #whatever the current passcode is
             dvTLP.ShowPage('Main Page')
             dvRelay.SetState('Close')
+            StartupAndShutdown()
             
         PadString = ''
         LblString = ''

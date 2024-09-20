@@ -22,6 +22,8 @@ from modules.helper.MirrorUI import Button, Label
 
 from extronlib.system import File
 
+from control.shutdownControl import StartupAndShutdown
+
 from devices import dvTLPMain, dvMatrix
 
 btn_startScreen = Button(dvTLPMain, 19)
@@ -70,6 +72,7 @@ def BtnEnterPasscode(button:Button, state):
         if (PadString == '2748') or (PadString == passcode):      #whatever the current passcode is
             dvTLPMain.ShowPage('room mode select')
             dvMatrix.Set('Relay', 'Close', {'Output': '4', 'Relay': '1'})
+            StartupAndShutdown()
             
         PadString = ''
         LblString = ''
