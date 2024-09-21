@@ -40,6 +40,7 @@ from modules.helper.ModuleSupport import eventEx
 
 #Project Imports
 from devices import dvTLP, dvRelay
+from control.shutdownControl import Startup
 
 #Linking Files
 import ui.tlpAdvanced
@@ -55,8 +56,7 @@ import variables as var
 btn_start = Button(dvTLP, 19)
 @eventEx(btn_start, 'Pressed')
 def ShowMain(button:Button, state):
-    dvTLP.ShowPage('Main Page')
-    dvRelay.SetState('Close')
+    Startup()
 
 """MAIN PAGE"""
 #Source Selection  
