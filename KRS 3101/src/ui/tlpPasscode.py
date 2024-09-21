@@ -17,7 +17,7 @@ passcode of the quarter. This passcode gets read in and put in a varaible for co
 """
 
 from modules.helper.ModuleSupport import eventEx
-from control.shutdownControl import StartupAndShutdown
+from control.shutdownControl import Startup
 
 from extronlib.ui import Button, Label
 from extronlib.system import File
@@ -40,7 +40,6 @@ def ShowStartPage(button:Button, state):
 #port 22022 in cyberduck
 passcodeFile = File('user/passcode.txt', 'r')
 passcode = str(passcodeFile.readline())
-print('passcode', passcode)
 
 PadButtons = []
 for Button_IDs in range(141, 151):
@@ -73,10 +72,7 @@ def BtnEnterPasscode(button:Button, state):
     if state == 'Pressed':
         button.SetState(1)
         if (PadString == '2748') or (PadString == passcode):      #whatever the current passcode is
-            dvTLP.ShowPage('Main Page')
-            dvRelay.SetState('Close')
-            StartupAndShutdown()
-            
+            Startup() 
         PadString = ''
         LblString = ''
         LblPadString.SetText(LblString)
