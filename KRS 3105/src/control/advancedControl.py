@@ -9,7 +9,7 @@ to be activated and keeps the buttons consistent with th eactual status.
 AV Mute uses a similar method but the only thing that changes the states is the advance settings blank image button. 
 """
 
-from devices import dvCenterPRJ, dvRightPRJ, dvLeftPRJ
+from devices import dvCenterPRJ, dvRightPRJ, dvLeftPRJ, GVEServer, PRJL_ID, PRJC_ID, PRJR_ID
 
 import ui.tlpAdvanced as tlp
 
@@ -29,6 +29,7 @@ r_prj_set = MESet([tlp.btn_rPrjOn, tlp.btn_rPrjOff])
 r_prj_set.SetCurrent(tlp.btn_rPrjOn if dvRightPRJ.ReadStatus('Power') is 'On' else tlp.btn_rPrjOff)
 
 def CenterPowerChanged(command, value, qualifier):
+    GVEServer.SendStatus(PRJC_ID, 'Power', value)
     if value is 'On' or value is 'Off':
         prj_set.SetCurrent(tlp.btn_projOn if value == 'On' else tlp.btn_projOff)
         CenterPRJTimer.Stop()
@@ -47,6 +48,7 @@ CenterPRJTimer.Stop()
 dvCenterPRJ.SubscribeStatus('Power', None, CenterPowerChanged)
 
 def LeftPowerChanged(command, value, qualifier):
+    GVEServer.SendStatus(PRJL_ID, 'Power', value)
     if value is 'On' or value is 'Off':
         l_prj_set.SetCurrent(tlp.btn_lPrjOn if value == 'On' else tlp.btn_lPrjOff)
         LeftPRJTimer.Stop()
@@ -67,6 +69,7 @@ LeftPRJTimer.Stop()
 dvLeftPRJ.SubscribeStatus('Power', None, LeftPowerChanged)
 
 def RightPowerChanged(command, value, qualifier):
+    GVEServer.SendStatus(PRJR_ID, 'Power', value)
     if value is 'On' or value is 'Off':
         r_prj_set.SetCurrent(tlp.btn_rPrjOn if value == 'On' else tlp.btn_rPrjOff)
         RightPRJTimer.Stop()
