@@ -32,7 +32,7 @@ The nightly shutdown function will be included in revision 1.0.2
 Rev 1.2.1:
 -- Removed multiple shutdown functions
 -- Created one function called by both button press and nightly timer
--- Implemented 11:00pm shutdown
+-- Implemented 11:00pm shu
 
 """
 
@@ -49,9 +49,8 @@ from variables import ButtonEventList
 
 #Linking Files
 import ui.tlpBluray
-import ui.tlpAdvanced
+import ui.tlpAdvanced as adv
 import ui.tlpAudio
-import ui.tlpPasscode
 import ui.tlpMainAudio as MainAudio
 import variables as var
 

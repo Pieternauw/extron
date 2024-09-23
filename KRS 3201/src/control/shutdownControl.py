@@ -1,13 +1,15 @@
 from devices import dvMatrix, dvCenterPRJ, dvRightPRJ, dvLeftPRJ, dvBiamp, dvTLPMain
 
 from modules.helper.ModuleSupport import eventEx 
-from modules.helper.MirrorUI import Button
+from modules.helper.MirrorUI import Button, Label
+from extronlib.system import File
 
-from extronlib.system import Clock
+from extronlib.system import Clock, Wait
 
 import ui.tlp as tlp
 
 def Startup():
+    print('Startup running')
     #default audio levels set, turn off mute buttons. Visual feedback handled by SubscribeStatus()
     tlp.tlpMainPageAudio.lvl_cMic.SetLevel(-18)
     tlp.tlpMainPageAudio.lvl_cProg.SetLevel(-18)
@@ -19,11 +21,18 @@ def Startup():
     dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
 
     dvCenterPRJ.SetAVMute('Off', None)
+    tlp.adv.btn_blankImg.SetState(0)
     dvLeftPRJ.SetAVMute('Off', None)
+    tlp.adv.btn_lBlankImg.SetState(0)
     dvRightPRJ.SetAVMute('Off', None)
+    tlp.adv.btn_rBlankImg.SetState(0)
 
     for j in ['1', '2', '3']:
         dvMatrix.SetVideoMute('Off', {'Output': j})
+        
+    tlp.tlpSourceSelect.btn_cVideoMute.SetState(0)
+    tlp.tlpSourceSelect.btn_lVideoMute.SetState(0)
+    tlp.tlpSourceSelect.btn_rVideoMute.SetState(0)
     
     #No ties for matrix, there might already be ties in place. Plus if they reselect 
     #then ties will be made. 
@@ -34,8 +43,11 @@ def Startup():
 def Shutdown():
     #shut off projectors and update buttons with SubscribeStatus()
     dvCenterPRJ.SetAVMute('Off', None)
+    tlp.adv.btn_blankImg.SetState(0)
     dvLeftPRJ.SetAVMute('Off', None)
+    tlp.adv.btn_lBlankImg.SetState(0)
     dvRightPRJ.SetAVMute('Off', None)
+    tlp.adv.btn_rBlankImg.SetState(0)
     
     dvCenterPRJ.SetPower('Off', None)
     dvRightPRJ.SetPower('Off', None)
@@ -68,6 +80,9 @@ def Shutdown():
     
     for j in ['1', '2', '3']:
             dvMatrix.SetVideoMute('Off', {'Output': j})
+    tlp.tlpSourceSelect.btn_cVideoMute.SetState(0)
+    tlp.tlpSourceSelect.btn_lVideoMute.SetState(0)
+    tlp.tlpSourceSelect.btn_rVideoMute.SetState(0)
     
     dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '9', 'Tie Type': 'Video'}) #Cynap to YuJa
     dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '10', 'Tie Type': 'Video'}) #Cynap to YuJa
@@ -86,5 +101,79 @@ def ShutdownConfirm(button:Button, state):
 def ShutdownSystem(clock, dt):
     Shutdown()
 
-Shutdown = Clock(['23:00:00'], None, ShutdownSystem)
-Shutdown.Enable()
+ShutdownClock = Clock(['23:00:00'], None, ShutdownSystem)
+ShutdownClock.Enable()
+
+btn_startScreen = Button(dvTLPMain, 19)
+
+@eventEx(btn_startScreen, 'Pressed')
+def ShowStartPage(button:Button, state):
+    print(button.Name, button.Host, state)
+    dvTLPMain.ShowPage("Main passcode")
+    #may want to auto this to the main page if I can't get the passcode going before deployment
+
+
+passcodeFile = File('user/passcode.txt', 'r')
+passcode = str(passcodeFile.readline())
+print('passcode', passcode)
+
+PadButtons = []
+for Button_IDs in range(141, 151):
+    PadButtons.append(Button(dvTLPMain, Button_IDs))
+    
+LblPadString = Label(dvTLPMain, 140)
+LblString = ''
+PadString = ''
+
+@eventEx(PadButtons, ['Pressed', 'Released'])
+def PadButtonPressed(button:Button, state):
+    print(button.Name, button.Host, state)
+    global PadString 
+    global LblString
+    if state == 'Pressed':
+        button.SetState(1)
+        PadString += button.Name
+        LblString += '*'
+        LblPadString.SetText(LblString)
+    elif state == 'Released':
+        button.SetState(0)
+
+#enter and clear
+btn_passcodeEnter = Button(dvTLPMain, 152)
+@eventEx(btn_passcodeEnter, ['Pressed', 'Released'])
+def BtnEnterPasscode(button:Button, state):
+    print(button.Name, button.Host, state)
+    global PadString 
+    global LblString
+    if state == 'Pressed':
+        button.SetState(1)
+        if (PadString == '2748') or (PadString == passcode):      #whatever the current passcode is
+            StartupWait = Wait(1, Startup)
+        PadString = ''
+        LblString = ''
+        LblPadString.SetText(LblString)
+    elif state == 'Released':
+        button.SetState(0)
+
+btn_passcodeClear = Button(dvTLPMain, 151)
+@eventEx(btn_passcodeClear, ['Pressed', 'Released'])
+def BtnClearPad(button:Button, state):
+    print(button.Name, button.Host, state)
+    global PadString
+    global LblString
+    PadString = ''
+    LblString = ''
+    LblPadString.SetText(LblString)
+    if state == 'Pressed':
+        button.SetState(1)
+    elif state == 'Released':
+        button.SetState(0)
+
+btn_passcodeCancel = Button(dvTLPMain, 153)
+@eventEx(btn_passcodeCancel, ['Pressed', 'Released'])
+def CancelPasscode(button:Button, state):
+    button.SetState(1 if state == 'Pressed' else 0)
+    print(button.Name, state)
+    if state is 'Pressed':
+        dvTLPMain.ShowPage('Start Page')
+    

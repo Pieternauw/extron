@@ -6,16 +6,15 @@ created seperately needs to be imported into this one for the compiler to recogn
 """
 
 # Python imports
-from extronlib.system import MESet, Clock
+from extronlib.system import MESet
 # Project imports
 from modules.helper.ModuleSupport import eventEx
 from modules.helper.MirrorUI import Button
-from devices import dvTLPMain, dvMatrix, dvBiamp, dvLeftPRJ, dvCenterPRJ, dvRightPRJ
+from devices import dvTLPMain
 
-import ui.tlpAdvanced
+import ui.tlpAdvanced as adv
 import ui.tlpAudioMix
 import ui.tlpBluray
-import ui.tlpPasscode
 import ui.tlpSourceSelect as tlpSourceSelect
 import ui.tlpMainPageAudio as tlpMainPageAudio
 # Define UI Objects

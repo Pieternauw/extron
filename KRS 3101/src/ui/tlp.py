@@ -49,9 +49,8 @@ from variables import ButtonEventList
 
 #Linking Files
 import ui.tlpBluray
-import ui.tlpAdvanced
+import ui.tlpAdvanced as adv
 import ui.tlpAudio
-import ui.tlpPasscode
 import ui.tlpMainAudio as MainAudio
 import variables as var
 

@@ -39,11 +39,11 @@ from extronlib.ui import Button, Label
 from modules.helper.ModuleSupport import eventEx
 
 #Project Imports
-from devices import dvTLP, dvRelay
+from devices import dvTLP
 from control.shutdownControl import Startup
 
 #Linking Files
-import ui.tlpAdvanced
+import ui.tlpAdvanced as adv
 import ui.tlpAudio
 import ui.tlpMainAudio as MainAudio
 import variables as var
@@ -51,12 +51,6 @@ import variables as var
 #bring in variables here for defaults (audio level, default source and what not)
 
 # Define UI Objects
-
-#Tap to start
-btn_start = Button(dvTLP, 19)
-@eventEx(btn_start, 'Pressed')
-def ShowMain(button:Button, state):
-    Startup()
 
 """MAIN PAGE"""
 #Source Selection  

@@ -9,10 +9,10 @@
         "irfile_folder_path": "ir",
         "system_id": "7942",
         "author": {
-            "name": "Your Name",
-            "email": "user@yourdomain.com"
+            "name": "Pieter Nauwelaerts",
+            "email": "pnauwela@ucsc.edu"
         },
-        "version": "1.3.2",
+        "version": "1.4.0",
         "primary_device_alias": "ProcessorAlias"
     },
     "devices": [
