@@ -40,7 +40,6 @@ from modules.helper.ModuleSupport import eventEx
 
 #Project Imports
 from devices import dvTLP
-from control.shutdownControl import Startup
 
 #Linking Files
 import ui.tlpAdvanced as adv

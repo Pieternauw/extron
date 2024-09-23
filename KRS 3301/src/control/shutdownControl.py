@@ -36,8 +36,8 @@ def Startup():
     dvRelay.SetState('Close')
     
 def Shutdown():
-    dvPRJ.SetPower('Off', None)
     dvPRJ.SetAVMute('Off', None)
+    dvPRJ.SetPower('Off', None)
     dvPRJ.Update('Power')
     tlp.adv.btn_blankImg.SetState(0)
         

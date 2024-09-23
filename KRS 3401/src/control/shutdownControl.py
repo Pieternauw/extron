@@ -30,6 +30,7 @@ def Startup():
     
     #main page shown, function called after successful passcode entry
     dvTLP.ShowPage('Main Page')
+    
     #unlock drawer
     dvRelay.SetState('Close')
     

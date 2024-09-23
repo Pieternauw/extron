@@ -49,13 +49,17 @@ def Shutdown():
     dvRightPRJ.SetAVMute('Off', None)
     tlp.adv.btn_rBlankImg.SetState(0)
     
-    dvCenterPRJ.SetPower('Off', None)
-    dvRightPRJ.SetPower('Off', None)
-    dvLeftPRJ.SetPower('Off', None)
     
-    dvCenterPRJ.Update('Power')
-    dvRightPRJ.Update('Power')
-    dvLeftPRJ.Update('Power') 
+    def PRJShutoff():
+        dvCenterPRJ.SetPower('Off', None)
+        dvRightPRJ.SetPower('Off', None)
+        dvLeftPRJ.SetPower('Off', None)
+    
+        dvCenterPRJ.Update('Power')
+        dvRightPRJ.Update('Power')
+        dvLeftPRJ.Update('Power') 
+        
+    PRJ_Shutoff = Wait(5, PRJShutoff)
     
     #set source buttons to all be deselected
     tlp.tlpSourceSelect.left_input_set.SetCurrent(None)
