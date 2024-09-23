@@ -7,10 +7,6 @@ from extronlib.system import Clock
 import ui.tlp as tlp
 
 def Startup():
-    #set input set to nothing
-    tlp.input_set.SetCurrent(None)
-    #Don't set scalar b/c instructor might be displaying something we want to keep up while system starts up 
-    
     #set default mic and prog volume levels
     tlp.MainAudio.lvl_mic.SetLevel(-18)
     tlp.MainAudio.lvl_prog.SetLevel(-18)
@@ -25,6 +21,10 @@ def Startup():
     #turn off video mute
     dvScalar.SetGlobalVideoMute('Off', None)
     tlp.btn_videoMute.SetState(0)   
+
+    dvPRJBack.Set('AVMute', 'Off')
+    dvPRJFront.Set('AVMute', 'Off')
+    dvPRJFront.Update('AVMute')
     
     #main page shown, function called after successful passcode entry
     dvTLP.ShowPage('Main Page')
@@ -47,6 +47,10 @@ def Shutdown():
     
     dvScalar.SetGlobalVideoMute('Off', None)
     tlp.btn_videoMute.SetState(0)   
+
+    dvPRJBack.Set('AVMute', 'Off')
+    dvPRJFront.Set('AVMute', 'Off')
+    dvPRJFront.Update('AVMute')
     
     dvTLP.HideAllPopups()
     dvTLP.ShowPage('Start Page')

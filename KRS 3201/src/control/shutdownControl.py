@@ -8,13 +8,6 @@ from extronlib.system import Clock
 import ui.tlp as tlp
 
 def Startup():
-    #set source buttons to all be deselected
-    tlp.tlpSourceSelect.left_input_set.SetCurrent(None)
-    tlp.tlpSourceSelect.right_input_set.SetCurrent(None)
-    tlp.tlpSourceSelect.center_board_set.SetCurrent(None)
-    tlp.tlpSourceSelect.center_input_set.SetCurrent(None)
-    tlp.tlpSourceSelect.btn_cBoardCams.SetState(0)
-
     #default audio levels set, turn off mute buttons. Visual feedback handled by SubscribeStatus()
     tlp.tlpMainPageAudio.lvl_cMic.SetLevel(-18)
     tlp.tlpMainPageAudio.lvl_cProg.SetLevel(-18)
@@ -24,6 +17,13 @@ def Startup():
     dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
     dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
     dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
+
+    dvCenterPRJ.SetAVMute('Off', None)
+    dvLeftPRJ.SetAVMute('Off', None)
+    dvRightPRJ.SetAVMute('Off', None)
+
+    for j in ['1', '2', '3']:
+        dvMatrix.SetVideoMute('Off', {'Output': j})
     
     #No ties for matrix, there might already be ties in place. Plus if they reselect 
     #then ties will be made. 
