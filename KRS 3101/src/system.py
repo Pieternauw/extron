@@ -25,7 +25,5 @@ def Initialize():
     dev.dvBluray.Connect()
     dev.dvTLP.HideAllPopups()
     dev.dvTLP.ShowPage('Start Page')
-    tlp.lvl_mic.SetLevel(var.mic_val)
-    tlp.lvl_prog.SetLevel(var.prog_val)
     # Finish Initialize() with a print()
     print('System Initialized')
