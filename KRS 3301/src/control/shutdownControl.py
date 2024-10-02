@@ -30,6 +30,8 @@ def Startup():
     dvScalar.SetGlobalVideoMute('Off', None)
     tlp.btn_videoMute.SetState(0)   
     
+    dvTLP.HidePopup('Login')
+    
     #main page shown, function called after successful passcode entry
     dvTLP.ShowPage('Main Page')
     #unlock drawer
@@ -114,7 +116,7 @@ def BtnEnterPasscode(button:Button, state):
     if state == 'Pressed':
         button.SetState(1)
         if (PadString == '2748') or (PadString == passcode):      #whatever the current passcode is
-            dvTLP.ShowPopup('Login', 1)
+            dvTLP.ShowPopup('Login')
             StartupWait = Wait(1, Startup)
         PadString = ''
         LblString = ''

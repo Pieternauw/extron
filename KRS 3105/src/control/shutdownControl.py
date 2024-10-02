@@ -34,6 +34,8 @@ def Startup():
     tlp.tlpSourceSelect.btn_lVideoMute.SetState(0)
     tlp.tlpSourceSelect.btn_rVideoMute.SetState(0)
     
+    dvTLPMain.HidePopup('Login')
+    
     #No ties for matrix, there might already be ties in place. Plus if they reselect 
     #then ties will be made. 
     #send to room select page and open up the relay drawer
@@ -152,7 +154,7 @@ def BtnEnterPasscode(button:Button, state):
     if state == 'Pressed':
         button.SetState(1)
         if (PadString == '2748') or (PadString == passcode):      #whatever the current passcode is
-            dvTLPMain.ShowPopup('Login', 1)
+            dvTLPMain.ShowPopup('Login')
             StartupWait = Wait(1, Startup)
         PadString = ''
         LblString = ''
