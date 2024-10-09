@@ -70,9 +70,11 @@ def VideoMuteControl(button:tlp.Button, state):
     print(button.Name, button.Host, state)
     if button.State == 0:
         dvMatrix.SetVideoMute('On', {'Output': '{}'.format(video_mute_list.index(button) + 1)})
+        dvMatrix.SetVideoMute('On', {'Output': '9' if button in [tlp.btn_lVideoMute, tlp.btn_cVideoMute] else '10'})
         button.SetState(1)
     else:
         dvMatrix.SetVideoMute('Off', {'Output': '{}'.format(video_mute_list.index(button) + 1)})
+        dvMatrix.SetVideoMute('Off', {'Output': '9' if button in [tlp.btn_lVideoMute, tlp.btn_cVideoMute] else '10'})
         button.SetState(0)
 
 #Laptop Feedback
