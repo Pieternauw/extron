@@ -97,12 +97,12 @@ def SwitchSourceSound(button:Button, state):
     if button is tlp.btn_leftSourceSound:
         source = dvMatrix.ReadStatus('OutputTieStatus', {'Output': '1', 'Tie Type': 'Video'})
         print(source)
-        dvMatrix.SetMatrixTieCommand(None, {'Input': source, 'Output': '12', 'Tie Type': 'Audio'})
+        dvMatrix.SetMatrixTieCommand(None, {'Input': source, 'Output': '12', 'Tie Type': 'Audio/Video'})
         button.SetVisible(False)
         tlp.btn_rightSourceSound.SetVisible(True)
     else:
         source = dvMatrix.ReadStatus('OutputTieStatus', {'Output': '3', 'Tie Type': 'Video'})
         print(source)
-        dvMatrix.SetMatrixTieCommand(None, {'Input': source, 'Output': '12', 'Tie Type': 'Audio'})
+        dvMatrix.SetMatrixTieCommand(None, {'Input': source, 'Output': '12', 'Tie Type': 'Audio/Video'})
         button.SetVisible(False)
         tlp.btn_leftSourceSound.SetVisible(True)

@@ -27,7 +27,7 @@ def Startup():
     dvRightPRJ.SetAVMute('Off', None)
     tlp.adv.btn_rBlankImg.SetState(0)
 
-    for j in ['1', '2', '3']:
+    for j in ['1', '2', '3', '9', '10']:
         dvMatrix.SetVideoMute('Off', {'Output': j})
         
     tlp.tlpSourceSelect.btn_cVideoMute.SetState(0)
@@ -84,7 +84,7 @@ def Shutdown():
     for i in ['1', '2', '3', '4', '5', '12']:
         dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': i, 'Tie Type': 'Audio/Video'}) 
     
-    for j in ['1', '2', '3']:
+    for j in ['1', '2', '3', '9', '10']:
             dvMatrix.SetVideoMute('Off', {'Output': j})
     tlp.tlpSourceSelect.btn_cVideoMute.SetState(0)
     tlp.tlpSourceSelect.btn_lVideoMute.SetState(0)
