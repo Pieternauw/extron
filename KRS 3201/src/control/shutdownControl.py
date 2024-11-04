@@ -89,8 +89,8 @@ def Shutdown():
     tlp.tlpSourceSelect.btn_lVideoMute.SetState(0)
     tlp.tlpSourceSelect.btn_rVideoMute.SetState(0)
     
-    dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '9', 'Tie Type': 'Video'}) #Cynap to YuJa
-    dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '10', 'Tie Type': 'Video'}) #Cynap to YuJa
+    dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '9', 'Tie Type': 'Audio/Video'}) #Cynap to YuJa
+    dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '10', 'Tie Type': 'Audio/Video'}) #Cynap to YuJa
     
     #Show the start page and lock the drawer. Hides popups
     dvTLPMain.ShowPage('Start Page')
