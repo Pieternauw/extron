@@ -26,6 +26,7 @@ btn_blurayHome = Button(dvTLPMain,70)
 btn_blurayOption = Button(dvTLPMain, 73)
 btn_blurayMenu = Button(dvTLPMain, 71)
 btn_bluraySub = Button(dvTLPMain, 74)   
+btn_resetButton = Button(dvTLPMain, 18)
 
 #Same as MP4k code so make sure this works
 btn_blurayEject = Button(dvTLPMain, 134)

@@ -19,9 +19,12 @@ has TTO in it, I send the tray command to close. Otherwise, I send the open comm
 
 import ui.tlpBluray as tlp 
 
-from devices import dvBluray
+import time
+
+from devices import dvBluray, dvMatrix, dvTLPMain
 
 from modules.helper.ModuleSupport import eventEx 
+from extronlib.system import Wait
 
 transport_set = {tlp.btn_blurayStop: 'Stop', tlp.btn_blurayPlay:'Play', 
                    tlp.btn_blurayPause: 'Play Pause', tlp.btn_blurayRTrack: 'Track Skip Previous', 
@@ -63,3 +66,27 @@ def TransportEvent(button:tlp.Button, state):
                 dvBluray.SetDiskTray('Close', None)
             else:
                 dvBluray.SetDiskTray('Open', None)
+
+
+@eventEx(tlp.btn_resetButton, 'Pressed')
+def ResetButton(button:tlp.Button, state):
+    global sleepTimer
+    dvMatrix.SetXTPInputPower('Disable', {'Input': '6'})
+    CountdownTimer()
+    tlp.btn_resetButton.SetText('Please Wait: ', sleepTimer)
+    ResetWait = Wait(1, ResetButtonWait)
+    
+def ResetButtonWait():
+    dvMatrix.SetXTPInputPower('Enable', {'Input': '6'})
+    
+sleepTimer = 16
+
+def CountdownTimer():
+    global sleepTimer
+    for i in range(16, 0, -1):
+        i -= 1
+        sleepTimer = i
+        time.sleep(1)
+    tlp.btn_resetButton.SetText('Sound and Green Screen Reset')
+    sleepTimer = 16
+    
