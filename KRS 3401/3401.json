@@ -12,7 +12,7 @@
             "name": "Pieter Nauwelaerts",
             "email": "pnauwela@ucsc.edu"
         },
-        "version": "1.4.0",
+        "version": "1.4.2",
         "primary_device_alias": "ProcessorAlias"
     },
     "devices": [

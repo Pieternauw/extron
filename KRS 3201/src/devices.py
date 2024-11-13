@@ -85,9 +85,9 @@ def BlurayConnectionHandler(client:EthernetClientInterface, state):
         print('Bluray attempt reconnect')
         BlurayConnectionTimer.Restart()
 
-dvLeftPRJ = GetConnectionHandler(dvLeftPRJ, 'Power', pollFrequency=30)
-dvCenterPRJ = GetConnectionHandler(dvCenterPRJ, 'Power', pollFrequency=10)
-dvRightPRJ = GetConnectionHandler(dvRightPRJ, 'Power', pollFrequency=30)
+dvLeftPRJ = GetConnectionHandler(dvLeftPRJ, 'LampUsage', pollFrequency=30)
+dvCenterPRJ = GetConnectionHandler(dvCenterPRJ, 'LampUsage', pollFrequency=10)
+dvRightPRJ = GetConnectionHandler(dvRightPRJ, 'LampUsage', pollFrequency=30)
 
 PRJ_DICT = {dvLeftPRJ: PRJL_ID, dvCenterPRJ: PRJC_ID, dvRightPRJ: PRJR_ID}
 
@@ -101,6 +101,19 @@ def ProjectorConnectionHandler(client:EthernetClientInterface, state):
         client.Update('AVMute')
     else:
         client.Connect(5)
+
+def LampUpdateL(command, value, qualifier):
+    GVEServer.SendStatus(PRJL_ID, 'Lamp 1 Hours', value)
+
+def LampUpdateC(command, value, qualifier):
+    GVEServer.SendStatus(PRJC_ID, 'Lamp 1 Hours', value)
+
+def LampUpdateR(command, value, qualifier):
+    GVEServer.SendStatus(PRJR_ID, 'Lamp 1 Hours', value)
+
+dvLeftPRJ.SubscribeStatus('LampUsage', None, LampUpdateL)
+dvCenterPRJ.SubscribeStatus('LampUsage', None, LampUpdateC)
+dvRightPRJ.SubscribeStatus('LampUsage', None, LampUpdateR)
 
 dvBiamp = GetConnectionHandler(dvBiamp, 'MuteControl', keepAliveQueryQualifier={'Instance Tag': 'MuteProgram', 'Channel': '1'}, pollFrequency=30)
 

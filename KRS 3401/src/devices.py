@@ -50,8 +50,8 @@ def SwitcherConnectionHandler(client:EthernetClientInterface, state):
     else:
         client.Connect(5)
 
-dvPRJFront = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L630U'), 'Power', pollFrequency=30)
-dvPRJBack = GetConnectionHandler(Projector.SerialClass(dvIPCP, 'COM1', Model='Powerlite L630U'), 'Power', pollFrequency=30)
+dvPRJFront = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L630U'), 'LampUsage', pollFrequency=30)
+dvPRJBack = GetConnectionHandler(Projector.SerialClass(dvIPCP, 'COM1', Model='Powerlite L630U'), 'LampUsage', pollFrequency=30)
 
 prj_dict = {dvPRJFront: PRJF_ID, dvPRJBack: PRJB_ID}
 
@@ -65,14 +65,20 @@ def ProjectorConnectionHandler(client:EthernetClientInterface, state):
 def UpdatePRJFStatus(command, value, qualifier):
     GVEServer.SendStatus(PRJF_ID, command, value)
 
+def UpdatePRJFLamp(command, value, qualifier):
+    GVEServer.SendStatus(PRJF_ID, 'Lamp 1 Hours', value)
+
 dvPRJFront.SubscribeStatus('Power', None, UpdatePRJFStatus)
-dvPRJFront.SubscribeStatus('LampUsage', None, UpdatePRJFStatus)
+dvPRJFront.SubscribeStatus('LampUsage', None, UpdatePRJFLamp)
 
 def UpdatePRJBStatus(command, value, qualifier):
     GVEServer.SendStatus(PRJB_ID, command, value)
 
+def UpdatePRJBLamp(command, value, qualifier):
+    GVEServer.SendStatus(PRJF_ID, 'Lamp 1 Hours', value)
+
 dvPRJBack.SubscribeStatus('Power', None, UpdatePRJBStatus)
-dvPRJBack.SubscribeStatus('LampUsage', None, UpdatePRJBStatus)
+dvPRJBack.SubscribeStatus('LampUsage', None, UpdatePRJBLamp)
 
 device_dict = {dvTLP: TLP_ID, dvIPCP: IPCP_ID}
 

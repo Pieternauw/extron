@@ -71,7 +71,7 @@ def BlurayConnectionHandler(client:EthernetClientInterface, state):
         client.StopKeepAlive()
         BlurayConnectionTimer.Restart()
 
-dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L630U'), 'Power', pollFrequency=30)
+dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L630U'), 'LampUsage', pollFrequency=30)
 
 @eventEx(dvPRJ, ['Connected', 'Disconnected'])
 def ProjectorConnectionHandler(client:EthernetClientInterface, state):
@@ -79,6 +79,11 @@ def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     GVEServer.SendStatus(PRJ_ID, 'Connection', state)
     if state is not 'Connected':
         client.Connect(5)
+
+def LampUpdate(command, value, qualifier):
+    GVEServer.SendStatus(PRJ_ID, 'Lamp 1 Hours', value)
+
+dvPRJ.SubscribeStatus('LampUsage', None, LampUpdate)
 
 device_dict = {dvTLP: TLP_ID, dvIPCP: IPCP_ID}
 

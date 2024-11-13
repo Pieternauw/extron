@@ -100,8 +100,22 @@ def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     if state is 'Connected':
         client.Update('Power')
         client.Update('AVMute')
+        client.Update('LampUsage')
     else:
         client.Connect(5)
+
+def LampUpdateL(command, value, qualifier):
+    GVEServer.SendStatus(PRJL_ID, 'Lamp 1 Hours', value)
+
+def LampUpdateC(command, value, qualifier):
+    GVEServer.SendStatus(PRJC_ID, 'Lamp 1 Hours', value)
+
+def LampUpdateR(command, value, qualifier):
+    GVEServer.SendStatus(PRJR_ID, 'Lamp 1 Hours', value)
+
+dvLeftPRJ.SubscribeStatus('LampUsage', None, LampUpdateL)
+dvCenterPRJ.SubscribeStatus('LampUsage', None, LampUpdateC)
+dvRightPRJ.SubscribeStatus('LampUsage', None, LampUpdateR)
 
 dvBiamp = GetConnectionHandler(dvBiamp, 'MuteControl', keepAliveQueryQualifier={'Instance Tag': 'MuteProgram', 'Channel': '1'}, pollFrequency=30)
 
