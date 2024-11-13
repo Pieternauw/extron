@@ -15,27 +15,23 @@ prj_set.SetCurrent(tlp.btn_projOn if dvPRJ.ReadStatus('Power') is 'On' else tlp.
 def PowerChanged(command, value, qualifier):
     print(value)
     GVEServer.SendStatus(PRJ_ID, 'Power', value)
-    #If SubscribeStatus calls function with value 'On', set button to on and stop timer. 
+    #If SubscribeStatus calls function with value 'On', set button to On. 
     if value is 'On':
         prj_set.SetCurrent(tlp.btn_projOn)
-        PRJStatusTimer.Stop()
-    #If SubscribeStatus calls fucntion with value 'Off', set off button and stop timer. 
+    #If SubscribeStatus calls fucntion with value 'Off', set off button. 
     elif value is 'Off':
         prj_set.SetCurrent(tlp.btn_projOff)
-        PRJStatusTimer.Stop()
     else:
         #in the case that no response is sent, or 'Warming Up' or 'Cooling Down', blink the On button and restart the timer
         tlp.btn_projOn.SetBlinking('Slow', [0, 1])
-        PRJStatusTimer.Restart()
 
 #Timer function called every time timer ends. Calls update function for projector, asking for most recent status. 
 def PowerTimer(timer:Timer, count):
     print("Timer started")
     dvPRJ.Update('Power')
 
-#5 second timer, stop after definition to prevent errors. 
-PRJStatusTimer = Timer(5, PowerTimer)
-PRJStatusTimer.Stop()
+#10 second timer
+PRJStatusTimer = Timer(10, PowerTimer)
 
 #SubscribeStatus to power with callback function
 dvPRJ.SubscribeStatus('Power', None, PowerChanged)

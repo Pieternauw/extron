@@ -15,22 +15,17 @@ def PowerChanged(command, value, qualifier):
     GVEServer.SendStatus(PRJB_ID, 'Power', value)
     if value is 'On':
         prj_set.SetCurrent(tlp.btn_projOn)
-        PRJStatusTimer.Stop()
     elif value is 'Off':
         prj_set.SetCurrent(tlp.btn_projOff)
-        PRJStatusTimer.Stop()
     else:
         tlp.btn_projOn.SetBlinking('Slow', [0, 1])
-        PRJStatusTimer.Restart()
 
 
 def PowerTimer(timer:Timer, count):
     print("Timer started")
     dvPRJFront.Update('Power')
 
-
-PRJStatusTimer = Timer(5, PowerTimer)
-PRJStatusTimer.Stop()
+PRJStatusTimer = Timer(10, PowerTimer)
 
 dvPRJFront.SubscribeStatus('Power', None, PowerChanged)
 
@@ -43,7 +38,6 @@ def ProjectorOnOff(button:tlp.Button, state):
     dvPRJBack.SetPower('On' if button is tlp.btn_projOn else 'Off', None)
     dvPRJFront.Update('Power')
     dvPRJBack.Update('Power')
-    dvPRJFront.Update('LampUsage')
 
 @eventEx(tlp.btn_blankImg, 'Pressed')
 def BlankImage(button:tlp.Button, state):
