@@ -15,7 +15,7 @@ from extronlib.system import Timer, ProgramLog
 from extronlib.interface import EthernetClientInterface, RelayInterface
 # Project import
 import modules.device.extr_Scaler_IN806_IN1808_Series_v1_1_6_0 as modScalar
-import modules.device.epsn_vp_CB_EB_PowerLite_L630U_Series_v1_0_4_0 as Projector
+import modules.device.epsn_vp_CB_EB_PU100xx_PU2010x_Series_v1_0_2_0 as Projector
 import modules.device.tasc_bluray_BD_MP4K_v1_0_0_0 as Bluray
 
 from modules.helper.ConnectionHandler import GetConnectionHandler
@@ -70,17 +70,24 @@ def BlurayConnectionHandler(client:EthernetClientInterface, state):
         client.StopKeepAlive()
         BlurayConnectionTimer.Restart()
 
-dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L630U'), 'Power', pollFrequency=30)
+dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L630U'), 'LampUsage', pollFrequency=30)
 
 @eventEx(dvPRJ, ['Connected', 'Disconnected'])
 def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     print('Projector on IP {0} is {1}'.format(client.IPAddress, state))
     GVEServer.SendStatus(PRJ_ID, 'Connection', state)
+
     if state is not 'Connected':
         client.Connect(5)
+
+
+def LampUpdate(command, value, qualifier):
+    GVEServer.SendStatus(PRJ_ID, 'Lamp 1 Hours', value)
+
+dvPRJ.SubscribeStatus('LampUsage', None, LampUpdate)
 
 device_dict = {dvTLP: TLP_ID, dvIPCP: IPCP_ID}
 
 @eventEx([dvTLP, dvIPCP], ['Offline', 'Online'])
 def TLPOff(device, state):
-    GVEServer.SendStatus(device_dict[device], 'Connection', state)        
+    GVEServer.SendStatus(device_dict[device], 'Connection', state)     
