@@ -33,7 +33,8 @@ def Startup():
     tlp.adv.btn_blankImg.SetState(0)
     
     #main page shown, function called after successful passcode entry
-    dvTLP.ShowPage('Start Page')
+    #TODO - make this center page from dual popup
+    dvTLP.ShowPage('Main Page')
     #unlock drawer
     dvRelay.SetState('Close')
     

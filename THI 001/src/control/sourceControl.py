@@ -21,7 +21,7 @@ import control.advancedControl as adv
 from devices import dvScalar, dvPRJ
 
 input_popup_list = ['Laptop Connected popup', 'Wireless insturction popup', 
-              'Document camera instruction popup', 'BluRay control popup']
+              'Document camera instruction popup', 'mac', 'BluRay control popup']
 
 @eventEx(tlp.input_set.Objects, 'Pressed')
 def ControlInput(button:tlp.Button, state):

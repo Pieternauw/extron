@@ -66,9 +66,10 @@ btn_sourceHDMI = Button(dvTLP, 10)
 btn_sourceWireless = Button(dvTLP, 16)
 btn_sourceDocCam = Button(dvTLP, 14)
 btn_sourceBluray = Button(dvTLP, 11)
+btn_sourceMac = Button(dvTLP) #TODO - get button from center page of Dual GUI
 
 #mutually exclusive set for all inputs. only allows one to be selected at a time
-input_set = MESet([btn_sourceHDMI, btn_sourceWireless, btn_sourceDocCam, btn_sourceBluray])
+input_set = MESet([btn_sourceHDMI, btn_sourceWireless, btn_sourceDocCam, btn_sourceMac, btn_sourceBluray])
 
 #assigns states to each button in the set
 for button in input_set.Objects:
@@ -76,8 +77,6 @@ for button in input_set.Objects:
     
 #set current to None means deselect all buttons
 input_set.SetCurrent(None)
-input_popup_list = ['Laptop Connected popup', 'Wireless instruction popup', 
-              'Document camera instruction popup', 'BluRay control popup']
 
 
 #Help Button
