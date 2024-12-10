@@ -1,4 +1,4 @@
-from devices import dvScalar, dvPRJ, dvTLP, dvRelay
+from devices import dvScalar, dvPRJ, dvTLP, dvRelay, dvBiamp
 
 from modules.helper.ModuleSupport import eventEx 
 
@@ -18,20 +18,22 @@ def Startup():
     #set default mic and prog volume levels
     tlp.MainAudio.lvl_mic.SetLevel(-18)
     tlp.MainAudio.lvl_prog.SetLevel(-18)
-    dvScalar.SetGroupProgramVolume(-18, None)
-    dvScalar.SetGroupMicVolume(-18, None)
-    
-    #turn off mic and program mutes
-    #visual feedback handled by SubscribeStatus()
-    dvScalar.SetGroupProgramMute('Off', None)
-    dvScalar.SetGroupMicMute('Off', None)    
+    dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelSpeech', 'Channel': '1'})
+    dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelProgram', 'Channel': '1'})        
+    dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
+    dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
+    dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
+    dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})    
     
     #turn off video mute
     dvScalar.SetGlobalVideoMute('Off', None)
     tlp.btn_videoMute.SetState(0)   
+
+    dvPRJ.SetAVMute('Off', None)
+    tlp.adv.btn_blankImg.SetState(0)
     
     #main page shown, function called after successful passcode entry
-    dvTLP.ShowPage('Main Page')
+    dvTLP.ShowPage('Start Page')
     #unlock drawer
     dvRelay.SetState('Close')
     
@@ -39,6 +41,7 @@ def Shutdown():
     dvPRJ.SetAVMute('Off', None)
     dvPRJ.SetPower('Off', None)
     dvPRJ.Update('Power')
+
     tlp.adv.btn_blankImg.SetState(0)
         
     tlp.input_set.SetCurrent(None)
@@ -47,8 +50,12 @@ def Shutdown():
     tlp.MainAudio.lvl_mic.SetLevel(-18)
     tlp.MainAudio.lvl_prog.SetLevel(-18)
     
-    dvScalar.SetGroupProgramVolume(-18, None)
-    dvScalar.SetGroupMicVolume(-18, None)
+    dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelSpeech', 'Channel': '1'})
+    dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelProgram', 'Channel': '1'})        
+    dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
+    dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
+    dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
+    dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
     
     dvScalar.SetGlobalVideoMute('Off', None)
     tlp.btn_videoMute.SetState(0)   

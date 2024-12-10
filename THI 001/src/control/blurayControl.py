@@ -24,9 +24,10 @@ from devices import dvBluray
 from modules.helper.ModuleSupport import eventEx 
 
 transport_set = {tlp.btn_blurayStop: 'Stop', tlp.btn_blurayPlay:'Play', 
-                   tlp.btn_blurayPause: 'Play Pause', tlp.btn_blurayRTrack: 'Track Skip Previous', 
-                   tlp.btn_blurayFTrack: 'Track Skip Next', tlp.btn_blurayRewind: 'Rewind', 
-                   tlp.btn_blurayFForward: 'Fast Forward'}
+                   tlp.btn_blurayPause: 'Pause', tlp.btn_blurayRTrack: 'Chapter Jump Previous', 
+                   tlp.btn_blurayFTrack: 'Chapter Skip Next'}
+
+scan_set = {tlp.btn_blurayRewind: 'Reverse', tlp.btn_blurayFForward: 'Forward'}
 
 menu_set = {tlp.btn_blurayDown: 'Down', tlp.btn_blurayRight: 'Right', tlp.btn_blurayUp: 'Up', 
               tlp.btn_blurayLeft: 'Left', tlp.btn_blurayEnter: 'Enter', tlp.btn_blurayReturn: 'Return', 
@@ -45,6 +46,8 @@ def TransportEvent(button:tlp.Button, state):
     #Transport set corresponds to buttons sent using SetTransport('<command>') in the device module
     if button in transport_set:
         dvBluray.SetTransport(transport_set[button], None)
+    elif button in scan_set:
+        dvBluray.SetScan(scan_set[button], 'Slow')
     #Menu set corresponds to buttons sent using SetMenu('<command>') in the device module 
     elif button in menu_set:
         dvBluray.SetMenu(menu_set[button], None)

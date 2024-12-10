@@ -16,7 +16,8 @@ from extronlib.interface import EthernetClientInterface, RelayInterface
 # Project import
 import modules.device.extr_Scaler_IN806_IN1808_Series_v1_1_6_0 as modScalar
 import modules.device.epsn_vp_CB_EB_PU100xx_PU2010x_Series_v1_0_2_0 as Projector
-import modules.device.tasc_bluray_BD_MP4K_v1_0_0_0 as Bluray
+import modules.device.tasc_bluray_BD_MP1_v1_2_0_0 as Bluray
+from modules.device import biam_dsp_TesiraSeries_v1_15_1_0 as Biamp
 
 from modules.helper.ConnectionHandler import GetConnectionHandler
 from modules.helper.ModuleSupport import eventEx
@@ -29,11 +30,13 @@ dvTLP = UIDevice('PanelAlias')
 
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
-TLP_ID = 'Touchpanel'; PRJ_ID = 'Projector'; SW_ID = 'Switcher'; BLU_ID = 'Bluray'; IPCP_ID = 'IPCP'
+TLP_ID = 'Touchpanel'; PRJ_ID = 'Projector'; SW_ID = 'Switcher'; BLU_ID = 'Bluray'; IPCP_ID = 'IPCP'; BMP_ID = 'Biamp'
 
 dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
-dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Model='IN1806')
+dvBiamp = Biamp.SSHClass('10.10.2.40', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', 'wag2748'))
+
+dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Credentials=('admin', 'wag2748'), Model='IN1806')
 dvScalar = GetConnectionHandler(dvScalar, 'Temperature', pollFrequency=30)         
 
 @eventEx(dvScalar, ['Connected', 'Disconnected'])
@@ -52,7 +55,7 @@ def SwitcherConnectionHandler(client:EthernetClientInterface, state):
     else:
         client.Connect(5)
 
-dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP4K')
+dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP1')
 
 def ConnectBluray(timer:Timer, count):
     dvBluray.Connect(5)
@@ -70,7 +73,7 @@ def BlurayConnectionHandler(client:EthernetClientInterface, state):
         client.StopKeepAlive()
         BlurayConnectionTimer.Restart()
 
-dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L630U'), 'LampUsage', pollFrequency=30)
+dvPRJ = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='EB-PU1008B'), 'LampUsage', pollFrequency=30)
 
 @eventEx(dvPRJ, ['Connected', 'Disconnected'])
 def ProjectorConnectionHandler(client:EthernetClientInterface, state):
@@ -78,6 +81,19 @@ def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     GVEServer.SendStatus(PRJ_ID, 'Connection', state)
 
     if state is not 'Connected':
+        client.Connect(5)
+
+dvBiamp = GetConnectionHandler(dvBiamp, 'MuteControl', keepAliveQueryQualifier={'Instance Tag': 'MuteProgram', 'Channel': '1'}, pollFrequency=30)
+
+@eventEx(dvBiamp, ['Connected', 'Disconnected'])
+def BiampConnectionHandler(client:EthernetClientInterface, state):
+    print('Biamp on IP {0} is {1}'.format(client.IPAddress, state))
+    GVEServer.SendStatus(BMP_ID, 'Connection', state)
+    if state is 'Connected':    
+        #these need to be called whenever - write an update function for whenever I need newest status in main code to return value
+        dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
+        dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
+    else:
         client.Connect(5)
 
 

@@ -20,7 +20,7 @@ received. If the user enters commands too fast for the device to respond sometim
 dec() command so the bar will adjust to the devices value when stabalized. 
 """
 
-from devices import dvScalar
+from devices import dvBiamp
 from modules.helper.ModuleSupport import eventEx
 
 import ui.tlpMainAudio as tlp 
@@ -30,12 +30,21 @@ tlp.lvl_mic.SetRange(-30, 12, 1)
 """TODO - Check if it's Mic in or Mic in"""
 @eventEx([tlp.btn_progAudioMute, tlp.btn_micAudioMute], 'Pressed')
 def MuteButtonPressed(button:tlp.Button, state):
+    print('control', button.Name, state)
     if button is tlp.btn_progAudioMute:
-        CurrentMute = dvScalar.ReadStatus('GroupProgramMute')
-        dvScalar.SetGroupProgramMute('Off' if CurrentMute is 'On' else 'On', None)
+        curr = dvBiamp.ReadStatus('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
+        if curr is 'Off':
+            dvBiamp.SetMuteControl('On', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
+        else:
+            dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
+        dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
     else:
-        CurrentMute = dvScalar.ReadStatus('GroupMicMute')
-        dvScalar.SetGroupMicMute('Off' if CurrentMute is 'On' else 'On', None)
+        curr = dvBiamp.ReadStatus('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
+        if curr is 'Off':
+            dvBiamp.SetMuteControl('On', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
+        else:
+            dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
+        dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
             
 def MicMuteChanged(command, value, qualifier=None):
     print(command, value, qualifier)
@@ -46,8 +55,8 @@ def ProgMuteChanged(command, value, qualifier=None):
     tlp.btn_progAudioMute.SetState(1 if value is 'On' else 0)
 
         
-dvScalar.SubscribeStatus('GroupMicMute', None, MicMuteChanged)
-dvScalar.SubscribeStatus('GroupProgramMute', None, ProgMuteChanged)
+dvBiamp.SubscribeStatus('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'}, MicMuteChanged)
+dvBiamp.SubscribeStatus('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'}, ProgMuteChanged)
             
 def MicVolumeChanged(command, value, qualifier=None):
     print(command, value, qualifier)
@@ -57,8 +66,8 @@ def ProgVolumeChanged(command, value, qualifier=None):
     print(command, value, qualifier)
     tlp.lvl_prog.SetLevel(int(value))
     
-dvScalar.SubscribeStatus('GroupMicVolume', None, MicVolumeChanged)
-dvScalar.SubscribeStatus('GroupProgramVolume', None, ProgVolumeChanged)
+dvBiamp.SubscribeStatus('LevelControl', {'Instance Tag': 'LevelSpeech', 'Channel': '1'}, MicVolumeChanged)
+dvBiamp.SubscribeStatus('LevelControl', {'Instance Tag': 'LevelProgram', 'Channel': '1'}, ProgVolumeChanged)
   
 mic_list = [tlp.btn_micAudioDown, tlp.btn_micAudioUp]
 prog_list = [tlp.btn_progAudioDown, tlp.btn_progAudioUp]  
@@ -73,11 +82,11 @@ def MicControlEvent(button:tlp.Button, state):
             tlp.lvl_mic.Dec()
         else:
             tlp.lvl_mic.Inc()
-        dvScalar.SetGroupMicVolume(tlp.lvl_mic.Level, None)
+        dvBiamp.SetLevelControl(tlp.lvl_mic.Level, {'Instance Tag': 'LevelSpeech', 'Channel': '1'})
     elif button in prog_list:
         if button is prog_list[0]:
             tlp.lvl_prog.Dec()
         else:
             tlp.lvl_prog.Inc()
-        dvScalar.SetGroupProgramVolume(tlp.lvl_prog.Level, None)
+        dvBiamp.SetLevelControl(tlp.lvl_prog.Level, {'Instance Tag': 'LevelProgram', 'Channel': '1'})
  

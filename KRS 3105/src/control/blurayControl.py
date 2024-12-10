@@ -66,27 +66,4 @@ def TransportEvent(button:tlp.Button, state):
                 dvBluray.SetDiskTray('Close', None)
             else:
                 dvBluray.SetDiskTray('Open', None)
-
-
-@eventEx(tlp.btn_resetButton, 'Pressed')
-def ResetButton(button:tlp.Button, state):
-    global sleepTimer
-    dvMatrix.SetXTPInputPower('Disable', {'Input': '6'})
-    CountdownTimer()
-    tlp.btn_resetButton.SetText('Please Wait: ', sleepTimer)
-    ResetWait = Wait(1, ResetButtonWait)
-    
-def ResetButtonWait():
-    dvMatrix.SetXTPInputPower('Enable', {'Input': '6'})
-    
-sleepTimer = 16
-
-def CountdownTimer():
-    global sleepTimer
-    for i in range(16, 0, -1):
-        i -= 1
-        sleepTimer = i
-        time.sleep(1)
-    tlp.btn_resetButton.SetText('Sound and Green Screen Reset')
-    sleepTimer = 16
     
