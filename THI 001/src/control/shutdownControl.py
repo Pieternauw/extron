@@ -34,7 +34,7 @@ def Startup():
     
     #main page shown, function called after successful passcode entry
     #TODO - make this center page from dual popup
-    dvTLP.ShowPage('Main Page')
+    dvTLP.ShowPage('C Projection')
     #unlock drawer
     dvRelay.SetState('Close')
     

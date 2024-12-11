@@ -34,7 +34,7 @@ TLP_ID = 'Touchpanel'; PRJ_ID = 'Projector'; SW_ID = 'Switcher'; BLU_ID = 'Blura
 
 dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
-dvBiamp = Biamp.SSHClass('10.10.2.40', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', 'wag2748'))
+dvBiamp = Biamp.SerialClass(dvIPCP, 'COM1', Model='TesiraFORTE DAN AI')
 
 dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Credentials=('admin', 'wag2748'), Model='IN1806')
 dvScalar = GetConnectionHandler(dvScalar, 'Temperature', pollFrequency=30)         
