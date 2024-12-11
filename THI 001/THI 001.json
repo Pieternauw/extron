@@ -21,7 +21,7 @@
                 "host_network_type": "AVLAN",
                 "interfaces": [
                     {
-                        "address": "192.168.253.250",
+                        "address": "128.114.41.218",
                         "type": "LAN"
                     },
                     {
