@@ -62,11 +62,11 @@ import variables as var
 
 """MAIN PAGE"""
 #Source Selection  
-btn_sourceHDMI = Button(dvTLP, 10)
-btn_sourceWireless = Button(dvTLP, 16)
-btn_sourceDocCam = Button(dvTLP, 14)
-btn_sourceBluray = Button(dvTLP, 11)
-btn_sourceMac = Button(dvTLP) #TODO - get button from center page of Dual GUI
+btn_sourceHDMI = Button(dvTLP, 247)
+btn_sourceWireless = Button(dvTLP, 250)
+btn_sourceMac = Button(dvTLP, 253) 
+btn_sourceBluray = Button(dvTLP, 248)
+btn_sourceDocCam = Button(dvTLP, 249)
 
 #mutually exclusive set for all inputs. only allows one to be selected at a time
 input_set = MESet([btn_sourceHDMI, btn_sourceWireless, btn_sourceDocCam, btn_sourceMac, btn_sourceBluray])
@@ -83,7 +83,7 @@ input_set.SetCurrent(None)
 btn_help = Button(dvTLP, 90)
 
 #video Mute
-btn_videoMute = Button(dvTLP, 17)
+btn_videoMute = Button(dvTLP, 255)
         
 """HDMI Popup"""
 
@@ -115,7 +115,7 @@ def CloseHelp(button:Button, state):
     if state is 'Pressed': dvTLP.HidePopup(help_popup[close_help.index(button)])
 
 #Shutdown button
-btn_shutdown = Button(dvTLP, 8)
+btn_shutdown = Button(dvTLP, 234)
 @eventEx(btn_shutdown, ButtonEventList)
 def ShowShutdownPage(button:Button, state):
     print(button.Name, state)

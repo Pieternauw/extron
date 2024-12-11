@@ -22,7 +22,7 @@ from devices import dvTLP, dvPRJ
 from variables import ButtonEventList
 
 #advanced settings
-btn_advSettings = Button(dvTLP, 47)
+btn_advSettings = Button(dvTLP, 235)
 @eventEx(btn_advSettings, ButtonEventList)
 def ShowAdvancedSettingsPopup(button:Button, state):
     print(button.Name, state)
