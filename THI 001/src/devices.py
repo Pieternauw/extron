@@ -12,7 +12,7 @@ Note: This is for definition only.  Connection and logic defined in system.py (s
 # Extron Library imports
 from extronlib.device import ProcessorDevice, UIDevice
 from extronlib.system import Timer, ProgramLog
-from extronlib.interface import EthernetClientInterface, RelayInterface
+from extronlib.interface import EthernetClientInterface, RelayInterface, SerialInterface
 # Project import
 import modules.device.extr_Scaler_IN806_IN1808_Series_v1_1_6_0 as modScalar
 import modules.device.epsn_vp_CB_EB_PU100xx_PU2010x_Series_v1_0_2_0 as Projector
@@ -34,7 +34,7 @@ TLP_ID = 'Touchpanel'; PRJ_ID = 'Projector'; SW_ID = 'Switcher'; BLU_ID = 'Blura
 
 dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
-dvBiamp = Biamp.SerialClass(dvIPCP, 'COM1', Model='TesiraFORTE DAN AI')
+dvBiamp = Biamp.SerialClass(dvIPCP, 'COM1', Baud=115200, Model='TesiraFORTE DAN AI')
 
 dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Credentials=('admin', 'wag2748'), Model='IN1806')
 dvScalar = GetConnectionHandler(dvScalar, 'Temperature', pollFrequency=30)         
@@ -86,8 +86,7 @@ def ProjectorConnectionHandler(client:EthernetClientInterface, state):
 dvBiamp = GetConnectionHandler(dvBiamp, 'MuteControl', keepAliveQueryQualifier={'Instance Tag': 'MuteProgram', 'Channel': '1'}, pollFrequency=30)
 
 @eventEx(dvBiamp, ['Connected', 'Disconnected'])
-def BiampConnectionHandler(client:EthernetClientInterface, state):
-    print('Biamp on IP {0} is {1}'.format(client.IPAddress, state))
+def BiampConnectionHandler(client:SerialInterface, state):
     GVEServer.SendStatus(BMP_ID, 'Connection', state)
     if state is 'Connected':    
         #these need to be called whenever - write an update function for whenever I need newest status in main code to return value

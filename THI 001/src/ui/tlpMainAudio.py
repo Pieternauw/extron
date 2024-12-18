@@ -17,8 +17,8 @@ btn_progAudioDown = Button(dvTLP, 236, repeatTime=0.2)
 btn_progAudioMute = Button(dvTLP, 237)
 
 #Microphone Audio
-btn_micAudioUp = Button(dvTLP, 241, repeatTime=0.2)
-btn_micAudioDown = Button(dvTLP, 239, repeatTime=0.2)
+btn_micAudioUp = Button(dvTLP, 239, repeatTime=0.2)
+btn_micAudioDown = Button(dvTLP, 241, repeatTime=0.2)
 btn_micAudioMute = Button(dvTLP, 240)
 
 #level bar

@@ -10,9 +10,9 @@ all control is handled in the blurayControl.py file.
 
 btn_blurayStop = Button(dvTLP, 51)
 btn_blurayPlay = Button(dvTLP, 60)
-btn_blurayPause = Button(dvTLP, 64)
+btn_blurayPause = Button(dvTLP, 66)
 btn_blurayRTrack = Button(dvTLP, 62)
-btn_blurayFTrack = Button(dvTLP, 66)
+btn_blurayFTrack = Button(dvTLP, 1066)
 btn_blurayRewind = Button(dvTLP, 1047)
 btn_blurayFForward = Button(dvTLP, 68)
 btn_blurayLeft = Button(dvTLP, 78)

@@ -14,8 +14,8 @@
     },
     "devices": [
         {
-            "name": "IPCP Pro 255Q xi",
-            "part_number": "60-1914-01",
+            "name": "IPCP Pro 255",
+            "part_number": "60-1431-01",
             "alias": "ProcessorAlias",
             "network": {
                 "host_network_type": "AVLAN",

@@ -122,6 +122,7 @@ def BtnEnterPasscode(button:Button, state):
     if state == 'Pressed':
         button.SetState(1)
         if (PadString == '2748') or (PadString == passcode):      #whatever the current passcode is
+            dvTLP.ShowPopup('Login')
             StartupWait = Wait(1, Startup)
         PadString = ''
         LblString = ''
