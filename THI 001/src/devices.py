@@ -83,26 +83,13 @@ def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     if state is not 'Connected':
         client.Connect(5)
 
-dvBiamp = GetConnectionHandler(dvBiamp, 'MuteControl', keepAliveQueryQualifier={'Instance Tag': 'MuteProgram', 'Channel': '1'}, pollFrequency=30)
-
-@eventEx(dvBiamp, ['Connected', 'Disconnected'])
-def BiampConnectionHandler(client:SerialInterface, state):
-    GVEServer.SendStatus(BMP_ID, 'Connection', state)
-    if state is 'Connected':    
-        #these need to be called whenever - write an update function for whenever I need newest status in main code to return value
-        dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
-        dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
-    else:
-        client.Connect(5)
-
-
 def LampUpdate(command, value, qualifier):
     GVEServer.SendStatus(PRJ_ID, 'Lamp 1 Hours', value)
 
 dvPRJ.SubscribeStatus('LampUsage', None, LampUpdate)
 
-device_dict = {dvTLP: TLP_ID, dvIPCP: IPCP_ID}
+device_dict = {dvTLP: TLP_ID, dvIPCP: IPCP_ID, dvBiamp: BMP_ID}
 
-@eventEx([dvTLP, dvIPCP], ['Offline', 'Online'])
+@eventEx([dvTLP, dvIPCP, dvBiamp], ['Offline', 'Online'])
 def TLPOff(device, state):
-    GVEServer.SendStatus(device_dict[device], 'Connection', state)     
+    GVEServer.SendStatus(device_dict[device], 'Connection', state)
