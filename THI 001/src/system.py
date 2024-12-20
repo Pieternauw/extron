@@ -25,5 +25,6 @@ def Initialize():
     dev.dvBluray.Connect()
     dev.dvTLP.HideAllPopups()
     dev.dvTLP.ShowPage('Start Page')
+    print("Connections started, system working")
     # Finish Initialize() with a print()
     print('System Initialized')
