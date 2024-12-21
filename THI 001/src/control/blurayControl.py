@@ -47,10 +47,10 @@ def TransportEvent(button:tlp.Button, state):
     if button in transport_set:
         dvBluray.SetTransport(transport_set[button], None)
     elif button in scan_set:
-        dvBluray.SetScan(scan_set[button], 'Slow')
+        dvBluray.SetScan(scan_set[button], {'Speed': 'Slow'})
     #Menu set corresponds to buttons sent using SetMenu('<command>') in the device module 
     elif button in menu_set:
-        dvBluray.SetMenu(menu_set[button], None)
+        dvBluray.SetMenuControl(menu_set[button], None)
     #The SetSubtitle() command was created by us in our device module. For future projects always use a BluRay module included in one of the project folders to have access to the SetSubtitle command.
     elif button is tlp.btn_bluraySub:
         dvBluray.SetSubtitle(None, None)

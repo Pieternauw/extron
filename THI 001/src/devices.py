@@ -34,7 +34,7 @@ TLP_ID = 'Touchpanel'; PRJ_ID = 'Projector'; SW_ID = 'Switcher'; BLU_ID = 'Blura
 
 dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
-dvBiamp = Biamp.SerialClass(dvIPCP, 'COM1', Baud=115200, Model='TesiraFORTE DAN AI')
+dvBiamp = Biamp.SSHClass('128.114.41.216', 22, Credentials=('admin', 'wag2748'), Model='TesiraFORTE DAN AI')
 
 dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Credentials=('admin', 'wag2748'), Model='IN1806')
 dvScalar = GetConnectionHandler(dvScalar, 'Temperature', pollFrequency=30)         
@@ -88,8 +88,21 @@ def LampUpdate(command, value, qualifier):
 
 dvPRJ.SubscribeStatus('LampUsage', None, LampUpdate)
 
-device_dict = {dvTLP: TLP_ID, dvIPCP: IPCP_ID, dvBiamp: BMP_ID}
+dvBiamp = GetConnectionHandler(dvBiamp, 'MuteControl', keepAliveQueryQualifier={'Instance Tag': 'MuteProgram', 'Channel': '1'}, pollFrequency=30)
 
-@eventEx([dvTLP, dvIPCP, dvBiamp], ['Offline', 'Online'])
+@eventEx(dvBiamp, ['Connected', 'Disconnected'])
+def BiampConnectionHandler(client:EthernetClientInterface, state):
+    print('Biamp on IP {0} is {1}'.format(client.IPAddress, state))
+    GVEServer.SendStatus(BMP_ID, 'Connection', state)
+    if state is 'Connected':    
+        #these need to be called whenever - write an update function for whenever I need newest status in main code to return value
+        dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
+        dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
+    else:
+        client.Connect(5)
+
+device_dict = {dvTLP: TLP_ID, dvIPCP: IPCP_ID}
+
+@eventEx([dvTLP, dvIPCP], ['Offline', 'Online'])
 def TLPOff(device, state):
     GVEServer.SendStatus(device_dict[device], 'Connection', state)

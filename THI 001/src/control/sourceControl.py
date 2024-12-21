@@ -30,16 +30,18 @@ def ControlInput(button:tlp.Button, state):
     dvPRJ.SetPower('On', None) 
     tlp.dvTLP.HideAllPopups()
     tlp.dvTLP.ShowPopup(input_popup_list[tlp.input_set.Objects.index(button)])
+    if button is tlp.btn_sourceWireless: tlp.dvTLP.ShowPopup('wireless select device')
     tlp.input_set.SetCurrent(button)
     adv.PRJStatusTimer.Restart()
+    tlp.wireless_btn_help_set.SetCurrent(None)
     
 @eventEx(tlp.btn_videoMute, 'Pressed')
 def VideoMuteControl(button:tlp.Button, state):
     if button.State == 0:
-        dvScalar.SetGlobalVideoMute('On', None)
+        dvScalar.SetVideoMute('On', {'Output': '1B'})
         button.SetState(1)
     else:
-        dvScalar.SetGlobalVideoMute('Off', None)
+        dvScalar.SetVideoMute('Off', {'Output': '1B'})
         button.SetState(0)   
      
 def LaptopConnectedFeedback(command, value, qualifier):

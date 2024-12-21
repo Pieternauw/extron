@@ -145,6 +145,19 @@ class DeviceClass:
         SubtitleCmdString = '!7SBT1\r'
         self.__SetHelper('Subtitle', SubtitleCmdString, value, qualifier)
 
+    def SetDiskTray(self, value, qualifier):
+
+        ValueStateValues = {
+            'Open': 'OP',
+            'Close': 'CL',
+        }
+
+        if value in ValueStateValues:
+            DiskTrayCmdString = '!7OPC{}\r'.format(ValueStateValues[value])
+            self.__SetHelper('DiskTray', DiskTrayCmdString, value, qualifier)
+        else:
+            self.Discard('Invalid Command for SetDiskTray')
+
     def SetTransport(self, value, qualifier):
 
         ValueStateValues = {

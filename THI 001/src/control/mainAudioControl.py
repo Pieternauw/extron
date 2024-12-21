@@ -25,8 +25,8 @@ from modules.helper.ModuleSupport import eventEx
 
 import ui.tlpMainAudio as tlp 
 
-tlp.lvl_prog.SetRange(-30, 12, 1)     #In steps of 2
-tlp.lvl_mic.SetRange(-30, 12, 1)
+tlp.lvl_prog.SetRange(-40, 6, 2)     #In steps of 2
+tlp.lvl_mic.SetRange(-20, 0, 1)
 """TODO - Check if it's Mic in or Mic in"""
 @eventEx([tlp.btn_progAudioMute, tlp.btn_micAudioMute], 'Pressed')
 def MuteButtonPressed(button:tlp.Button, state):

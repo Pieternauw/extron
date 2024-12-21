@@ -26,7 +26,9 @@ def Startup():
     dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})    
     
     #turn off video mute
-    dvScalar.SetGlobalVideoMute('Off', None)
+    dvScalar.SetVideoMute('Off', {'Output': '1A'})
+    dvScalar.SetVideoMute('Off', {'Output': '1B'})
+    dvScalar.SetVideoMute('Off', {'Output': 'Loop Out'})
     tlp.btn_videoMute.SetState(0)   
 
     dvPRJ.SetAVMute('Off', None)
@@ -47,6 +49,7 @@ def Shutdown():
         
     tlp.input_set.SetCurrent(None)
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})
+    tlp.wireless_btn_help_set.SetCurrent(None)
     
     tlp.MainAudio.lvl_mic.SetLevel(-18)
     tlp.MainAudio.lvl_prog.SetLevel(-18)
@@ -58,7 +61,9 @@ def Shutdown():
     dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
     dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
     
-    dvScalar.SetGlobalVideoMute('Off', None)
+    dvScalar.SetVideoMute('On', {'Output': '1A'})
+    dvScalar.SetVideoMute('Off', {'Output': '1B'})
+    dvScalar.SetVideoMute('On', {'Output': 'Loop Out'})
     tlp.btn_videoMute.SetState(0)   
     
     dvTLP.HideAllPopups()

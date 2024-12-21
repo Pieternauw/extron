@@ -81,6 +81,17 @@ input_set.SetCurrent(None)
 
 #Help Button
 btn_help = Button(dvTLP, 90)
+btn_exit_help = Button(dvTLP, 225)
+
+@eventEx(btn_help, ['Pressed', 'Released'])
+def ShowHelp(button:Button, state):
+    button.SetState(1 if state is 'Pressed' else 0)
+    dvTLP.ShowPopup('help popup')
+    
+@eventEx(btn_exit_help, ['Pressed', 'Released'])
+def ExitHelp(button:Button, state):
+    button.SetState(1 if state is 'Pressed' else 0)
+    dvTLP.HidePopup('help popup')
 
 #video Mute
 btn_videoMute = Button(dvTLP, 255)
@@ -95,8 +106,32 @@ lblLaptopConnected = Label(dvTLP, 133)
 #Help Buttons
 btn_macHelp = Button(dvTLP, 131)
 btn_winHelp = Button(dvTLP, 130)
-btn_exitMacHelp = Button(dvTLP, 58)
+btn_exitMacHelp = Button(dvTLP, 174)
 btn_exitWinHelp = Button(dvTLP, 163)
+
+btn_wirelessMac = Button(dvTLP, 13)
+btn_wirelessWindows = Button(dvTLP, 53)
+btn_wirelessIPhone = Button(dvTLP, 58)
+btn_wirelessAndroid = Button(dvTLP, 75)
+
+wireless_btn_help_set = MESet([btn_wirelessMac, btn_wirelessWindows, btn_wirelessIPhone, btn_wirelessAndroid])
+
+for button in wireless_btn_help_set.Objects:
+    wireless_btn_help_set.SetStates(button, 0, 1)
+    
+wireless_btn_help_set.SetCurrent(None)
+
+prev_popup = ''
+
+wireless_help_set = {btn_wirelessMac: 'wireless mac os', btn_wirelessWindows: 'wireless windows', btn_wirelessIPhone: 'wireless ios', btn_wirelessAndroid: 'wireless android'}
+@eventEx(wireless_btn_help_set.Objects, 'Pressed')
+def WirelessHelpSelect(button:Button, state):
+    global prev_popup
+    dvTLP.HidePopup('wireless select device')
+    dvTLP.HidePopup(prev_popup)
+    dvTLP.ShowPopup(wireless_help_set[button])
+    prev_popup = wireless_help_set[button]
+    wireless_btn_help_set.SetCurrent(button)
 
 help_set = [btn_macHelp, btn_winHelp]
 close_help = [btn_exitMacHelp, btn_exitWinHelp]
