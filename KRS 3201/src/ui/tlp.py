@@ -185,11 +185,17 @@ for button in wireless_set.Objects:
     
 wireless_set.SetCurrent(None)
 
-wireless_popup_set = ['wireless mac os popup', 'wireless windows popup', 'wireless ios popup', 'wireless android popup']
+wireless_popup_set = {btn_wirelessMac: 'wireless mac os popup', btn_wirelessWindows: 'wireless windows popup',
+                      btn_wirelessIpadIphone: 'wireless ios popup', btn_wirelessAndroid: 'wireless android popup'}
     
+prev_popup = ''
+
 @eventEx(wireless_set.Objects, BTNEVL)
 def WirelessHelpSelect(button:Button, state):
     print(button.Name, button.Host, state)
-    dvTLPMain.HideAllPopups()
-    dvTLPMain.ShowPopup('Wireless instruction popup')
-    dvTLPMain.ShowPopup(wireless_popup_set[wireless_set.Objects.index(button)])
+    global prev_popup
+    dvTLPMain.HidePopup('wireless select device')
+    dvTLPMain.HidePopup(prev_popup)
+    prev_popup = wireless_popup_set[button]
+    dvTLPMain.ShowPopup(wireless_popup_set[button])
+    wireless_set.SetCurrent(button)
