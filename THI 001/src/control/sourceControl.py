@@ -27,6 +27,7 @@ input_popup_list = ['Laptop Connected popup', 'wireless popup',
 def ControlInput(button:tlp.Button, state):
     print(button.Name, state, 'Control')
     dvScalar.SetInput('{}'.format(tlp.input_set.Objects.index(button) + 2), {'Type': 'Audio/Video'})
+    dvScalar.SetVideoMute('Off', {'Output': '1A'})
     dvPRJ.SetPower('On', None) 
     tlp.dvTLP.HideAllPopups()
     tlp.dvTLP.ShowPopup(input_popup_list[tlp.input_set.Objects.index(button)])

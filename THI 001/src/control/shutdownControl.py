@@ -26,7 +26,6 @@ def Startup():
     dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})    
     
     #turn off video mute
-    dvScalar.SetVideoMute('Off', {'Output': '1A'})
     dvScalar.SetVideoMute('Off', {'Output': '1B'})
     dvScalar.SetVideoMute('Off', {'Output': 'Loop Out'})
     tlp.btn_videoMute.SetState(0)   
