@@ -41,8 +41,8 @@ def Startup():
     
 def Shutdown():
     dvPRJ.SetAVMute('Off', None)
-    dvPRJ.SetPower('Off', None)
-    dvPRJ.Update('Power')
+    prjWait = Wait(1, dvPRJ.SetPower('Off', None))
+    prjUpdateWait = Wait(1, dvPRJ.Update('Power'))
 
     tlp.adv.btn_blankImg.SetState(0)
         
@@ -152,5 +152,5 @@ def CancelPasscode(button:Button, state):
     global PadString, LblString
     PadString = LblString = ''
     if state == 'Pressed': LblPadString.SetText('')
-    button.SetState(1 if 'Pressed' else 0)
+    button.SetState(1 if state is 'Pressed' else 0)
     dvTLP.ShowPage('Start Page')
