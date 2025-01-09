@@ -41,8 +41,10 @@ def Startup():
     
 def Shutdown():
     dvPRJ.SetAVMute('Off', None)
-    prjWait = Wait(1, dvPRJ.SetPower('Off', None))
-    prjUpdateWait = Wait(1, dvPRJ.Update('Power'))
+    dvPRJ.SetPower('Off', None)
+    dvPRJ.Update('Power')
+    prjWait = Wait(3, dvPRJ.SetPower('Off', None))
+    prjUpdateWait = Wait(3, dvPRJ.Update('Power'))
 
     tlp.adv.btn_blankImg.SetState(0)
         
