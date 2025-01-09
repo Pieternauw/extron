@@ -39,12 +39,15 @@ def Startup():
     #unlock drawer
     dvRelay.SetState('Close')
     
+def PRJShutdown():
+    dvPRJ.SetPower('Off', None)
+    dvPRJ.Update('Power')
+    
 def Shutdown():
     dvPRJ.SetAVMute('Off', None)
     dvPRJ.SetPower('Off', None)
     dvPRJ.Update('Power')
-    prjWait = Wait(3, dvPRJ.SetPower('Off', None))
-    prjUpdateWait = Wait(3, dvPRJ.Update('Power'))
+    prjWait = Wait(3, PRJShutdown)
 
     tlp.adv.btn_blankImg.SetState(0)
         
