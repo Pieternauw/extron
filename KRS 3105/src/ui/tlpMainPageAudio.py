@@ -1,8 +1,4 @@
-"""
-This file contains the definition for the main page mic and program volume controls. It only 
-defines the objects and the states of the up or down buttons. Control and state based feedback
-is defined in the control file matching this one
-"""
+
 
 from modules.helper.MirrorUI import Button, Level 
 

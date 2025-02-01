@@ -79,7 +79,7 @@ btn_shutdown = Button(dvTLP, 8)
 def ShowShutdownPage(button:Button, state):
     print(button.Name, state)
     button.SetState(1 if state is 'Pressed' else 0)
-    if state is 'Pressed': dvTLP.ShowPage("Shutdown confirmation")
+    dvTLP.ShowPage("Shutdown confirmation")
 
 btn_shdnYes = Button(dvTLP, 6)
 

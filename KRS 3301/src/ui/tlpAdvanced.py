@@ -1,4 +1,3 @@
-
 from modules.helper.ModuleSupport import eventEx
 from extronlib.system import MESet
 from extronlib.ui import Button, Label, Slider
@@ -11,11 +10,9 @@ btn_advSettings = Button(dvTLP, 47)
 @eventEx(btn_advSettings, ButtonEventList)
 def ShowAdvancedSettingsPopup(button:Button, state):
     print(button.Name, state)
-    if state == 'Pressed':
-        button.SetState(1)
-        dvTLP.ShowPopup("Advanced Settings")
-    elif state == 'Released':
-        button.SetState(0)
+    button.SetState(1 if state is 'Pressed' else 0)
+    dvTLP.ShowPopup("Advanced Settings")
+    
 
 #Activity Timeout
 btn_actTimeout = Button(dvTLP, 155)
@@ -39,48 +36,37 @@ def TechButtonPressed(button:Button, state):
     print(button.Name, state)
     global techstr 
     global techlblstr
-    if state == 'Pressed':
-        button.SetState(1)
-        techstr += button.Name
-        techlblstr += '*'
-        LblTechString.SetText(techlblstr)
-    elif state == 'Released':
-        button.SetState(0)
-
+    button.SetState(1 if state is 'Pressed' else 0)
+    techstr += button.Name
+    techlblstr += '*'
+    LblTechString.SetText(techlblstr)
+    
 btn_techClear = Button(dvTLP, 117)
 btn_techEnter = Button(dvTLP, 118)
+
+def blank_str():
+    global techstr, techlblstr
+    techstr = ''
+    techlblstr = ''
+    LblTechString.SetText(techlblstr)
 
 @eventEx([btn_techClear, btn_techEnter], ButtonEventList)
 def BtnEnterTech(button:Button, state):
     print(button.Name, state)
-    global techstr 
-    global techlblstr
-    if state == 'Pressed':
-        button.SetState(1)
-        if button is btn_techEnter and techstr == '2748':
-            dvTLP.ShowPopup('Audio Mix popup')
-        techstr = ''
-        techlblstr = ''
-        LblTechString.SetText(techlblstr)
-    elif state == 'Released':
-        button.SetState(0)
-
+    global techstr
+    button.SetState(1 if state is 'Pressed' else 0)
+    if button is btn_techEnter and techstr == '2748':
+        dvTLP.ShowPopup('Audio Mix popup')
+    blank_str()
+    
 #Advanced Exit 
 btn_advSettingsExit = Button(dvTLP, 56)
 @eventEx(btn_advSettingsExit, ButtonEventList)
 def ExitAdvancedSettingsPopup(button:Button, state):
     print(button.Name, state)
-    if state == 'Pressed':
-        global techstr
-        global techlblstr
-        button.SetState(1)
-        techstr = ''
-        techlblstr = ''
-        LblTechString.SetText(techstr)          #clear the passcode before closing the page so it's empty when the user returns 
-        dvTLP.HidePopup("Advanced Settings")
-    elif state == 'Released':
-        button.SetState(0)
-
+    button.SetState(1 if state is 'Pressed' else 0)
+    blank_str()        #clear the passcode before closing the page so it's empty when the user returns 
+    dvTLP.HidePopup("Advanced Settings")
 
 sld_lavMic = Slider(dvTLP, 22)
 sld_lavMic.SetRange(-18, 80, 1)
@@ -110,4 +96,3 @@ btn_exitMix = Button(dvTLP, 76)
 def ExitAudioMix(button:Button, state):
     print(button.Name, state)
     dvTLP.HidePopup('Audio Mix popup')
-

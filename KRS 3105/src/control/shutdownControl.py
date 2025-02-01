@@ -130,57 +130,43 @@ for Button_IDs in range(141, 151):
 LblPadString = Label(dvTLPMain, 140)
 LblString = ''
 PadString = ''
-
-@eventEx(PadButtons, ['Pressed', 'Released'])
-def PadButtonPressed(button:Button, state):
-    print(button.Name, button.Host, state)
-    global PadString 
-    global LblString
-    if state == 'Pressed':
-        button.SetState(1)
-        PadString += button.Name
-        LblString += '*'
-        LblPadString.SetText(LblString)
-    elif state == 'Released':
-        button.SetState(0)
-
-#enter and clear
-btn_passcodeEnter = Button(dvTLPMain, 152)
-@eventEx(btn_passcodeEnter, ['Pressed', 'Released'])
-def BtnEnterPasscode(button:Button, state):
-    print(button.Name, button.Host, state)
-    global PadString 
-    global LblString
-    if state == 'Pressed':
-        button.SetState(1)
-        if (PadString == '2748') or (PadString == passcode):      #whatever the current passcode is
-            dvTLPMain.ShowPopup('Login')
-            StartupWait = Wait(1, Startup)
-        PadString = ''
-        LblString = ''
-        LblPadString.SetText(LblString)
-    elif state == 'Released':
-        button.SetState(0)
-
-btn_passcodeClear = Button(dvTLPMain, 151)
-@eventEx(btn_passcodeClear, ['Pressed', 'Released'])
-def BtnClearPad(button:Button, state):
-    print(button.Name, button.Host, state)
+def clear_code():
     global PadString
     global LblString
     PadString = ''
     LblString = ''
     LblPadString.SetText(LblString)
-    if state == 'Pressed':
-        button.SetState(1)
-    elif state == 'Released':
-        button.SetState(0)
 
+@eventEx(PadButtons, ['Pressed', 'Released'])
+def PadButtonPressed(button:Button, state):
+    print(button.Name, state)
+    global PadString 
+    global LblString
+    button.SetStat(1 if state is 'Pressed' else 0)
+    button.SetState(1)
+    PadString += button.Name
+    LblString += '*'
+    LblPadString.SetText(LblString)
+
+#enter and clear
+btn_passcodeEnter = Button(dvTLPMain, 152)
+btn_passcodeClear = Button(dvTLPMain, 151)
+@eventEx([btn_passcodeEnter, btn_passcodeClear], ['Pressed', 'Released'])
+def BtnEnterPasscode(button:Button, state):
+    print(button.Name, state)
+    global PadString 
+    button.SetState(1 if state is 'Pressed' else 0)
+    if (button is btn_passcodeEnter) and ((PadString == '2748') or (PadString == passcode)):      #whatever the current passcode is
+        print('startup running')
+        dvTLPMain.ShowPopup('Login')
+        StartupWait = Wait(1, Startup)
+    clear_code()
+        
 btn_passcodeCancel = Button(dvTLPMain, 153)
 @eventEx(btn_passcodeCancel, ['Pressed', 'Released'])
 def CancelPasscode(button:Button, state):
-    button.SetState(1 if state == 'Pressed' else 0)
     print(button.Name, state)
-    if state is 'Pressed':
-        dvTLPMain.ShowPage('Start Page')
+    clear_code()
+    button.SetState(1 if state is 'Pressed' else 0)
+    dvTLPMain.ShowPage('Start Page')
     

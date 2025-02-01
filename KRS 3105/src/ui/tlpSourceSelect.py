@@ -1,22 +1,3 @@
-"""
-This file is the definiton of every source selection button. It includes both center, left, and right 
-input sets and uses the MESet class to combine them all. With the MESet, only one of the groups buttons
-can be selected at a time. This allows for visual feedback to acurately represent the current selcted 
-source. 
-
-The final piece of this is the event when any button is pressed. Depending on which set its in, different 
-variables are set for the control file. The variables include:
-1. prj_select -> referneces which projector to tie inputs too. Also determines wich to turn on and what set 
-to pull the button index from for source selection
-2. monitor_select -> refers to the confidence monitor on the podium. Center and left use the same monitor
-3. yuja_select -> refers to which yuja input gets tied to the input source. Center and left use the same 
-number. Also used for board camera selection as of rev 1.0.0
-
-These numbers are used in the control file matching this one. This method simplifies the logic needed in 
-switching sources and allows me to treat all input buttons as one big set of buttons. That way only one 
-method is needed to control any input button selection. 
-"""
-
 from devices import dvTLPMain
 from modules.helper.ModuleSupport import eventEx
 from modules.helper.MirrorUI import Button, Label
@@ -129,7 +110,6 @@ lblLaptopConnected = Label(dvTLPMain, 133)
 prj_select = 2
 monitor_select = 4
 yuja_select = 9
-mode = 'Center'
 
 popup_list = ['Laptop Connected popup', 'Wireless instruction popup', 'Installed mac', 
               'Document camera instruction popup', 'Document camera instruction popup', 
@@ -146,21 +126,21 @@ btn_rightSourceSound.SetVisible(False)
 
 @eventEx(btn_cBoardCams, 'Pressed')
 def CenterBoardCams(button:Button, state):   
-    global prj_select, monitor_select, yuja_select, mode
-    prj_select = 2; monitor_select = 4; yuja_select = 9; mode = ''
     dvTLPMain.ShowPopup('center board camera selection')
     center_input_set.SetCurrent(None)
     button.SetState(1)
     
 @eventEx([btn_cBoard1, btn_cBoard2, btn_cBoard3], 'Pressed')
 def CenterBoardInputs(button:Button, state):
+    global prj_select, monitor_select, yuja_select
+    prj_select = 2; monitor_select = 4; yuja_select = 9
     center_board_set.SetCurrent(button)
 
 #every input button for left right and center is in the total list
 @eventEx(input_total_list, 'Pressed')
 def SwitchInput(button:Button, state):
     #global variable definitions allow them to be used across multiple function and multiple files 
-    global prj_select, monitor_select, yuja_select, mode
+    global prj_select, monitor_select, yuja_select
     print(button.Name, button.Host, state)
     dvTLPMain.HideAllPopups()
     btn_cBoardCams.SetState(0)
@@ -174,8 +154,6 @@ def SwitchInput(button:Button, state):
         prj_select = 2
         monitor_select = 4
         yuja_select = 9
-        mode = 'Center'
-        #show popup corresponding to button pressed 
         dvTLPMain.ShowPopup(popup_list[center_input_set.Objects.index(button)])
         #set visual status
         center_input_set.SetCurrent(button)
@@ -183,8 +161,7 @@ def SwitchInput(button:Button, state):
         #set left projector, left yuja, left confidence
         prj_select = 1
         monitor_select = 4
-        yuja_select = 9
-        mode = 'Left'
+        yuja_select = 9;
         dvTLPMain.ShowPopup(popup_list[left_input_set.Objects.index(button)])
         left_input_set.SetCurrent(button)
         #left source sound becomes active, switch to right source button now visible
@@ -195,7 +172,6 @@ def SwitchInput(button:Button, state):
         prj_select = 3
         monitor_select = 5
         yuja_select = 10
-        mode = 'Right'  
         dvTLPMain.ShowPopup(popup_list[right_input_set.Objects.index(button)])
         right_input_set.SetCurrent(button)
         #now sound is from right source, set left source sound button to visible

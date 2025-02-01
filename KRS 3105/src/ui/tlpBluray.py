@@ -1,8 +1,3 @@
-"""
-This file only creates every button object and assigns the basic feedback on 
-press and release to every button. 
-"""
-
 from modules.helper.MirrorUI import Button 
 from modules.helper.ModuleSupport import eventEx
 from devices import dvTLPMain

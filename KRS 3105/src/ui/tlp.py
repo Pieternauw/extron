@@ -1,10 +1,3 @@
-"""
-The main file for the project. This file includes a lot of main page buttons such as the shutdown buttons,
-the advanced settings button, and help buttons. It also includes the shutdown routine which in rev 1.0.1 will 
-be moved to a control file. This is the collection point for all other touch panels as well. Any file that's 
-created seperately needs to be imported into this one for the compiler to recognize it. 
-"""
-
 # Python imports
 from extronlib.system import MESet
 # Project imports
@@ -13,7 +6,6 @@ from modules.helper.MirrorUI import Button
 from devices import dvTLPMain
 
 import ui.tlpAdvanced as adv
-import ui.tlpAudioMix
 import ui.tlpBluray
 import ui.tlpSourceSelect as tlpSourceSelect
 import ui.tlpMainPageAudio as tlpMainPageAudio
