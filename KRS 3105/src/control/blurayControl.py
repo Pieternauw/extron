@@ -1,11 +1,8 @@
 import ui.tlpBluray as tlp 
 
-import time
-
-from devices import dvBluray, dvMatrix, dvTLPMain
+from devices import dvBluray
 
 from modules.helper.ModuleSupport import eventEx 
-from extronlib.system import Wait
 
 transport_set = {tlp.btn_blurayStop: 'Stop', tlp.btn_blurayPlay:'Play', 
                    tlp.btn_blurayPause: 'Play Pause', tlp.btn_blurayRTrack: 'Track Skip Previous', 

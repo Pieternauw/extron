@@ -1,8 +1,4 @@
-"""
-This file contains the definition for the main page mic and program volume controls. It only 
-defines the objects and the states of the up or down buttons. Control and state based feedback
-is defined in the control file matching this one
-"""
+
 
 from modules.helper.MirrorUI import Button, Level 
 
@@ -31,8 +27,5 @@ def MutePressedEvent(button:Button, state):
 @eventEx([btn_cMicUp, btn_cMicDown, btn_cProgUp, btn_cProgDown], BTNEVL)
 def VolumeChangeCenter(button:Button, state):
     print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        button.SetState(1)
-    else:
-        button.SetState(0)
+    button.SetState(1 if state is 'Pressed' or state is 'Held' else 0)
 

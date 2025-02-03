@@ -1,14 +1,3 @@
-"""
-This file contains the control for the advanced settings page. Included are the instructions to the projectors 
-for when the on or off button is pressed. These buttons utilize the subscribe status method to stay consistent with
-the projector's power state. They are initialized with the current state at device connection via the readstatus() 
-method call after their definitions. When any power command is sent (either on or off here, or on in the source 
-selection page) the power status is updated using the update('power') this causes the subscribe status method 
-to be activated and keeps the buttons consistent with th eactual status.
-
-AV Mute uses a similar method but the only thing that changes the states is the advance settings blank image button. 
-"""
-
 from devices import dvCenterPRJ, dvRightPRJ, dvLeftPRJ, GVEServer, PRJL_ID, PRJC_ID, PRJR_ID
 
 import ui.tlpAdvanced as tlp
@@ -120,3 +109,5 @@ def BlankImage(button:Button, state):
     elif button is tlp.btn_rBlankImg:
         button.SetState(0 if button.State is 1 else 1)
         dvRightPRJ.Set('AVMute', 'Off' if button.State is 0 else 'On')
+
+"""NO AUDIO SLIDERS DEFINED YET"""
