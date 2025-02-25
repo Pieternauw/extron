@@ -126,7 +126,7 @@ print('passcode', passcode)
 PadButtons = []
 for Button_IDs in range(141, 151):
     PadButtons.append(Button(dvTLPMain, Button_IDs))
-    
+
 LblPadString = Label(dvTLPMain, 140)
 LblString = ''
 PadString = ''

@@ -1,22 +1,3 @@
-"""
-This file defines the BluRay control response. When a button is pressed, the matching command
-is sent out. Buttons are named by commands to simplify the logic. Certain set commands take 
-different arguments such as SetTransport() or SetMenuControl(). Using button names simplifies
-the program and allows me to define different lists of buttons. If a matching button is found, 
-it takes the name of that button and sends the command. The same goes for subtitle with my own defined 
-SetSubtitle() command in the module file for the BluRay device. 
-
-The disk tray is a special case. There is only an open and close command, but no way for me to know 
-if the tray is already open or closed in the extron module. To work around this I define my own 
-Tray commands, using the disk tray commands provided but based on status the device sends me. 
-
-Using SendAndWait() I can ask the device for its status on some command, and assign the response to a variable. 
-By decoding the variable I can check if a certain string is in the response and do something if it is. 
-In this case if the tray is open, the device sends back a string with TTO included. There are more parts to the
-string but that's the only difference between open and closed. Closed responds TTC. If the string returned 
-has TTO in it, I send the tray command to close. Otherwise, I send the open command. 
-"""
-
 import ui.tlpBluray as tlp 
 
 from devices import dvBluray

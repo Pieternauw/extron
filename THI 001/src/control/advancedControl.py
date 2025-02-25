@@ -1,10 +1,10 @@
-from devices import dvPRJ, GVEServer, PRJ_ID
+from devices import dvPRJ, GVEServer, dvScalar, PRJ_ID
 
 from extronlib.system import MESet, Timer
 
 from modules.helper.ModuleSupport import eventEx
 
-import ui.tlpAdvanced as tlp 
+import ui.tlpAdvanced as tlp
 
 #Exclusive set of the power buttons
 prj_set = MESet([tlp.btn_projOn, tlp.btn_projOff])
@@ -52,3 +52,17 @@ def BlankImage(button:tlp.Button, state):
     print(button.Name, state)    
     button.SetState(0 if button.State is 1 else 1)
     dvPRJ.Set('AVMute', 'Off' if button.State is 0 else 'On')
+
+
+mic_slider_list = [tlp.sld_lavMic, tlp.sld_handHeld]
+prg_slider_list = [tlp.sld_wireless, tlp.sld_laptop, tlp.sld_bluray]
+
+@eventEx([tlp.sld_lavMic, tlp.sld_handHeld, tlp.sld_laptop, tlp.sld_wireless, tlp.sld_bluray, tlp.sld_ampLevelOut], 'Changed')
+def SliderChanged(slider:tlp.Slider, state, value):
+    print(slider.Name, 'Control')
+    if slider in mic_slider_list:
+        dvScalar.SetMicLineInputGain(value, {'Input': '{}'.format(mic_slider_list.index(slider) + 1)})  #TODO check these input numbers
+    elif slider in prg_slider_list:
+        dvScalar.SetEmbeddedInputGain(value, {'Input': '{}'.format(prg_slider_list.index(slider)+ 1)})
+    elif slider is tlp.sld_ampLevelOut:
+        dvScalar.SetOutputAttenuation(value, {'Output': 'Amp Out'})

@@ -1,14 +1,3 @@
-"""
-The source control file handles switching inputs based on button input. It also takes in a popup list
-and switches popups depending on what input was selected. It also includes the laptop feedback which 
-informs the user if their laptop was detected or not. This feedback also uses the SubscribeStatus() 
-function to keep track of the input signal status on input 2 where the winder cable terminates. 
-
-In this file is also shutdown control instructions, telling the projector to turn off and telling 
-the switcher to swap to input 3 (the cynap) which is the default in all room shutdown processes. 
-In the next revision there will be relay commands on shutdown to handle the mic drawer closing. 
-"""
-
 #extron Import
 from modules.helper.ModuleSupport import eventEx 
 

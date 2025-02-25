@@ -1,41 +1,3 @@
-"""
-This is the place to put the modules for each UI in the system.  One module for each unique ui --
-mirrored panels should be in the same file.
-* UI object definition
-* UI navigation
-"""
-
-"""
-Version 1.0.1 - Pre-deployment in Kresge 3101 w/ Organizational changes
-
---- Code Structure ---
-
-Import statements:
-System for MESet - used to group the input buttons together
-UI for Button and Label - define all UI objects referenced including text objects
-Module Support for eventEx - allows user defined functions to control devices and do actions
-
-Device imports - Touchpanel for UI interaction and the 1808 switcher for source and audio control - Audio may be removed at later revision
-Variables - A list of button event types allowing for different responses based on button state
-
-UI Files - Where other sections of the UI are defined such as BluRay control, the Advanced Settings popup, and the passcode page
-UI is split between different files for organizaitional purposes. Having multiple files for UI objects makes each file smaller and easier to handle
-Control for these UI objects is included in the Control folder where a majority of the external device interaction is defined. 
-The only remaining control is the 1808 switcher's audio control on shutdown routine which will be moved soon
-
-MAIN PAGE
-This is where all main page buttons are defined including source selection buttons, shutdown buttons, and the advanced settings popup.
-This section also includes help popups from different selected sources and the overall help button (still undefined). 
-
-The nightly shutdown function will be included in revision 1.0.2
-
-Rev 1.2.1:
--- Removed multiple shutdown functions
--- Created one function called by both button press and nightly timer
--- Implemented 11:00pm shu
-
-"""
-
 # Python imports
 
 # Extron Library imports
@@ -83,16 +45,13 @@ input_set.SetCurrent(None)
 btn_help = Button(dvTLP, 90)
 btn_exit_help = Button(dvTLP, 225)
 
-@eventEx(btn_help, ['Pressed', 'Released'])
-def ShowHelp(button:Button, state):
+@eventEx([btn_help, btn_exit_help], ['Pressed', 'Released'])
+def HelpPopup(button:Button, state):
     button.SetState(1 if state is 'Pressed' else 0)
-    dvTLP.ShowPopup('help popup')
-    
-@eventEx(btn_exit_help, ['Pressed', 'Released'])
-def ExitHelp(button:Button, state):
-    button.SetState(1 if state is 'Pressed' else 0)
-    dvTLP.HidePopup('help popup')
-
+    if button is btn_help:
+        dvTLP.ShowPopup('help popup')
+    else:
+        dvTLP.HidePopup('help popup')
 #video Mute
 btn_videoMute = Button(dvTLP, 255)
         
@@ -103,12 +62,6 @@ btn_videoMute = Button(dvTLP, 255)
 btn_laptopConnectedFeedback = Button(dvTLP, 23)
 lblLaptopConnected = Label(dvTLP, 133)
         
-#Help Buttons
-btn_macHelp = Button(dvTLP, 131)
-btn_winHelp = Button(dvTLP, 130)
-btn_exitMacHelp = Button(dvTLP, 174)
-btn_exitWinHelp = Button(dvTLP, 163)
-
 btn_wirelessMac = Button(dvTLP, 13)
 btn_wirelessWindows = Button(dvTLP, 53)
 btn_wirelessIPhone = Button(dvTLP, 58)
@@ -132,22 +85,24 @@ def WirelessHelpSelect(button:Button, state):
     dvTLP.ShowPopup(wireless_help_set[button])
     prev_popup = wireless_help_set[button]
     wireless_btn_help_set.SetCurrent(button)
+    
+btn_macHelp = Button(dvTLP, 131)
+btn_winHelp = Button(dvTLP, 130)
+btn_exitMacHelp = Button(dvTLP, 174)
+btn_exitWinHelp = Button(dvTLP, 163)
 
 help_set = [btn_macHelp, btn_winHelp]
 close_help = [btn_exitMacHelp, btn_exitWinHelp]
 help_popup = ["mac laptop & tablet help popup", "Windows Laptop Help popup"]
 
-@eventEx(help_set, ['Pressed', 'Released'])
-def ShowHelp(button:Button, state):
+@eventEx([btn_macHelp, btn_winHelp, btn_exitMacHelp, btn_exitWinHelp], ['Pressed', 'Released'])
+def HelpPopups(button:Button, state):
     print(button.Name, state)
     button.SetState(1 if state is 'Pressed' else 0)
-    if state is 'Pressed': dvTLP.ShowPopup(help_popup[help_set.index(button)])
-
-@eventEx(close_help, ['Pressed', 'Released'])
-def CloseHelp(button:Button, state):
-    print(button.Name, state)
-    button.SetState(1 if state is 'Pressed' else 0)
-    if state is 'Pressed': dvTLP.HidePopup(help_popup[close_help.index(button)])
+    if button in help_set:
+        dvTLP.ShowPopup(help_popup[help_set.index(button)])
+    else: 
+        dvTLP.HidePopup(help_popup[close_help.index(button)])
 
 #Shutdown button
 btn_shutdown = Button(dvTLP, 234)
