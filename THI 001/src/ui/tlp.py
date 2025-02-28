@@ -12,7 +12,6 @@ from variables import ButtonEventList
 #Linking Files
 import ui.tlpBluray
 import ui.tlpAdvanced as adv
-import ui.tlpAudio
 import ui.tlpMainAudio as MainAudio
 import variables as var
 
@@ -119,6 +118,3 @@ btn_shdnNo = Button(dvTLP, 7)
 def ShutdownNo(button:Button, state):
     print(button.Name, state)
     dvTLP.ShowPage("Main Page")
-
-    
-
