@@ -76,7 +76,6 @@ Version 2.1.0 is a complete overhaul of the old code. Each room will get its own
     \item Password page, and admin passcode function changes.
     \item Inline statements used in button events. 
     \item Button to popup name dictionaries whenever possible.
-    \item Simplification of list indexing.
     \item Combining slider files with advanced settings files.
     \item Text files with descriptions of file structure and methods. 
     \item Redundant code removed.
@@ -115,14 +114,34 @@ button as the index for the correct popup reference. This is simplified, but is 
 A notable replacement of lists with dictionaries is in rooms with Biamps. Now, Biamp commands, specifically tags, are sent 
 with a dictionary reference. 
 
-\subsubsection*{Simplification of List Indexing}
-
 \subsubsection*{Sliders}
+
+Previous versions had two files covering the advanced settings page functionality. The first was a pair of touch panel 
+and control files covering the main functions of the page. The second was an extra popup page with audio level sliders.
+This new version removes the extra file pair and puts the slider definitions into the same file as the rest of the
+functions. The slider event has also been condensed into one function instead of one per slider. 
+
+Sliders still do not control biamp rooms. This function was deemed unecessary as the only time these values should be adjusted 
+is if we change the Biamp program. Sliders do work in rooms where there is only an Extron switcher controling the mix of 
+program and speech
 
 \subsubsection*{Text Files}
 
+Each project now has a text file in the \lstinline|tlp| folder and \lstinline|control| folder. This text file now contains 
+all of the large instruction comments which explain what each file in the folder does. It also includes some function 
+specific infomration which may be useful when reading through the code. This change was made to clean up and shorten files,
+removing long blocks of text breaking up function flow. 
+
 \subsubsection*{Redundancy}
 
+Matrix rooms originally had multiple variables set by the button event. This number has been reduced, using the projector 
+output to refer to left right or center when turning on the correct device. This change reduces the number of global variables 
+that require definition and verification of value, instead opting to use a number variable that refers to the same thing that 
+is necessary for functionality.
+
+Inline statements handling button states are now included wherever possible. The exception is for buttons requiring response 
+from a device like audio mutes or the proejctor on/off. Button events have been reduced with many functions being able to
+be colapsed together. 
 
 \section*{v1.6.4 (Deployed)}
 
@@ -137,9 +156,8 @@ with a dictionary reference.
 Version 1.5.5 is a version for every room. This version changes all projectors from being connected with 'Power' to 
 being connected with 'LampUpdate'. This allows GVE to be updated with the current lamp hours of every room. Power commands 
 are sent often enough to be updating the informaton on GVE, and their status is already being sent over. We want GVE to have 
-Lamp Hours in the information section, so this is how that will be accomplished. The code is not currently in a room but is ready
-to be uploaded. Rooms that are not on larger version 1.5 will be incrememnted in their current version by 1 (for example KRS 
-3401 is on v1.4.0, so now is on 1.4.1)
+Lamp Hours in the information section, so this is how that will be accomplished. Rooms that are not on larger version 1.5 will 
+be incrememnted in their current version by 1 (for example KRS 3401 is on v1.4.0, so now is on 1.4.1)
 
 \section*{v1.5.4 (Deployed)}
 
