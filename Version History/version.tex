@@ -59,14 +59,70 @@ all of the Git commit messages into one comprehnsible document with more details
 to the Git repository here: \url{https://git.ucsc.edu/pnauwela/extron}. Each commit has a line by line comparison of what 
 was added or removed. The structure of this document has the most recent commits listed at the very top. Version number structure 
 is as follows: \lstinline|vX.Y.Z|. X refers to the system components like Switchers or Projectors. When these items are changed out, 
-the number will tick up by 1. Y refers to big code concepts like adding a new page, or changing code structures and functions. 
+the number will tick up by 1. This number will aslo change for large code base structure changes, including file structure changes, 
+or function overhauls. Y refers to big code or UI concepts like adding a new page, or changing code structures and functions. 
 Z refers to small line changes, like changing the range on an audio level, or making something work slightly different then it 
 did in the previous versions. Another thing to note is that not every room will be on the same version at the same time. Some 
 rooms don't get changes in one version but do get the next. Even if a room is at 1.4.3, that doesn't mean it got the change 
 from 1.4.2 added to it if 1.4.2 was made for another room. A room will only get a new version number if that version change 
-was made to it. 
+was made to it. Rooms where this happens are noted specifically with their changes in each section. If rooms share a version 
+number with different features, it will be marekd. 
 
 \section*{v2.1.0 (Prepared)}
+
+Version 2.1.0 is a complete overhaul of the old code. Each room will get its own version including a few major points:
+
+\begin{itemize}
+    \item Password page, and admin passcode function changes.
+    \item Inline statements used in button events. 
+    \item Button to popup name dictionaries whenever possible.
+    \item Simplification of list indexing.
+    \item Combining slider files with advanced settings files.
+    \item Text files with descriptions of file structure and methods. 
+    \item Redundant code removed.
+\end{itemize}
+
+The different types of rooms have some variation of implementation, but each room gets these changes. 
+
+\subsubsection*{Passwords}
+
+The password touch panel and control files, as well as the fucntions in the advanced settings page files have been simplified.
+Each includes a new function \lstinline|clear_code()| which resets global variables and clears the label. This function is 
+used by 3 button events, removing redundant code and decluttering functions. 
+
+Password button definitions are now simplified by changing how the correct input is calculated. Previously, the name of the 
+button in the GUI needed to be changed to match its number, making changing a GUI difficult if one needed to be copied over
+for a quick deployment. Now, by using the list index for the total button set, with \lstinline|[0 - 9]| in order, the list 
+index can be directly called and added to the entered password for comparison. This change also simplifies the code, removing
+the need for the \lstinline|button.Name| function call. 
+
+Other simplifications such as changing button states to inline if-statements simplify function design. 
+
+\subsubsection*{Inline Statements}
+
+All touch panel files now feature inline if statements for setting button feedback. 
+
+\subsubsection*{Popup Dictionaries}
+
+Open and close buttons for popup pages are now tied to a dictionary for their page reference. Previously, buttons and page 
+names had seperate lists. Now, they have been combined into a dictionary, making opening and closing a page possible through 
+one simple command. The exception is the Mac and Windows help pages. Two keys for one item isn't possible, so the open and 
+close buttons would need their own index refering to the same popup page. I deemed this to be cluttered as the popup names 
+are long. Instead, the open and close buttons are in a list, with \lstinline|[mac, windows]|. The button event is for both
+sets, checking if it's in the open or close first, then calling the correct popup function, using the index of the current 
+button as the index for the correct popup reference. This is simplified, but is possible to be simplified more with time. 
+
+A notable replacement of lists with dictionaries is in rooms with Biamps. Now, Biamp commands, specifically tags, are sent 
+with a dictionary reference. 
+
+\subsubsection*{Simplification of List Indexing}
+
+\subsubsection*{Sliders}
+
+\subsubsection*{Text Files}
+
+\subsubsection*{Redundancy}
+
 
 \section*{v1.6.4 (Deployed)}
 
