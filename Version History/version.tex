@@ -145,11 +145,45 @@ be colapsed together.
 
 \section*{v1.6.4 (Deployed)}
 
+Version 1.6.4 was a quick bandaid fix for an issue with THI 001. The projector would not turn off during the shutdown command
+despite waiting for the warming process to finish. By adding a delayed second shutdown command, the projector was given 
+duplicate commands to shut down, meaning if the first didn't work, the second, coming 3 seconds later, would. This quick fix 
+is hopefully temporary until we know why it does this. The current theory is that the projector stops communicating until the 
+first command is sent, meaning the second one will confirm the shutdown before the connection is lost again. 
+
 \section*{v1.6.3}
+
+This version was created for THI 001. This version for THI 001 also includes a fix to turn off the confidence monitor 
+on system shutdown. Monitors should not be displaying the Cynap when the system is shut down, so by disabling its output we 
+effectively turn off the monitor. The output is re-enabled when the system passcode is entered correctly. 
+
+\section*{v1.6.2}
+
+The first functional deployment version of THI 001. This version includes the custom \lstinline|SetDiskTray()| method in 
+the bluray module, Biamp connection using campus LAN, video mute turning off only YuJa and projector, while leaving the 
+confidence monitor displaying the connected source, and a more robust shutdown fucntion. It fixed a long standing issue 
+with the wireless help buttons not being enabled. Now, they have a new method of opening using a \lstinline|MESet([])| 
+to handle button feedback, and a dictionary of popup names, opening based on the button selection. Audio values have been 
+tuned to the correct numbers to match the Biamp program levels. 
 
 \section*{v1.6.0}
 
+This is the initial development version of THI 001. The code for this room is based on a large room GUI with only the center 
+projection page used. The room also includes a Biamp which was experiemented with multiple control forms. This version uses
+campus LAN to communicate with the Biamp and is the first room to do so.
+
 \section*{1.5.6}
+
+This version has two types.First, for KRS 3201 and 3105, the version fixes the buttons on the wireless instruction popup. It uses a
+\lstinline|MESet([])| to control button functions. The popup references have now been added to a dictionary that is used to 
+show the most recent pressed button's popup. There is also an empty string used to hold the name of the current popup, used
+to close the correct one when a new button is pressed. This method is used because there are multiple popups stacked when in 
+this state, so this allows only the correct one to be closed. 
+
+For the small rooms KRS 3101, and KRS 3301, The version changes the login popup slightly. It adds in a new text box reminding 
+professors to wear the lappel mic in the room. Often times professors, who don't know there's a speech device in ther room, 
+will forget to wear it meaning YuJa records no audio. This reminder is hopefully to help them realize they need to wear it. 
+The delay is now 3 seconds, increased from 1. 
 
 \section*{v1.5.5 (Deployed)}
 
