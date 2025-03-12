@@ -79,8 +79,6 @@ def ShowStartPage(button:Button, state):
 
 """PASSCODE SCREEN"""
 
-"""TODO - Cancel Button needs to be added"""
-
 #port 22022 in cyberduck
 passcodeFile = File('user/passcode.txt', 'r')
 passcode = str(passcodeFile.readline())

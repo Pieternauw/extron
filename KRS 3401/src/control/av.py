@@ -19,6 +19,5 @@ Examples:
 # Project imports
 import control.sourceControl
 import control.shutdownControl
-import control.audioControl
 import control.mainAudioControl
 import control.advancedControl
