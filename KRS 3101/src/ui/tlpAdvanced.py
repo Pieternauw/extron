@@ -33,13 +33,14 @@ techlblstr = ''
 
 @eventEx(TechButtons, ButtonEventList)
 def TechButtonPressed(button:Button, state):
-    print(button.Name, state)
-    global techstr 
-    global techlblstr
     button.SetState(1 if state is 'Pressed' else 0)
-    techstr += button.Name
-    techlblstr += '*'
-    LblTechString.SetText(techlblstr)
+    if state is 'Pressed':
+        print(button.Name, state)
+        global techstr 
+        global techlblstr
+        techstr += button.Name
+        techlblstr += '*'
+        LblTechString.SetText(techlblstr)
     
 btn_techClear = Button(dvTLP, 117)
 btn_techEnter = Button(dvTLP, 118)

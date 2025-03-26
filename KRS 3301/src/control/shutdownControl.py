@@ -100,14 +100,14 @@ def clear_code():
 
 @eventEx(PadButtons, ['Pressed', 'Released'])
 def PadButtonPressed(button:Button, state):
-    print(button.Name, state)
-    global PadString 
-    global LblString
-    button.SetStat(1 if state is 'Pressed' else 0)
-    button.SetState(1)
-    PadString += button.Name
-    LblString += '*'
-    LblPadString.SetText(LblString)
+    button.SetState(1 if state is 'Pressed' else 0)
+    if state is 'Pressed':
+        print(button.Name, state, "Control")
+        global PadString 
+        global LblString
+        PadString += button.Name
+        LblString += '*'
+        LblPadString.SetText(LblString)
 
 #enter and clear
 btn_passcodeEnter = Button(dvTLP, 152)
