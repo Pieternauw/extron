@@ -2,12 +2,11 @@ from modules.helper.ModuleSupport import eventEx
 from extronlib.system import MESet
 from extronlib.ui import Button, Label, Slider
 
-from devices import dvTLP, dvPRJ
-from variables import ButtonEventList
+from devices import dvTLP
 
 #advanced settings
-btn_advSettings = Button(dvTLP, 47)
-@eventEx(btn_advSettings, ButtonEventList)
+btn_advSettings = Button(dvTLP, 41)
+@eventEx(btn_advSettings, ['Pressed', 'Released'])
 def ShowAdvancedSettingsPopup(button:Button, state):
     print(button.Name, state)
     button.SetState(1 if state is 'Pressed' else 0)
@@ -31,15 +30,16 @@ LblTechString = Label(dvTLP, 20)
 techstr = ''
 techlblstr = ''
 
-@eventEx(TechButtons, ButtonEventList)
+@eventEx(TechButtons, ['Pressed', 'Released'])
 def TechButtonPressed(button:Button, state):
-    print(button.Name, state)
-    global techstr 
-    global techlblstr
     button.SetState(1 if state is 'Pressed' else 0)
-    techstr += button.Name
-    techlblstr += '*'
-    LblTechString.SetText(techlblstr)
+    if state is 'Pressed':
+        print(button.Name, state)
+        global techstr 
+        global techlblstr
+        techstr += button.Name
+        techlblstr += '*'
+        LblTechString.SetText(techlblstr)
     
 btn_techClear = Button(dvTLP, 117)
 btn_techEnter = Button(dvTLP, 118)
@@ -50,7 +50,7 @@ def blank_str():
     techlblstr = ''
     LblTechString.SetText(techlblstr)
 
-@eventEx([btn_techClear, btn_techEnter], ButtonEventList)
+@eventEx([btn_techClear, btn_techEnter], ['Pressed', 'Released'])
 def BtnEnterTech(button:Button, state):
     print(button.Name, state)
     global techstr
@@ -61,7 +61,7 @@ def BtnEnterTech(button:Button, state):
     
 #Advanced Exit 
 btn_advSettingsExit = Button(dvTLP, 56)
-@eventEx(btn_advSettingsExit, ButtonEventList)
+@eventEx(btn_advSettingsExit, ['Pressed', 'Released'])
 def ExitAdvancedSettingsPopup(button:Button, state):
     print(button.Name, state)
     button.SetState(1 if state is 'Pressed' else 0)

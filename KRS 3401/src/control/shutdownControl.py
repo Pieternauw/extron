@@ -25,7 +25,9 @@ def Startup():
     dvScalar.SetGroupMicMute('Off', None)
     
     #turn off video mute
-    dvScalar.SetGlobalVideoMute('Off', None)
+    dvScalar.SetVideoMute('Off', {'Output': '1B'})
+    dvScalar.SetVideoMute('Off', {'Output': '1A'})
+    
     tlp.btn_videoMute.SetState(0)   
     
     #main page shown, function called after successful passcode entry
@@ -48,7 +50,10 @@ def Shutdown():
     dvScalar.SetGroupProgramVolume(-18, None)
     dvScalar.SetGroupMicVolume(-18, None)
     
-    dvScalar.SetGlobalVideoMute('Off', None)
+    dvScalar.SetVideoMute('On', {'Output': '1B'})
+    dvScalar.SetVideoMute('Off', {'Output': '1A'})
+    
+
     tlp.btn_videoMute.SetState(0)   
 
     dvPRJBack.Set('AVMute', 'Off')

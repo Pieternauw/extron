@@ -18,17 +18,10 @@ def PowerChanged(command, value, qualifier):
     elif value is 'Off':
         prj_set.SetCurrent(tlp.btn_projOff)
     else:
-        tlp.btn_projOn.SetBlinking('Slow', [0, 1])
-
-
-def PowerTimer(timer:Timer, count):
-    print("Timer started")
-    dvPRJFront.Update('Power')
-
-PRJStatusTimer = Timer(10, PowerTimer)
-
+        tlp.btn_projOn.SetBlinking('Medium', [0, 1])
+        tlp.btn_projOff.SetBlinking('Medium', [0, 1])
+        
 dvPRJFront.SubscribeStatus('Power', None, PowerChanged)
-
 
 @eventEx(prj_set.Objects, 'Pressed')
 def ProjectorOnOff(button:tlp.Button, state):

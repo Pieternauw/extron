@@ -29,18 +29,18 @@ def ControlInput(button:tlp.Button, state):
     dvScalar.SetInput('{}'.format(tlp.input_set.Objects.index(button) + 1), {'Type': 'Audio/Video'})
     dvPRJFront.SetPower('On', None) 
     dvPRJBack.SetPower('On', None) 
+    dvPRJFront.Update('Power')
     tlp.dvTLP.HideAllPopups()
     tlp.dvTLP.ShowPopup(input_popup_list[tlp.input_set.Objects.index(button)])
     tlp.input_set.SetCurrent(button)
-    adv.PRJStatusTimer.Restart()
     
 @eventEx(tlp.btn_videoMute, 'Pressed')
 def VideoMuteControl(button:tlp.Button, state):
     if button.State == 0:
-        dvScalar.SetGlobalVideoMute('On', None)
+        dvScalar.SetVideoMute('On', {'Output': '1A'})
         button.SetState(1)
     else:
-        dvScalar.SetGlobalVideoMute('Off', None)
+        dvScalar.SetVideoMute('Off', {'Output': '1A'})
         button.SetState(0)   
      
 def LaptopConnectedFeedback(command, value, qualifier):

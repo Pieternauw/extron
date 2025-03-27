@@ -50,14 +50,13 @@ def SwitcherConnectionHandler(client:EthernetClientInterface, state):
     else:
         client.Connect(5)
 
-dvPRJFront = GetConnectionHandler(Projector.SerialOverEthernetClass('10.10.2.30', 2003, Model='PowerLite L630U'), 'LampUsage', pollFrequency=30)
-dvPRJBack = GetConnectionHandler(Projector.SerialClass(dvIPCP, 'COM1', Model='Powerlite L630U'), 'LampUsage', pollFrequency=30)
+dvPRJFront = GetConnectionHandler(Projector.SerialClass(dvIPCP, 'COM1', Model='PowerLite L630U'), 'LampUsage', pollFrequency=30)
+dvPRJBack = GetConnectionHandler(Projector.SerialClass(dvIPCP, 'COM2', Model='Powerlite L630U'), 'LampUsage', pollFrequency=30)
 
 prj_dict = {dvPRJFront: PRJF_ID, dvPRJBack: PRJB_ID}
 
-@eventEx(dvPRJFront, ['Connected', 'Disconnected'])
-def ProjectorConnectionHandler(client:EthernetClientInterface, state):
-    print('Projector on IP {0} is {1}'.format(client.IPAddress, state))
+@eventEx([dvPRJFront, dvPRJBack], ['Connected', 'Disconnected'])
+def ProjectorConnectionHandler(client, state):
     GVEServer.SendStatus(prj_dict[client], 'Connection', state)
     if state is not 'Connected':
         client.Connect(5) 
@@ -75,7 +74,7 @@ def UpdatePRJBStatus(command, value, qualifier):
     GVEServer.SendStatus(PRJB_ID, command, value)
 
 def UpdatePRJBLamp(command, value, qualifier):
-    GVEServer.SendStatus(PRJF_ID, 'Lamp 1 Hours', value)
+    GVEServer.SendStatus(PRJB_ID, 'Lamp 1 Hours', value)
 
 dvPRJBack.SubscribeStatus('Power', None, UpdatePRJBStatus)
 dvPRJBack.SubscribeStatus('LampUsage', None, UpdatePRJBLamp)

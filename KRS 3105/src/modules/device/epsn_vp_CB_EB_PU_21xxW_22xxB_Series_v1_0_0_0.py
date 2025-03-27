@@ -30,6 +30,7 @@ class DeviceClass:
             'CB-PU2216B': self.epsn_1_5651_PU22xxB,
             'EB-PU2213B': self.epsn_1_5651_PU22xxB,
             'CB-PU2213B': self.epsn_1_5651_PU22xxB,
+            'CB-PU2010B': self.epsn_1_5651_PU22xxB,
         }
 
         self.Commands = {

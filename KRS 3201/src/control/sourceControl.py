@@ -3,6 +3,7 @@ from devices import dvMatrix, dvCenterPRJ, dvRightPRJ, dvLeftPRJ
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button
 
+from control.advancedControl import PRJLeftTimer, PRJCenterTimer, PRJRightTimer
 import ui.tlpSourceSelect as tlp
 
 @eventEx([tlp.btn_cBoard1, tlp.btn_cBoard2, tlp.btn_cBoard3], 'Pressed')
@@ -19,16 +20,18 @@ def SourceSelection(button:Button, state):
     if tlp.prj_select == 1:
         output = tlp.left_input_set.Objects.index(button) + 1
         dvLeftPRJ.SetPower('On', None)
-        dvLeftPRJ.Update('Power')
+        PRJLeftTimer.Restart()
     elif tlp.prj_select == 2:
         output = tlp.center_input_set.Objects.index(button) + 1
         dvCenterPRJ.SetPower('On', None)
         dvCenterPRJ.Update('Power')
+        PRJCenterTimer.Restart()
     elif tlp.prj_select == 3:
         output = tlp.right_input_set.Objects.index(button) + 1
         dvRightPRJ.SetPower('On', None)
         dvRightPRJ.Update('Power')
-    
+        PRJRightTimer.Restart()
+
     #left and right board cams special case where input value is the same as yuja value (9 for left and center, 10 for right). can be hardcoded 
     if button in [tlp.btn_lBoardCams, tlp.btn_rBoardCams]:
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.prj_select), 'Tie Type': 'Video'})

@@ -2,7 +2,7 @@ from devices import dvCenterPRJ, dvRightPRJ, dvLeftPRJ, GVEServer, PRJL_ID, PRJC
 
 import ui.tlpAdvanced as tlp
 
-from extronlib.system import MESet, Timer
+from extronlib.system import MESet
 
 from modules.helper.MirrorUI import Button
 from modules.helper.ModuleSupport import eventEx 
@@ -35,10 +35,6 @@ def LeftPowerChanged(command, value, qualifier):
         tlp.btn_lPrjOn.SetBlinking('Medium', [0, 1])
         tlp.btn_lPrjOff.SetBlinking('Medium', [0, 1])
 
-def LeftTimer(timer:Timer, count):
-    print("Left Timer started")
-    dvLeftPRJ.Update('Power')
-
 dvLeftPRJ.SubscribeStatus('Power', None, LeftPowerChanged)
 
 def RightPowerChanged(command, value, qualifier):
@@ -48,8 +44,7 @@ def RightPowerChanged(command, value, qualifier):
     else:
         tlp.btn_rPrjOn.SetBlinking('Medium', [0, 1])
         tlp.btn_rPrjOff.SetBlinking('Medium', [0, 1])
-
-
+        
 dvRightPRJ.SubscribeStatus('Power', None, RightPowerChanged)
 
 #might need to be a list instead of *[]

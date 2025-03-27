@@ -6,7 +6,8 @@ from extronlib.system import File
 
 from extronlib.system import Clock, Wait
 
-import ui.tlp as tlp
+from control.advancedControl import PRJLeftTimer, PRJCenterTimer, PRJRightTimer
+import ui.tlp as tlp 
 
 def Startup():
     print('Startup running')
@@ -56,11 +57,10 @@ def Shutdown():
         dvCenterPRJ.SetPower('Off', None)
         dvRightPRJ.SetPower('Off', None)
         dvLeftPRJ.SetPower('Off', None)
+        PRJLeftTimer.Restart()
+        PRJCenterTimer.Restart()
+        PRJRightTimer.Restart()
     
-        dvCenterPRJ.Update('Power')
-        dvRightPRJ.Update('Power')
-        dvLeftPRJ.Update('Power') 
-        
     PRJ_Shutoff = Wait(2, PRJShutoff)
     
     #set source buttons to all be deselected

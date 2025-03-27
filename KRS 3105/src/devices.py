@@ -64,7 +64,6 @@ def MatricConnectionHandler(client:EthernetClientInterface, state):
     GVEServer.SendStatus(SW_ID, 'Connection', state)
     if state is 'Connected':
         dvMatrix.Update('InputSignalStatusEndpoint', {'Input': '1', 'Sub Input': '1'})
-        dvMatrix.Set('MatrixTieCommand', {'Input': '6', 'Output': '11', 'Tie Type': 'Audio/Video'})
         print(dvMatrix.ReadStatus('InputSignalStatusEndpoint', {'Input': '1', 'Sub Input': '1'}))
         #verify other update calls needed
     else:
