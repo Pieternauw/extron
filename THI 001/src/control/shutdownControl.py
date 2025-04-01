@@ -7,11 +7,9 @@ from extronlib.ui import Button, Label
 from extronlib.system import File
 
 import ui.tlp as tlp
+import control.advancedControl as adv
 
-def Startup():
-    print('Startup running')
-    #set input set to nothing
-    #Don't set scalar b/c instructor might be displaying something we want to keep up while system starts up 
+def DefaultCalls():
     dvPRJ.SetAVMute('Off', None)
     tlp.adv.btn_blankImg.SetState(0)
     
@@ -23,15 +21,17 @@ def Startup():
     dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
     dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
     dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
-    dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})    
+    dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'}) 
+
+def Startup():
+    print('Startup running') 
+    
+    DefaultCalls()
     
     #turn off video mute
     dvScalar.SetVideoMute('Off', {'Output': '1B'})
     dvScalar.SetVideoMute('Off', {'Output': 'Loop Out'})
     tlp.btn_videoMute.SetState(0)   
-
-    dvPRJ.SetAVMute('Off', None)
-    tlp.adv.btn_blankImg.SetState(0)
     
     #main page shown, function called after successful passcode entry
     #TODO - make this center page from dual popup
@@ -39,31 +39,18 @@ def Startup():
     #unlock drawer
     dvRelay.SetState('Close')
     
-def PRJShutdown():
-    dvPRJ.SetPower('Off', None)
-    dvPRJ.Update('Power')
-    
 def Shutdown():
-    dvPRJ.SetAVMute('Off', None)
-    dvPRJ.SetPower('Off', None)
-    dvPRJ.Update('Power')
+    DefaultCalls()
+    
+    def PRJShutdown():
+        dvPRJ.SetPower('Off', None)
+        adv.PRJStatusTimer.Restart()
+
     prjWait = Wait(3, PRJShutdown)
 
-    tlp.adv.btn_blankImg.SetState(0)
-        
     tlp.input_set.SetCurrent(None)
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})
     tlp.wireless_btn_help_set.SetCurrent(None)
-    
-    tlp.MainAudio.lvl_mic.SetLevel(-18)
-    tlp.MainAudio.lvl_prog.SetLevel(-18)
-    
-    dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelSpeech', 'Channel': '1'})
-    dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelProgram', 'Channel': '1'})        
-    dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
-    dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
-    dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
-    dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
     
     dvScalar.SetVideoMute('On', {'Output': '1A'})
     dvScalar.SetVideoMute('Off', {'Output': '1B'})

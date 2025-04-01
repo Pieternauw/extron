@@ -20,8 +20,19 @@ def PowerChanged(command, value, qualifier):
     else:
         tlp.btn_projOn.SetBlinking('Medium', [0, 1])
         tlp.btn_projOff.SetBlinking('Medium', [0, 1])
+        if PRJTimer.Count == 0:
+            PRJTimer.Restart()
         
 dvPRJFront.SubscribeStatus('Power', None, PowerChanged)
+
+def TimerResponse(timer:Timer, count):
+    print("timer count {}".format(count))
+    dvPRJFront.Update('Power')
+    if count > 7:
+        timer.Stop()
+        print("timer stopped")
+
+PRJTimer = Timer(5, TimerResponse)
 
 @eventEx(prj_set.Objects, 'Pressed')
 def ProjectorOnOff(button:tlp.Button, state):
@@ -31,6 +42,7 @@ def ProjectorOnOff(button:tlp.Button, state):
     dvPRJBack.SetPower('On' if button is tlp.btn_projOn else 'Off', None)
     dvPRJFront.Update('Power')
     dvPRJBack.Update('Power')
+    TimerResponse.Resume()
 
 @eventEx(tlp.btn_blankImg, 'Pressed')
 def BlankImage(button:tlp.Button, state):

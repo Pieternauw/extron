@@ -6,6 +6,7 @@ from extronlib.system import Clock, Wait
 from extronlib.ui import Button
 
 import ui.tlp as tlp
+from control.advancedControl import PRJTimer
 
 def Startup():
     print('Startup running')
@@ -39,7 +40,7 @@ def Startup():
 def Shutdown():
     dvPRJBack.SetPower('Off', None)
     dvPRJFront.SetPower('Off', None)
-    dvPRJFront.Update('Power')
+    PRJTimer.Restart()
         
     tlp.input_set.SetCurrent(None)
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})
