@@ -117,6 +117,7 @@ dvCenterPRJ.SubscribeStatus('LampUsage', None, LampUpdateC)
 dvRightPRJ.SubscribeStatus('LampUsage', None, LampUpdateR)
 
 dvBiamp = GetConnectionHandler(dvBiamp, 'MuteControl', keepAliveQueryQualifier={'Instance Tag': 'MuteProgram', 'Channel': '1'}, pollFrequency=30)
+# dvBiamp = GetConnectionHandler(dvBiamp, 'SignalPresentMeter', keepAliveQueryQualifier={'Instance Tag': 'SpeechPresent', 'Channel': '1', 'Meter Name': 'Speech'})
 
 @eventEx(dvBiamp, ['Connected', 'Disconnected'])
 def BiampConnectionHandler(client:EthernetClientInterface, state):

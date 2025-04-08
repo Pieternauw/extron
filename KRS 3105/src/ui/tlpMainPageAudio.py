@@ -1,13 +1,9 @@
-
-
-from modules.helper.MirrorUI import Button, Level 
+from modules.helper.MirrorUI import Button, Level #, Label
 
 from modules.helper.ModuleSupport import eventEx
 from devices import dvTLPMain
 
 BTNEVL = ['Pressed', 'Released']
-
-"""TODO get all the dual projection ones too if they're not the same reference ID numbers """
 
 btn_cProgUp = Button(dvTLPMain, 238, repeatTime=0.2)
 btn_cProgMute = Button(dvTLPMain, 237)
@@ -19,6 +15,12 @@ btn_cMicUp = Button(dvTLPMain, 239, repeatTime=0.2)
 
 lvl_cMic = Level(dvTLPMain, 242)
 lvl_cProg = Level(dvTLPMain, 244)
+
+"""
+lbl_Speech = Label(dvTLPMain, )
+lbl_micNotW = Label(dvTLPMain, )
+lbl_micNotR = Label(dvTLPMain, )
+"""
 
 @eventEx([btn_cMicMute, btn_cProgMute], 'Pressed')
 def MutePressedEvent(button:Button, state):

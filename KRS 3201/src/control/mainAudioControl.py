@@ -1,6 +1,8 @@
 from devices import dvBiamp
 from modules.helper.ModuleSupport import eventEx
 
+#from extronlib.system import Timer
+
 import ui.tlpMainPageAudio as tlp
 
 tlp.lvl_cMic.SetRange(-40, 12, 1)      #check these range numbers, might want to be smaller as well
@@ -62,3 +64,30 @@ def MicControl(button:tlp.Button, state):
             tlp.lvl_cProg.Inc()
         dvBiamp.SetLevelControl(tlp.lvl_cProg.Level, {'Instance Tag': 'LevelProgram', 'Channel': '1'})
 
+"""
+r = True
+
+def FlipLabel(timer:Timer, count):
+    global r
+    print(r)
+    tlp.lbl_micNotR.SetVisible(r)
+    r = not r
+    if count >= 60:
+        timer.Stop()
+
+SpeechTimer = Timer(1, FlipLabel)
+
+def SpeechPresent(command, value, qualifier):
+    print(value)
+    if value == 'Signal Present':
+        SpeechTimer.Stop()
+        tlp.lbl_Speech.SetVisible(True)
+        tlp.lbl_micNotR.SetVisible(False)
+        tlp.lbl_micNotW.SetVisible(False)
+    else:
+        tlp.lbl_Speech.SetVisible(False)
+        tlp.lbl_micNotW.SetVisible(True)
+        SpeechTimer.Restart()     
+    
+dvBiamp.SubscribeStatus('SignalPresentMeter', {'Instance Tag': 'SpeechPresent', 'Channel': '1', 'Meter Name': 'Speech'}, SpeechPresent)
+"""
