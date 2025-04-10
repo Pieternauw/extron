@@ -6,45 +6,37 @@ from modules.helper.ModuleSupport import eventEx
 
 import ui.tlpAdvanced as tlp 
 
-#Exclusive set of the power buttons
 prj_set = MESet([tlp.btn_projOn, tlp.btn_projOff])
-#Set button at declaration to current projector status
 prj_set.SetCurrent(tlp.btn_projOn if dvPRJ.ReadStatus('Power') is 'On' else tlp.btn_projOff)
 
-#Define a repsonse function for subscribe status
 def PowerChanged(command, value, qualifier):
     print(value)
     GVEServer.SendStatus(PRJ_ID, 'Power', value)
-    #If SubscribeStatus calls function with value 'On', set button to on and stop timer. 
     if value is 'On':
         prj_set.SetCurrent(tlp.btn_projOn)
-    #If SubscribeStatus calls fucntion with value 'Off', set off button and stop timer. 
     elif value is 'Off':
         prj_set.SetCurrent(tlp.btn_projOff)
     else:
-        #in the case that no response is sent, or 'Warming Up' or 'Cooling Down', blink the On button and restart the timer
-        tlp.btn_projOn.SetBlinking('Slow', [0, 1])
-        PRJStatusTimer.Restart()
+        tlp.btn_projOn.SetBlinking('Medium', [0, 1])
+        tlp.btn_projOff.SetBlinking('Medium', [0, 1])
+        if PRJStatusTimer.Count == 0:
+            PRJStatusTimer.Restart()
 
-#Timer function called every time timer ends. Calls update function for projector, asking for most recent status. 
-def PowerTimer(timer:Timer, count):
-    dvPRJ.Update('Power')
-
-#5 second timer, stop after definition to prevent errors. 
-PRJStatusTimer = Timer(10, PowerTimer)
-#SubscribeStatus to power with callback function
 dvPRJ.SubscribeStatus('Power', None, PowerChanged)
 
-#Event to handle button press
+def PowerTimer(timer:Timer, count):
+    dvPRJ.Update('Power')
+    if count > 7:
+        timer.Stop()
+
+PRJStatusTimer = Timer(5, PowerTimer)
+
 @eventEx(prj_set.Objects, 'Pressed')
 def ProjectorOnOff(button:tlp.Button, state):
     print(button, state)
-    #Set current MESet to button pressed
     prj_set.SetCurrent(button)
-    #If power on was pressed, send on command
     dvPRJ.SetPower('On' if button is tlp.btn_projOn else 'Off', None)
-    #Update the device to trigger SubscribeStatus, allowing for visual state to correspond with device status. 
-    dvPRJ.Update('Power')
+    PRJStatusTimer.Resume()
     
 @eventEx(tlp.btn_blankImg, 'Pressed')
 def BlankImage(button:tlp.Button, state):
@@ -59,7 +51,7 @@ prg_slider_list = [tlp.sld_wireless, tlp.sld_laptop, tlp.sld_bluray]
 def SliderChanged(slider:tlp.Slider, state, value):
     print(slider.Name, 'Control')
     if slider in mic_slider_list:
-        dvScalar.SetMicLineInputGain(value, {'Input': '{}'.format(mic_slider_list.index(slider) + 1)})  #TODO check these input numbers
+        dvScalar.SetMicLineInputGain(value, {'Input': '{}'.format(mic_slider_list.index(slider) + 1)})
     elif slider in prg_slider_list:
         dvScalar.SetEmbeddedInputGain(value, {'Input': '{}'.format(prg_slider_list.index(slider)+ 1)})
     elif slider is tlp.sld_ampLevelOut:
