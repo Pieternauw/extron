@@ -70,8 +70,10 @@ def HelpPopups(button:Button, state):
     button.SetState(1 if state is 'Pressed' else 0)
     if button in help_set:
         dvTLP.ShowPopup(help_popup[help_set.index(button)])
+        dvTLP.HidePopup('Laptop Connected popup')
     else: 
         dvTLP.HidePopup(help_popup[close_help.index(button)])
+        dvTLP.ShowPopup('Laptop Connected popup')
 
 #Shutdown button
 btn_shutdown = Button(dvTLP, 8)

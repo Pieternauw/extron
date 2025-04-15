@@ -57,7 +57,7 @@ lblLaptopConnected = Label(dvTLP, 133)
 #Help Buttons
 btn_macHelp = Button(dvTLP, 131)
 btn_winHelp = Button(dvTLP, 130)
-btn_exitMacHelp = Button(dvTLP, 58)
+btn_exitMacHelp = Button(dvTLP, 174)
 btn_exitWinHelp = Button(dvTLP, 163)
 
 help_set = [btn_macHelp, btn_winHelp]
@@ -70,8 +70,10 @@ def HelpPopups(button:Button, state):
     button.SetState(1 if state is 'Pressed' else 0)
     if button in help_set:
         dvTLP.ShowPopup(help_popup[help_set.index(button)])
+        dvTLP.HidePopup('Laptop Connected popup')
     else: 
         dvTLP.HidePopup(help_popup[close_help.index(button)])
+        dvTLP.ShowPopup('Laptop Connected popup')
 
 #Shutdown button
 btn_shutdown = Button(dvTLP, 8)

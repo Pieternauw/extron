@@ -123,46 +123,24 @@ def CancelShutdown(button:Button, state):
         
 #Help Buttons
 btn_macHelp = Button(dvTLPMain, 131)
-@eventEx(btn_macHelp, BTNEVL)
-def ShowMacHelpPopup(button:Button, state):
-    print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        button.SetState(1)
-        dvTLPMain.ShowPopup("mac laptop & tablet help popup")
-    elif state == 'Released':
-        button.SetState(0)     
-
 btn_winHelp = Button(dvTLPMain, 130)
-@eventEx(btn_winHelp, BTNEVL)
-def ShowMacHelpPopup(button:Button, state):
-    print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        button.SetState(1)
-        dvTLPMain.ShowPopup("Windows Laptop Help popup")
-    elif state == 'Released':
-        button.SetState(0)
-        
-"""Mac Help Popup"""
 btn_exitMacHelp = Button(dvTLPMain, 174)
-@eventEx(btn_exitMacHelp, BTNEVL)
-def CloseMacHelpPopup(button:Button, state):
-    print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        button.SetState(1)
-        dvTLPMain.HidePopup("mac laptop & tablet help popup")
-    elif state == 'Released':
-        button.SetState(0)
-
-"""Windows Help Popup"""
 btn_exitWinHelp = Button(dvTLPMain, 163)
-@eventEx(btn_exitWinHelp, BTNEVL)
-def CloseMacHelpPopup(button:Button, state):
-    print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        button.SetState(1)
-        dvTLPMain.HidePopup("Windows Laptop Help popup")
-    elif state == 'Released':
-        button.SetState(0)
+
+help_set = [btn_macHelp, btn_winHelp]
+close_help = [btn_exitMacHelp, btn_exitWinHelp]
+help_popup = ["mac laptop & tablet help popup", "Windows Laptop Help popup"]
+
+@eventEx([btn_macHelp, btn_winHelp, btn_exitMacHelp, btn_exitWinHelp], ['Pressed', 'Released'])
+def HelpPopups(button:Button, state):
+    print(button.Name, state)
+    button.SetState(1 if state is 'Pressed' else 0)
+    if button in help_set:
+        dvTLPMain.ShowPopup(help_popup[help_set.index(button)])
+        dvTLPMain.HidePopup('Laptop Connected popup')
+    else: 
+        dvTLPMain.HidePopup(help_popup[close_help.index(button)])
+        dvTLPMain.ShowPopup('Laptop Connected popup')
         
 """Wireless Help Popup"""
 btn_wirelessMac = Button(dvTLPMain, 13)
