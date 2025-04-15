@@ -13,10 +13,6 @@ def ShowAdvancedSettingsPopup(button:Button, state):
     dvTLP.ShowPopup("Advanced Settings")
     
 
-#Activity Timeout
-btn_actTimeout = Button(dvTLP, 155)
-btn_actTimeout.SetVisible(False)
-
 btn_projOn = Button(dvTLP, 24)
 btn_projOff = Button(dvTLP, 25)
 

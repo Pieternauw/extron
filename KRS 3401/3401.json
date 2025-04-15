@@ -4,15 +4,12 @@
         "code_folder_path": "src",
         "code_entry_file": "main.py",
         "layout_folder_path": "layout",
-        "sound_folder_path": "sound",
-        "rfile_folder_path": "rfile",
-        "irfile_folder_path": "ir",
         "system_id": "7942",
         "author": {
             "name": "Pieter Nauwelaerts",
             "email": "pnauwela@ucsc.edu"
         },
-        "version": "2.1.0",
+        "version": "2.2.0",
         "primary_device_alias": "ProcessorAlias"
     },
     "devices": [

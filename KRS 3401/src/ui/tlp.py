@@ -39,7 +39,7 @@ input_popup_list = ['Laptop Connected popup', 'Wireless instruction popup',
 
 #Help Button
 btn_help = Button(dvTLP, 90)
-
+btn_help.SetVisible(False)
 #video Mute
 btn_videoMute = Button(dvTLP, 17)
         
@@ -64,13 +64,17 @@ help_popup = ["mac laptop & tablet help popup", "Windows Laptop Help popup"]
 def ShowHelp(button:Button, state):
     print(button.Name, state)
     button.SetState(1 if state is 'Pressed' else 0)
-    if state is 'Pressed': dvTLP.ShowPopup(help_popup[help_set.index(button)])
+    if state is 'Pressed': 
+        dvTLP.ShowPopup(help_popup[help_set.index(button)])
+        dvTLP.HidePopup('Laptop Connected popup')
 
 @eventEx(close_help, ['Pressed', 'Released'])
 def CloseHelp(button:Button, state):
     print(button.Name, state)
     button.SetState(1 if state is 'Pressed' else 0)
-    if state is 'Pressed': dvTLP.HidePopup(help_popup[close_help.index(button)])
+    if state is 'Pressed': 
+        dvTLP.HidePopup(help_popup[close_help.index(button)])
+        dvTLP.ShowPopup('Laptop Connected popup')
 
 #Shutdown button
 btn_shutdown = Button(dvTLP, 8)
