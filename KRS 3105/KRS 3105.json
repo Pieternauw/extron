@@ -9,7 +9,7 @@
             "name": "Pieter Nauwelaerts",
             "email": "pnauwela@ucsc.edu"
         },
-        "version": "2.2.0",
+        "version": "2.3.0",
         "primary_device_alias": "ProcessorAlias"
     },
     "devices": [
@@ -18,7 +18,7 @@
             "part_number": "60-1917-01",
             "alias": "ProcessorAlias",
             "network": {
-                "host_network_type": "AVLAN",
+                "host_network_type": "LAN",
                 "interfaces": [
                     {
                         "address": "128.114.159.227",

@@ -1,7 +1,7 @@
 from devices import dvBiamp
 from modules.helper.ModuleSupport import eventEx
 
-#from extronlib.system import Timer
+from extronlib.system import Timer
 
 import ui.tlpMainPageAudio as tlp
 
@@ -64,7 +64,6 @@ def MicControl(button:tlp.Button, state):
             tlp.lvl_cProg.Inc()
         dvBiamp.SetLevelControl(tlp.lvl_cProg.Level, {'Instance Tag': 'LevelProgram', 'Channel': '1'})
 
-"""
 r = True
 
 def FlipLabel(timer:Timer, count):
@@ -90,4 +89,3 @@ def SpeechPresent(command, value, qualifier):
         SpeechTimer.Restart()     
     
 dvBiamp.SubscribeStatus('SignalPresentMeter', {'Instance Tag': 'SpeechPresent', 'Channel': '1', 'Meter Name': 'Speech'}, SpeechPresent)
-"""

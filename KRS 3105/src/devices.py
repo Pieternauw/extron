@@ -39,7 +39,7 @@ TLPF_ID = 'TLPF'; TLPB_ID = 'TLPB'; PRJL_ID = 'PRJL'; PRJC_ID = 'PRJC'; PRJR_ID 
 
 dvMatrix = Matrix.EthernetClass('10.10.2.30', 23, Model='XTP II CrossPoint 1600')
 
-dvBiamp = Biamp.SSHClass('10.10.2.40', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', 'wag2748'))
+dvBiamp = Biamp.SSHClass('128.114.159.236', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', 'wag2748'))
 
 #TODO - Change to ethernet
 dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP4K') #4k in room
@@ -116,8 +116,8 @@ dvLeftPRJ.SubscribeStatus('LampUsage', None, LampUpdateL)
 dvCenterPRJ.SubscribeStatus('LampUsage', None, LampUpdateC)
 dvRightPRJ.SubscribeStatus('LampUsage', None, LampUpdateR)
 
-dvBiamp = GetConnectionHandler(dvBiamp, 'MuteControl', keepAliveQueryQualifier={'Instance Tag': 'MuteProgram', 'Channel': '1'}, pollFrequency=30)
-# dvBiamp = GetConnectionHandler(dvBiamp, 'SignalPresentMeter', keepAliveQueryQualifier={'Instance Tag': 'SpeechPresent', 'Channel': '1', 'Meter Name': 'Speech'})
+# dvBiamp = GetConnectionHandler(dvBiamp, 'MuteControl', keepAliveQueryQualifier={'Instance Tag': 'MuteProgram', 'Channel': '1'}, pollFrequency=30)
+dvBiamp = GetConnectionHandler(dvBiamp, 'SignalPresentMeter', keepAliveQueryQualifier={'Instance Tag': 'SpeechPresent', 'Channel': '1', 'Meter Name': 'Speech'})
 
 @eventEx(dvBiamp, ['Connected', 'Disconnected'])
 def BiampConnectionHandler(client:EthernetClientInterface, state):
