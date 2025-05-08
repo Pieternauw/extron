@@ -60,8 +60,7 @@ def TechButtonPressed(button:Button, state):
     button.SetState(1 if state is 'Pressed' else 0)
     if state is 'Pressed':
         print(button.Name, state)
-        global techstr 
-        global techlblstr
+        global techstr, techlblstr
         techstr += button.Name
         techlblstr += '*'
         LblTechString.SetText(techlblstr)
@@ -71,8 +70,7 @@ btn_techEnter = Button(dvTLPMain, 118)
 
 def blank_str():
     global techstr, techlblstr
-    techstr = ''
-    techlblstr = ''
+    techstr = techlblstr = ''
     LblTechString.SetText(techlblstr)
 
 @eventEx([btn_techClear, btn_techEnter], ['Pressed', 'Released'])
@@ -91,15 +89,6 @@ def ExitAdvancedSettingsPopup(button:Button, state):
     print(button.Name, state)
     button.SetState(1 if state is 'Pressed' else 0)
     blank_str()        #clear the passcode before closing the page so it's empty when the user returns 
-    dvTLPMain.HidePopup("Advanced Settings")
-
-#Advanced Exit 
-btn_advSettingsExit = Button(dvTLPMain, 56)
-@eventEx(btn_advSettingsExit, ['Pressed', 'Released'])
-def ExitAdvancedSettingsPopup(button:Button, state):
-    print(button.Name, button.Host, state)
-    button.SetState(1 if state is 'Pressed' else 0)
-    blank_str()          #clear the passcode before closing the page so it's empty when the user returns 
     dvTLPMain.HidePopup("Advanced Settings")
 
 btn_Inactivity = Button(dvTLPMain, 155)

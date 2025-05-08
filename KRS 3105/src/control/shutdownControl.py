@@ -116,8 +116,6 @@ btn_startScreen = Button(dvTLPMain, 19)
 def ShowStartPage(button:Button, state):
     print(button.Name, button.Host, state)
     dvTLPMain.ShowPage("Main passcode")
-    #may want to auto this to the main page if I can't get the passcode going before deployment
-
 
 passcodeFile = File('user/passcode.txt', 'r')
 passcode = str(passcodeFile.readline())
@@ -128,13 +126,10 @@ for Button_IDs in range(141, 151):
     PadButtons.append(Button(dvTLPMain, Button_IDs))
     
 LblPadString = Label(dvTLPMain, 140)
-LblString = ''
-PadString = ''
+LblString = PadString = ''
 def clear_code():
-    global PadString
-    global LblString
-    PadString = ''
-    LblString = ''
+    global PadString, LblString
+    PadString = LblString = ''
     LblPadString.SetText(LblString)
 
 @eventEx(PadButtons, ['Pressed', 'Released'])
@@ -142,8 +137,7 @@ def PadButtonPressed(button:Button, state):
     button.SetState(1 if state is 'Pressed' else 0)
     if state is 'Pressed':
         print(button.Name, state, "Control")
-        global PadString 
-        global LblString
+        global PadString, LblString
         PadString += button.Name
         LblString += '*'
         LblPadString.SetText(LblString)
@@ -151,7 +145,8 @@ def PadButtonPressed(button:Button, state):
 #enter and clear
 btn_passcodeEnter = Button(dvTLPMain, 152)
 btn_passcodeClear = Button(dvTLPMain, 151)
-@eventEx([btn_passcodeEnter, btn_passcodeClear], ['Pressed', 'Released'])
+btn_passcodeCancel = Button(dvTLPMain, 153)
+@eventEx([btn_passcodeEnter, btn_passcodeClear, btn_passcodeCancel], ['Pressed', 'Released'])
 def BtnEnterPasscode(button:Button, state):
     print(button.Name, state)
     global PadString 
@@ -160,13 +155,6 @@ def BtnEnterPasscode(button:Button, state):
         print('startup running')
         dvTLPMain.ShowPopup('Login')
         StartupWait = Wait(1, Startup)
+    elif (button is btn_passcodeCancel):
+        dvTLPMain.ShowPage('Start Page')
     clear_code()
-        
-btn_passcodeCancel = Button(dvTLPMain, 153)
-@eventEx(btn_passcodeCancel, ['Pressed', 'Released'])
-def CancelPasscode(button:Button, state):
-    print(button.Name, state)
-    clear_code()
-    button.SetState(1 if state is 'Pressed' else 0)
-    dvTLPMain.ShowPage('Start Page')
-    
