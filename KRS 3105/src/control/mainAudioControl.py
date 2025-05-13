@@ -73,6 +73,9 @@ def FlipLabel(timer:Timer, count):
     r = not r
     if count >= 60:
         timer.Stop()
+        tlp.lbl_micNotW.SetVisible(False)
+        tlp.lbl_micNotR.SetVisible(True)
+        
 
 SpeechTimer = Timer(1, FlipLabel)
 
