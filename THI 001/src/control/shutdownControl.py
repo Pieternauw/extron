@@ -42,11 +42,8 @@ def Startup():
 def Shutdown():
     DefaultCalls()
     
-    def PRJShutdown():
-        dvPRJ.SetPower('Off', None)
-        adv.PRJStatusTimer.Restart()
-
-    prjWait = Wait(3, PRJShutdown)
+    dvPRJ.SetPower('Off', None)
+    adv.PRJStatusTimer.Restart()
 
     tlp.input_set.SetCurrent(None)
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})
@@ -94,6 +91,7 @@ for Button_IDs in range(141, 151):
 LblPadString = Label(dvTLP, 140)
 LblString = ''
 PadString = ''
+
 def clear_code():
     global PadString
     global LblString
@@ -103,14 +101,14 @@ def clear_code():
 
 @eventEx(PadButtons, ['Pressed', 'Released'])
 def PadButtonPressed(button:Button, state):
-    print(button.Name, state)
-    global PadString 
-    global LblString
-    button.SetStat(1 if state is 'Pressed' else 0)
-    button.SetState(1)
-    PadString += button.Name
-    LblString += '*'
-    LblPadString.SetText(LblString)
+    button.SetState(1 if state is 'Pressed' else 0)
+    if state is 'Pressed':
+        print(button.Name, state, "Control")
+        global PadString 
+        global LblString
+        PadString += button.Name
+        LblString += '*'
+        LblPadString.SetText(LblString)
 
 #enter and clear
 btn_passcodeEnter = Button(dvTLP, 152)
@@ -123,7 +121,7 @@ def BtnEnterPasscode(button:Button, state):
     if (button is btn_passcodeEnter) and ((PadString == '2748') or (PadString == passcode)):      #whatever the current passcode is
         print('startup running')
         dvTLP.ShowPopup('Login')
-        StartupWait = Wait(1, Startup)
+        StartupWait = Wait(3, Startup)
     clear_code()
         
 btn_passcodeCancel = Button(dvTLP, 153)

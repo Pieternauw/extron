@@ -31,7 +31,7 @@ def PowerChanged(command, value, qualifier):
 def PowerTimer(timer:Timer, count):
     print("Timer started")
     dvPRJ.Update('Power')
-    if count > 10:
+    if count > 11:
         timer.Stop()
         print("Timer stopped")
 

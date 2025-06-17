@@ -8,7 +8,7 @@ tlp.lvl_mic.SetRange(-20, 0, 1)
 """TODO - Check if it's Mic in or Mic in"""
 tag_dict = {tlp.btn_progAudioMute: 'MuteProgram', tlp.btn_micAudioMute: 'MuteSpeech'}
 
-@eventEx([tlp.btn_cProgMute, tlp.btn_cMicMute], 'Pressed')
+@eventEx([tlp.btn_progAudioMute, tlp.btn_micAudioMute], 'Pressed')
 def MuteButtonPressed(button:tlp.Button, state):
     print('control', button.Name, state)
     curr = dvBiamp.ReadStatus('MuteControl', {'Instance Tag': tag_dict[button], 'Channel': '1'})
