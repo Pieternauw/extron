@@ -1,11 +1,13 @@
 from devices import dvBiamp
 from modules.helper.ModuleSupport import eventEx
 
+# from extronlib.system import Timer
+
 import ui.tlpMainAudio as tlp 
 
 tlp.lvl_prog.SetRange(-40, 6, 2)     #In steps of 2
 tlp.lvl_mic.SetRange(-20, 0, 1)
-"""TODO - Check if it's Mic in or Mic in"""
+
 tag_dict = {tlp.btn_progAudioMute: 'MuteProgram', tlp.btn_micAudioMute: 'MuteSpeech'}
 
 @eventEx([tlp.btn_progAudioMute, tlp.btn_micAudioMute], 'Pressed')
@@ -62,3 +64,30 @@ def MicControlEvent(button:tlp.Button, state):
             tlp.lvl_prog.Inc()
         dvBiamp.SetLevelControl(tlp.lvl_prog.Level, {'Instance Tag': 'LevelProgram', 'Channel': '1'})
  
+# r = True
+
+# def FlipLabel(timer:Timer, count):
+#     global r
+#     print(r)
+#     tlp.lbl_micNotR.SetVisible(r)
+#     r = not r
+#     if count >= 60:
+#         timer.Stop()
+#         tlp.lbl_micNotW.SetVisible(False)
+#         tlp.lbl_micNotR.SetVisible(True)
+        
+# SpeechTimer = Timer(1, FlipLabel)
+
+# def SpeechPresent(command, value, qualifier);
+#     print(value)
+#     if value == "Signal Present":
+#         SpeechTimer.Stop()
+#         tlp.lbl_Speech.SetVisible(True)
+#         tlp.lbl_micNotR.SetVisible(False)
+#         tlp.lbl_micNotW.SetVisible(False)
+#     else:
+#         tlp.lbl_Speech.SetVisible(False)
+#         tlp.lbl_micNotW.SetVisible(True)
+#         SpeechTimer.Restart()
+        
+# dvBiamp.SubscribeStatus('SignalPresentMeter', {'Instance Tag': 'SpeechPresent', 'Channel': '1', 'Meter Name': 'Speech'}, SpeechPresent)
