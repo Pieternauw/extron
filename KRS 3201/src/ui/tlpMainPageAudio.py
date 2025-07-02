@@ -18,11 +18,11 @@ btn_cMicUp = Button(dvTLPMain, 239, repeatTime=0.2)
 lvl_cMic = Level(dvTLPMain, 242)
 lvl_cProg = Level(dvTLPMain, 244)
 
-"""
-lbl_Speech = Label(dvTLPMain, )
-lbl_micNotW = Label(dvTLPMain, )
-lbl_micNotR = Label(dvTLPMain, )
-"""
+
+# lbl_Speech = Label(dvTLPMain, 1245)
+# lbl_micNotW = Label(dvTLPMain, 1246)
+# lbl_micNotR = Label(dvTLPMain, 1247)
+
 
 @eventEx([btn_cMicMute, btn_cProgMute], 'Pressed')
 def MutePressedEvent(button:Button, state):
