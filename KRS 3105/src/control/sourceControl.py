@@ -1,4 +1,4 @@
-from devices import dvMatrix, dvCenterPRJ, dvRightPRJ, dvLeftPRJ
+from devices import dvMatrix #, dvCenterPRJ, dvRightPRJ, dvLeftPRJ
 
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button
@@ -18,16 +18,16 @@ def SourceSelection(button:Button, state):
     #turn on projector corresponding to whichever mode was selected. Can reduce redundancy by comparing to prj_select variable instead of mode variable. 
     if tlp.prj_select == 1:
         output = tlp.left_input_set.Objects.index(button) + 1
-        dvLeftPRJ.SetPower('On', None)
-        dvLeftPRJ.Update('Power')
+        # dvLeftPRJ.SetPower('On', None)
+        # dvLeftPRJ.Update('Power')
     elif tlp.prj_select == 2:
         output = tlp.center_input_set.Objects.index(button) + 1
-        dvCenterPRJ.SetPower('On', None)
-        dvCenterPRJ.Update('Power')
+        # dvCenterPRJ.SetPower('On', None)
+        # dvCenterPRJ.Update('Power')
     elif tlp.prj_select == 3:
         output = tlp.right_input_set.Objects.index(button) + 1
-        dvRightPRJ.SetPower('On', None)
-        dvRightPRJ.Update('Power')
+        # dvRightPRJ.SetPower('On', None)
+        # dvRightPRJ.Update('Power')
     
     #left and right board cams special case where input value is the same as yuja value (9 for left and center, 10 for right). can be hardcoded 
     if button in [tlp.btn_lBoardCams, tlp.btn_rBoardCams]:
