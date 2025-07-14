@@ -1,4 +1,5 @@
-from devices import dvMatrix, dvCenterPRJ, dvRightPRJ, dvLeftPRJ, dvBiamp, dvTLPMain
+from devices import dvMatrix, dvBiamp, dvTLPMain
+#dvCenterPRJ, dvRightPRJ, dvLeftPRJ, 
 
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button, Label
