@@ -1,4 +1,5 @@
-from devices import dvCenterPRJ, GVEServer, PRJL_ID, PRJC_ID, PRJR_ID
+from devices import dvCenterPRJ, GVEServer, PRJC_ID
+#, PRJL_ID,  PRJR_ID
 # dvRightPRJ, dvLeftPRJ, 
 
 import ui.tlpAdvanced as tlp
