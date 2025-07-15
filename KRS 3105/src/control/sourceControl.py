@@ -1,4 +1,4 @@
-from devices import dvMatrix #, dvCenterPRJ, dvRightPRJ, dvLeftPRJ
+from devices import dvMatrix, dvCenterPRJ #, dvRightPRJ, dvLeftPRJ
 
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button
@@ -22,8 +22,8 @@ def SourceSelection(button:Button, state):
         # dvLeftPRJ.Update('Power')
     elif tlp.prj_select == 2:
         output = tlp.center_input_set.Objects.index(button) + 1
-        # dvCenterPRJ.SetPower('On', None)
-        # dvCenterPRJ.Update('Power')
+        dvCenterPRJ.SetPower('On', None)
+        dvCenterPRJ.Update('Power')
     elif tlp.prj_select == 3:
         output = tlp.right_input_set.Objects.index(button) + 1
         # dvRightPRJ.SetPower('On', None)

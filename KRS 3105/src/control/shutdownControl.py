@@ -1,5 +1,5 @@
-from devices import dvMatrix, dvBiamp, dvTLPMain
-#dvCenterPRJ, dvRightPRJ, dvLeftPRJ, 
+from devices import dvMatrix, dvBiamp, dvTLPMain, dvCenterPRJ
+# , dvRightPRJ, dvLeftPRJ, 
 
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button, Label
@@ -21,7 +21,7 @@ def Startup():
     dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
     dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
 
-    # dvCenterPRJ.SetAVMute('Off', None)
+    dvCenterPRJ.SetAVMute('Off', None)
     tlp.adv.btn_blankImg.SetState(0)
     # dvLeftPRJ.SetAVMute('Off', None)
     tlp.adv.btn_lBlankImg.SetState(0)
@@ -40,7 +40,7 @@ def Startup():
     #No ties for matrix, there might already be ties in place. Plus if they reselect 
     #then ties will be made. 
     #send to room select page and open up the relay drawer
-    dvTLPMain.ShowPage('room mode select')
+    dvTLPMain.ShowPage('C Projection')
     dvMatrix.Set('Relay', 'Close', {'Output': '4', 'Relay': '1'})
     
 def Shutdown():
@@ -53,16 +53,16 @@ def Shutdown():
     tlp.adv.btn_rBlankImg.SetState(0)
     
     
-    # def PRJShutoff():
-    #     dvCenterPRJ.SetPower('Off', None)
+    def PRJShutoff():
+        dvCenterPRJ.SetPower('Off', None)
     #     dvRightPRJ.SetPower('Off', None)
     #     dvLeftPRJ.SetPower('Off', None)
     
-    #     dvCenterPRJ.Update('Power')
+        dvCenterPRJ.Update('Power')
     #     dvRightPRJ.Update('Power')
     #     dvLeftPRJ.Update('Power') 
         
-    # PRJ_Shutoff = Wait(2, PRJShutoff)
+    PRJ_Shutoff = Wait(2, PRJShutoff)
     
     #set source buttons to all be deselected
     tlp.tlpSourceSelect.left_input_set.SetCurrent(None)
