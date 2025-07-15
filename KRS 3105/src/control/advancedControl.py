@@ -3,7 +3,7 @@ from devices import dvCenterPRJ, GVEServer, PRJL_ID, PRJC_ID, PRJR_ID
 
 import ui.tlpAdvanced as tlp
 
-from extronlib.system import MESet
+from extronlib.system import MESet, Timer
 
 from modules.helper.MirrorUI import Button
 from modules.helper.ModuleSupport import eventEx 
@@ -18,6 +18,18 @@ prj_set.SetCurrent(tlp.btn_projOn if dvCenterPRJ.ReadStatus('Power') is 'On' els
 # r_prj_set = MESet([tlp.btn_rPrjOn, tlp.btn_rPrjOff])
 # r_prj_set.SetCurrent(tlp.btn_rPrjOn if dvRightPRJ.ReadStatus('Power') is 'On' else tlp.btn_rPrjOff)
 
+# def CenterPowerChanged(command, value, qualifier):
+#     GVEServer.SendStatus(PRJC_ID, 'Power', value)
+#     if value is 'On' or value is 'Off':
+#         prj_set.SetCurrent(tlp.btn_projOn if value == 'On' else tlp.btn_projOff)
+#     else:
+#         tlp.btn_projOn.SetBlinking('Medium', [0, 1])
+#         tlp.btn_projOff.SetBlinking('Medium', [0, 1])
+
+# dvCenterPRJ.SubscribeStatus('Power', None, CenterPowerChanged)
+
+# TEMP CODE
+
 def CenterPowerChanged(command, value, qualifier):
     GVEServer.SendStatus(PRJC_ID, 'Power', value)
     if value is 'On' or value is 'Off':
@@ -25,8 +37,19 @@ def CenterPowerChanged(command, value, qualifier):
     else:
         tlp.btn_projOn.SetBlinking('Medium', [0, 1])
         tlp.btn_projOff.SetBlinking('Medium', [0, 1])
+        if PRJCenterTimer.Count == 0: PRJCenterTimer.Restart()
+        else: PRJCenterTimer.Resume()
 
 dvCenterPRJ.SubscribeStatus('Power', None, CenterPowerChanged)
+
+def CenterTimer(timer:Timer, count):
+    print("Center Timer Count {}".format(count))
+    dvCenterPRJ.Update('Power')
+    if count > 10:
+        timer.Stop()
+        print("Center timer stopped")
+        
+PRJCenterTimer = Timer(5, CenterTimer)
 
 # def LeftPowerChanged(command, value, qualifier):
 #     GVEServer.SendStatus(PRJL_ID, 'Power', value)
@@ -58,6 +81,7 @@ def ProjectorOnOff(button:Button, state):
     if button in prj_set.Objects:
         dvCenterPRJ.SetPower('On' if button is tlp.btn_projOn else 'Off', None)
         dvCenterPRJ.Update('Power')
+        PRJCenterTimer.Restart()
     # elif button in l_prj_set.Objects:
     #     dvLeftPRJ.SetPower('On' if button is tlp.btn_lPrjOn else 'Off', None)
     #     dvLeftPRJ.Update('Power')
