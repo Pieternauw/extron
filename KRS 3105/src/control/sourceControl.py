@@ -3,6 +3,8 @@ from devices import dvMatrix, dvCenterPRJ #, dvRightPRJ, dvLeftPRJ
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button
 
+from extronlib.system import Wait
+
 import ui.tlpSourceSelect as tlp
 
 @eventEx([tlp.btn_cBoard1, tlp.btn_cBoard2, tlp.btn_cBoard3], 'Pressed')
@@ -33,13 +35,22 @@ def SourceSelection(button:Button, state):
     if button in [tlp.btn_lBoardCams, tlp.btn_rBoardCams]:
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.prj_select), 'Tie Type': 'Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.monitor_select),'Tie Type': 'Audio/Video'})
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.yuja_select),'Tie Type': 'Audio/Video'})
+        
+        def YuJaWait_bc():
+            dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(tlp.yuja_select), 'Output': '{}'.format(tlp.yuja_select),'Tie Type': 'Audio/Video'})
+            
+        YuJa_Wait_bc = Wait(1, YuJaWait_bc)
         #no tie to output 12 since no audio comes through (reduce error chance)
     else:
         #button pressed was not a board camera. This code works for any button left right or center, setting the input to all of the correct projectors and outputs needed to be tied. 
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.prj_select), 'Tie Type':'Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.monitor_select), 'Tie Type': 'Audio/Video'})
-        dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.yuja_select), 'Tie Type':'Audio/Video'})
+        
+        def YuJaWait_m():
+            dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.yuja_select), 'Tie Type':'Audio/Video'})
+        
+        YuJa_Wait_m = Wait(1, YuJaWait_m)
+        
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '12', 'Tie Type': 'Audio/Video'})
         #for error prevention, tie yuja output from BluRay to a blank screen. HDCP content is not allowed to Yuja so needs to be not sent. 
         if button in [tlp.btn_cBluray, tlp.btn_lBluray, tlp.btn_rBluray]:

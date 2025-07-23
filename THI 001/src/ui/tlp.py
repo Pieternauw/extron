@@ -119,4 +119,4 @@ btn_shdnNo = Button(dvTLP, 7)
 @eventEx(btn_shdnNo, 'Pressed')
 def ShutdownNo(button:Button, state):
     print(button.Name, state)
-    dvTLP.ShowPage("Main Page")
+    dvTLP.ShowPage("C Projection")
