@@ -7,10 +7,12 @@ import variables as var
 import control.advancedControl as adv
 
 #Device Imports
-from devices import dvScalar, dvPRJ
+from devices import dvScalar, dvPRJ, GVEServer, PRJ_ID
 
 input_popup_list = ['Laptop Connected popup', 'wireless popup', 
               'Document camera instruction popup', 'Mac Help popup', 'BluRay control popup']
+
+source_list = ['LAPTOP HDMI', 'WIRELESS', 'DOC CAM', 'INSTRUCTOR PC', 'BLU RAY']
 
 @eventEx(tlp.input_set.Objects, 'Pressed')
 def ControlInput(button:tlp.Button, state):
@@ -24,6 +26,7 @@ def ControlInput(button:tlp.Button, state):
     tlp.input_set.SetCurrent(button)
     adv.PRJStatusTimer.Restart()
     tlp.wireless_btn_help_set.SetCurrent(None)
+    GVEServer.SendStatus(PRJ_ID, 'Source', source_list[tlp.input_set.Objects.index(button)])
     
 @eventEx(tlp.btn_videoMute, 'Pressed')
 def VideoMuteControl(button:tlp.Button, state):

@@ -1,4 +1,4 @@
-from devices import dvScalar, dvPRJ, dvTLP, dvRelay
+from devices import dvScalar, dvPRJ, dvTLP, dvRelay, GVEServer, PRJ_ID
 
 from modules.helper.ModuleSupport import eventEx 
 
@@ -45,6 +45,7 @@ def Shutdown():
         
     tlp.input_set.SetCurrent(None)
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})
+    GVEServer.SendStatus(PRJ_ID, 'Source', 'SYSTEM OFF')
     
     tlp.MainAudio.lvl_mic.SetLevel(-18)
     tlp.MainAudio.lvl_prog.SetLevel(-18)

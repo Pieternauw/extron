@@ -7,10 +7,12 @@ import variables as var
 import control.advancedControl as adv
 
 #Device Imports
-from devices import dvScalar, dvPRJ
+from devices import dvScalar, dvPRJ, PRJ_ID, GVEServer
 
 input_popup_list = ['Laptop Connected popup', 'Wireless insturction popup', 
               'Document camera instruction popup', 'BluRay control popup']
+
+source_list = ['LAPTOP HDMI', 'WIRELESS', 'DOC CAM', 'BLU RAY']
 
 @eventEx(tlp.input_set.Objects, 'Pressed')
 def ControlInput(button:tlp.Button, state):
@@ -21,6 +23,7 @@ def ControlInput(button:tlp.Button, state):
     tlp.dvTLP.ShowPopup(input_popup_list[tlp.input_set.Objects.index(button)])
     tlp.input_set.SetCurrent(button)
     adv.PRJStatusTimer.Restart()
+    GVEServer.SendStatus(PRJ_ID, 'Source', source_list[tlp.input_set.Objects.index(button)])
     
 @eventEx(tlp.btn_videoMute, 'Pressed')
 def VideoMuteControl(button:tlp.Button, state):

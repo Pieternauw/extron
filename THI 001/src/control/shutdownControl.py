@@ -1,4 +1,4 @@
-from devices import dvScalar, dvPRJ, dvTLP, dvRelay, dvBiamp
+from devices import dvScalar, dvPRJ, dvTLP, dvRelay, dvBiamp, GVEServer, PRJ_ID
 
 from modules.helper.ModuleSupport import eventEx 
 
@@ -48,6 +48,7 @@ def Shutdown():
     tlp.input_set.SetCurrent(None)
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})
     tlp.wireless_btn_help_set.SetCurrent(None)
+    GVEServer.SendStatus(PRJ_ID, 'Source', 'SYSTEM OFF')
     
     dvScalar.SetVideoMute('On', {'Output': '1A'})
     dvScalar.SetVideoMute('Off', {'Output': '1B'})
