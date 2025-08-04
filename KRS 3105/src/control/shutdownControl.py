@@ -1,5 +1,5 @@
-from devices import dvMatrix, dvBiamp, dvTLPMain, dvCenterPRJ
-# , dvRightPRJ, dvLeftPRJ, 
+from devices import dvMatrix, dvBiamp, dvTLPMain, dvCenterPRJ, GVEServer, PRJC_ID
+# , dvRightPRJ, dvLeftPRJ, PRJL_ID, PRJR_ID
 
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button, Label
@@ -52,7 +52,6 @@ def Shutdown():
     # dvRightPRJ.SetAVMute('Off', None)
     tlp.adv.btn_rBlankImg.SetState(0)
     
-    
     def PRJShutoff():
         dvCenterPRJ.SetPower('Off', None)
     #     dvRightPRJ.SetPower('Off', None)
@@ -94,6 +93,10 @@ def Shutdown():
     dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '9', 'Tie Type': 'Audio/Video'}) #Cynap to YuJa
     dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '10', 'Tie Type': 'Audio/Video'}) #Cynap to YuJa
     
+    GVEServer.SendStatus(PRJC_ID, 'Source', 'SYSTEM OFF')
+    # GVEServer.SendStatus(PRJL_ID, 'Source', 'SYSTEM OFF')
+    # GVEServer.SendStatus(PRJR_ID, 'Source', 'SYSTEM OFF')
+    
     #Show the start page and lock the drawer. Hides popups
     dvTLPMain.ShowPage('Start Page')
     dvMatrix.Set('Relay', 'Open', {'Output': '4', 'Relay': '1'})
@@ -103,7 +106,6 @@ def Shutdown():
 def ShutdownConfirm(button:Button, state):
     print(button.Name, button.Host, state)
     Shutdown()
-    
         
 def ShutdownSystem(clock, dt):
     Shutdown()

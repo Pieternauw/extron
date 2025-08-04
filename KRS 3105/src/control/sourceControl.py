@@ -1,4 +1,4 @@
-from devices import dvMatrix, dvCenterPRJ #, dvRightPRJ, dvLeftPRJ
+from devices import dvMatrix, dvCenterPRJ, GVEServer, PRJC_ID #, dvRightPRJ, dvLeftPRJ, PRJR_ID, PRJL_ID
 
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button
@@ -6,6 +6,8 @@ from modules.helper.MirrorUI import Button
 from extronlib.system import Wait
 
 import ui.tlpSourceSelect as tlp
+
+source_list = ['LAPTOP', 'WIRELESS', 'INSTALLED PC', 'DOC CAM', 'DOC CAM', 'BLU RAY', 'CAMERA']
 
 @eventEx([tlp.btn_cBoard1, tlp.btn_cBoard2, tlp.btn_cBoard3], 'Pressed')
 def CenterBoardSelectInput(button:Button, state):
@@ -22,14 +24,18 @@ def SourceSelection(button:Button, state):
         output = tlp.left_input_set.Objects.index(button) + 1
         # dvLeftPRJ.SetPower('On', None)
         # dvLeftPRJ.Update('Power')
+        # GVEServer.SendStatus(PRJL_ID, 'Source', source_list[output - 1])
     elif tlp.prj_select == 2:
         output = tlp.center_input_set.Objects.index(button) + 1
         dvCenterPRJ.SetPower('On', None)
         dvCenterPRJ.Update('Power')
+        GVEServer.SendStatus(PRJC_ID, 'Source', source_list[output - 1])
     elif tlp.prj_select == 3:
         output = tlp.right_input_set.Objects.index(button) + 1
         # dvRightPRJ.SetPower('On', None)
         # dvRightPRJ.Update('Power')
+        # GVEServer.SendStatus(PRJR_ID, 'Source', source_list[output - 1])
+        
     
     #left and right board cams special case where input value is the same as yuja value (9 for left and center, 10 for right). can be hardcoded 
     if button in [tlp.btn_lBoardCams, tlp.btn_rBoardCams]:
