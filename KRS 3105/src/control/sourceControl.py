@@ -1,4 +1,4 @@
-from devices import dvMatrix, dvCenterPRJ, GVEServer, PRJC_ID #, dvRightPRJ, dvLeftPRJ, PRJR_ID, PRJL_ID
+from devices import dvMatrix, dvCenterPRJ, GVEServer, dvRightPRJ, dvLeftPRJ, PRJR_ID, PRJL_ID, PRJC_ID
 
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button
@@ -22,9 +22,9 @@ def SourceSelection(button:Button, state):
     #turn on projector corresponding to whichever mode was selected. Can reduce redundancy by comparing to prj_select variable instead of mode variable. 
     if tlp.prj_select == 1:
         output = tlp.left_input_set.Objects.index(button) + 1
-        # dvLeftPRJ.SetPower('On', None)
-        # dvLeftPRJ.Update('Power')
-        # GVEServer.SendStatus(PRJL_ID, 'Source', source_list[output - 1])
+        dvLeftPRJ.SetPower('On', None)
+        dvLeftPRJ.Update('Power')
+        GVEServer.SendStatus(PRJL_ID, 'Source', source_list[output - 1])
     elif tlp.prj_select == 2:
         output = tlp.center_input_set.Objects.index(button) + 1
         dvCenterPRJ.SetPower('On', None)
@@ -32,9 +32,9 @@ def SourceSelection(button:Button, state):
         GVEServer.SendStatus(PRJC_ID, 'Source', source_list[output - 1])
     elif tlp.prj_select == 3:
         output = tlp.right_input_set.Objects.index(button) + 1
-        # dvRightPRJ.SetPower('On', None)
-        # dvRightPRJ.Update('Power')
-        # GVEServer.SendStatus(PRJR_ID, 'Source', source_list[output - 1])
+        dvRightPRJ.SetPower('On', None)
+        dvRightPRJ.Update('Power')
+        GVEServer.SendStatus(PRJR_ID, 'Source', source_list[output - 1])
         
     
     #left and right board cams special case where input value is the same as yuja value (9 for left and center, 10 for right). can be hardcoded 

@@ -1,5 +1,4 @@
-from devices import dvMatrix, dvBiamp, dvTLPMain, dvCenterPRJ, GVEServer, PRJC_ID
-# , dvRightPRJ, dvLeftPRJ, PRJL_ID, PRJR_ID
+from devices import dvMatrix, dvBiamp, dvTLPMain, dvCenterPRJ, dvRightPRJ, dvLeftPRJ, GVEServer, PRJC_ID, PRJL_ID, PRJR_ID
 
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button, Label
@@ -23,9 +22,9 @@ def Startup():
 
     dvCenterPRJ.SetAVMute('Off', None)
     tlp.adv.btn_blankImg.SetState(0)
-    # dvLeftPRJ.SetAVMute('Off', None)
+    dvLeftPRJ.SetAVMute('Off', None)
     tlp.adv.btn_lBlankImg.SetState(0)
-    # dvRightPRJ.SetAVMute('Off', None)
+    dvRightPRJ.SetAVMute('Off', None)
     tlp.adv.btn_rBlankImg.SetState(0)
 
     for j in ['1', '2', '3', '9', '10']:
@@ -40,26 +39,26 @@ def Startup():
     #No ties for matrix, there might already be ties in place. Plus if they reselect 
     #then ties will be made. 
     #send to room select page and open up the relay drawer
-    dvTLPMain.ShowPage('C Projection')
+    dvTLPMain.ShowPage('room mode select')
     dvMatrix.Set('Relay', 'Close', {'Output': '4', 'Relay': '1'})
     
 def Shutdown():
     #shut off projectors and update buttons with SubscribeStatus()
     # dvCenterPRJ.SetAVMute('Off', None)
     tlp.adv.btn_blankImg.SetState(0)
-    # dvLeftPRJ.SetAVMute('Off', None)
+    dvLeftPRJ.SetAVMute('Off', None)
     tlp.adv.btn_lBlankImg.SetState(0)
-    # dvRightPRJ.SetAVMute('Off', None)
+    dvRightPRJ.SetAVMute('Off', None)
     tlp.adv.btn_rBlankImg.SetState(0)
     
     def PRJShutoff():
         dvCenterPRJ.SetPower('Off', None)
-    #     dvRightPRJ.SetPower('Off', None)
-    #     dvLeftPRJ.SetPower('Off', None)
+        dvRightPRJ.SetPower('Off', None)
+        dvLeftPRJ.SetPower('Off', None)
     
         dvCenterPRJ.Update('Power')
-    #     dvRightPRJ.Update('Power')
-    #     dvLeftPRJ.Update('Power') 
+        dvRightPRJ.Update('Power')
+        dvLeftPRJ.Update('Power') 
         
     PRJ_Shutoff = Wait(2, PRJShutoff)
     
@@ -94,8 +93,8 @@ def Shutdown():
     dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '10', 'Tie Type': 'Audio/Video'}) #Cynap to YuJa
     
     GVEServer.SendStatus(PRJC_ID, 'Source', 'SYSTEM OFF')
-    # GVEServer.SendStatus(PRJL_ID, 'Source', 'SYSTEM OFF')
-    # GVEServer.SendStatus(PRJR_ID, 'Source', 'SYSTEM OFF')
+    GVEServer.SendStatus(PRJL_ID, 'Source', 'SYSTEM OFF')
+    GVEServer.SendStatus(PRJR_ID, 'Source', 'SYSTEM OFF')
     
     #Show the start page and lock the drawer. Hides popups
     dvTLPMain.ShowPage('Start Page')

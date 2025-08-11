@@ -18,8 +18,8 @@ from extronlib.interface import EthernetClientInterface
 from modules.device import extr_matrix_XTPIICrossPointSeries_v1_12_0_1 as Matrix
 from modules.device import biam_dsp_TesiraSeries_v1_15_1_0 as Biamp
 from modules.device import tasc_bluray_BD_MP4K_v1_0_0_0 as Bluray
-# from modules.device import epsn_vp_CB_EB_PU_21xxW_22xxB_Series_v1_0_0_0 as Projector
-from modules.device import epsn_vp_CB_EB_PU100xx_PU2010x_Series_v1_0_2_0 as Projector
+from modules.device import epsn_vp_CB_EB_PU_21xxW_22xxB_Series_v1_0_0_0 as Projector
+# from modules.device import epsn_vp_CB_EB_PU100xx_PU2010x_Series_v1_0_2_0 as Projector
 from modules.device import extr_dsp_SSP_200_v1_0_0_0 as SSP
 from modules.helper.ConnectionHandler import GetConnectionHandler
 from modules.helper.ModuleSupport import eventEx
@@ -37,9 +37,9 @@ dvTLPMain = MirrorUIDevice([dvTLPFront, dvTLPBooth])
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
 TLPF_ID = 'TLPF'; TLPB_ID = 'TLPB' 
-# PRJL_ID = 'PRJL';
+PRJL_ID = 'PRJL'
 PRJC_ID = 'PRJC'
-# ; PRJR_ID = 'PRJR'
+PRJR_ID = 'PRJR'
 BMP_ID = 'Biamp'; BLU_ID = 'Bluray'; SW_ID = 'Matrix'; IPCP_ID = 'IPCP'; SSP_ID = 'SSP'
 
 dvMatrix = Matrix.EthernetClass('10.10.2.30', 23, Model='XTP II CrossPoint 1600')
@@ -52,9 +52,9 @@ dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP4K') #4k in room
 #dvBoardCam1 = BoardCam.SerialClass(dvIPCP, 'COM2', Model='AT-HDVS-CAM')
 #dvBoardCam2 = BoardCam.SerialClass(dvIPCP, 'COM1', Model='AT-HDVS-CAM')
 
-# dvLeftPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2033, Model='CB-PU2220B')       #for 150 and 600 there are two different models
-dvCenterPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2034, Model='CB-PU2010B')
-# dvRightPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2035, Model='CB-PU2220B')
+dvLeftPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2033, Model='CB-PU2220B')       #for 150 and 600 there are two different models
+dvCenterPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2034, Model='CB-PU2220B')
+dvRightPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2035, Model='CB-PU2220B')
 
 dvSSP = SSP.SSHClass('10.10.2.42', 22023, Model='SSP 200', Credentials=('admin', 'wag2748'))
 
@@ -90,22 +90,16 @@ def BlurayConnectionHandler(client:EthernetClientInterface, state):
         client.StopKeepAlive()
         BlurayConnectionTimer.Restart()
 
-# dvLeftPRJ = GetConnectionHandler(dvLeftPRJ, 'Power', pollFrequency=30)
+dvLeftPRJ = GetConnectionHandler(dvLeftPRJ, 'Power', pollFrequency=30)
 dvCenterPRJ = GetConnectionHandler(dvCenterPRJ, 'Power', pollFrequency=10)
-# dvRightPRJ = GetConnectionHandler(dvRightPRJ, 'Power', pollFrequency=30)
+dvRightPRJ = GetConnectionHandler(dvRightPRJ, 'Power', pollFrequency=30)
 
 PRJ_DICT = {
-    # dvLeftPRJ: PRJL_ID, 
-    dvCenterPRJ: PRJC_ID
-    # , dvRightPRJ: PRJR_ID
-    }
+    dvLeftPRJ: PRJL_ID, dvCenterPRJ: PRJC_ID, dvRightPRJ: PRJR_ID
+}
 
 #check if I can do client.Update('Power') instead of casting each
-@eventEx([
-    # dvLeftPRJ, 
-    dvCenterPRJ
-    #, dvRightPRJ
-    ], ['Connected', 'Disconnected'])
+@eventEx([dvLeftPRJ, dvCenterPRJ, dvRightPRJ], ['Connected', 'Disconnected'])
 def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     print('Projector on IP {0} is {1}'.format(client.IPAddress, state))
     GVEServer.SendStatus(PRJ_DICT[client], 'Connection', state)
@@ -116,18 +110,18 @@ def ProjectorConnectionHandler(client:EthernetClientInterface, state):
     else:
         client.Connect(5)
 
-# def LampUpdateL(command, value, qualifier):
-#     GVEServer.SendStatus(PRJL_ID, 'Lamp 1 Hours', value)
+def LampUpdateL(command, value, qualifier):
+    GVEServer.SendStatus(PRJL_ID, 'Lamp 1 Hours', value)
 
 def LampUpdateC(command, value, qualifier):
     GVEServer.SendStatus(PRJC_ID, 'Lamp 1 Hours', value)
 
-# def LampUpdateR(command, value, qualifier):
-#     GVEServer.SendStatus(PRJR_ID, 'Lamp 1 Hours', value)
+def LampUpdateR(command, value, qualifier):
+    GVEServer.SendStatus(PRJR_ID, 'Lamp 1 Hours', value)
 
-# dvLeftPRJ.SubscribeStatus('LampUsage', None, LampUpdateL)
+dvLeftPRJ.SubscribeStatus('LampUsage', None, LampUpdateL)
 dvCenterPRJ.SubscribeStatus('LampUsage', None, LampUpdateC)
-# dvRightPRJ.SubscribeStatus('LampUsage', None, LampUpdateR)
+dvRightPRJ.SubscribeStatus('LampUsage', None, LampUpdateR)
 
 # dvBiamp = GetConnectionHandler(dvBiamp, 'MuteControl', keepAliveQueryQualifier={'Instance Tag': 'MuteProgram', 'Channel': '1'}, pollFrequency=30)
 dvBiamp = GetConnectionHandler(dvBiamp, 'SignalPresentMeter', keepAliveQueryQualifier={'Instance Tag': 'SpeechPresent', 'Channel': '1', 'Meter Name': 'Speech'})
