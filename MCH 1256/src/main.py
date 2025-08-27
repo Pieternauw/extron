@@ -15,7 +15,7 @@ print('ControlScript', Platform(), Version())
 # Project imports
 import variables
 import devices
-import HAVC.src.ui.nbp
+import src.ui.nbp
 import control.av
 import system
 
