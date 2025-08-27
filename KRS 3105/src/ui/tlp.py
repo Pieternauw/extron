@@ -19,11 +19,8 @@ btn_startScreen = Button(dvTLPMain, 19)
 @eventEx(btn_startScreen, BTNEVL)
 def StartScreen(button:Button, state):
     print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        button.SetState(1)
-        dvTLPMain.ShowPage('Main passcode')
-    elif state == 'Released':
-        button.SetState(0)
+    button.SetState(1 if state is 'Pressed' else 0)
+    if state == 'Pressed': dvTLPMain.ShowPage('Main passcode')
 
 selected = False
 dual = False
@@ -34,37 +31,34 @@ btn_singleDisplay = Button(dvTLPMain, 30)
 def SingleDisplay(button:Button, state):
     global selected, dual
     print(button.Name, button.Host, state)
+    button.SetState(1 if state is 'Pressed' else 0)
     if state == 'Pressed':
-        button.SetState(1)
         dvTLPMain.ShowPage('C Projection')
         dvTLPMain.ShowPopup('center mode confirm')
         selected = True
         dual = False
-    elif state == 'Released':
-        button.SetState(0)
     
 btn_dualDisplay = Button(dvTLPMain, 31)
 @eventEx(btn_dualDisplay, BTNEVL)
 def DualDisplay(button:Button, state):
     global selected, dual
     print(button.Name, button.Host, state)
+    button.SetState(1 if state is 'Pressed' else 0)
     if state == 'Pressed':
         button.SetState(1)
         dvTLPMain.ShowPage('DualProjection')
         dvTLPMain.ShowPopup('dual mode confirm')
         selected = True
         dual = True
-    elif state == 'Released':
-        button.SetState(0)
-
+        
 """confirmation button """
 btn_cConfirm = Button(dvTLPMain, 46)
 btn_dConfirm = Button(dvTLPMain, 17)
 @eventEx([btn_cConfirm, btn_dConfirm], BTNEVL)
 def CenterConfirm(button:Button, state):
     print(button.Name, button.Host, state)
+    button.SetState(1 if state is 'Pressed' else 0)
     if state == 'Pressed':
-        button.SetState(1)
         dvTLPMain.HideAllPopups()
         dvTLPMain.ShowPage('room mode select')
         
@@ -75,21 +69,15 @@ btn_dTopHelp = Button(dvTLPMain, 11)
 @eventEx([btn_cHelpPopup, btn_dBottomHelp, btn_dTopHelp], BTNEVL)
 def CenterHelpButton(button:Button, state):
     print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        button.SetState(1)
-        dvTLPMain.ShowPopup('help popup')
-    elif state == 'Released':
-        button.SetState(0)
+    button.SetState(1 if state is 'Pressed' else 0)
+    if state == 'Pressed': dvTLPMain.ShowPopup('help popup')
         
 btn_exitHelp = Button(dvTLPMain, 225)
 @eventEx(btn_exitHelp, BTNEVL)
 def ExitHelpPopup(button:Button, state):
     print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        button.SetState(1)
-        dvTLPMain.HidePopup('help popup')
-    elif state == 'Released':
-        button.SetState(0)
+    button.SetState(1 if state is 'Pressed' else 0)
+    if state == 'Pressed': dvTLPMain.HidePopup('help popup')
     
 """Shutdown Screen"""
 btn_cShutdown = Button(dvTLPMain, 234)
@@ -98,13 +86,8 @@ btn_roomSelectShutdown = Button(dvTLPMain, 12)
 @eventEx([btn_cShutdown, btn_dShutdown, btn_roomSelectShutdown], BTNEVL)
 def ShutdownPage(button:Button, state):
     print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        button.SetState(1)
-        dvTLPMain.ShowPage('Shutdown confirmation')
-    elif state == 'Released':
-        button.SetState(0)
-        
-
+    button.SetState(1 if state is 'Pressed' else 0)
+    if state == 'Pressed': dvTLPMain.ShowPage('Shutdown confirmation')
         
 btn_shutdownYes = Button(dvTLPMain, 6)
         
@@ -112,6 +95,7 @@ btn_shutdownNo = Button(dvTLPMain, 7)
 @eventEx(btn_shutdownNo, 'Pressed')
 def CancelShutdown(button:Button, state):
     print(button.Name, button.Host, state)
+    button.SetState(1 if state is 'Pressed' else 0)
     global selected, dual
     if selected:
         if dual:

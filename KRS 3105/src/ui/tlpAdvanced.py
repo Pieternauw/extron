@@ -10,29 +10,9 @@ btn_cAdvSettings = Button(dvTLPMain, 235)
 @eventEx([btn_dAdvSettings, btn_cAdvSettings], ['Pressed', 'Released'])
 def ShowAdvancedSettingsPopup(button:Button, state):
     print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        button.SetState(1)
-        dvTLPMain.ShowPopup("Advanced Settings")
-    elif state == 'Released':
-        button.SetState(0)
-"""
-#Activity Timeout
-btn_actTimeout = Button(dvTLPMain, 155)
-@eventEx(btn_actTimeout, ['Pressed', 'Released'])
-def DisableActivityTimeout(button:Button, state):
-    print(button.Name, button.Host, state)
-    if state == 'Pressed':
-        button.SetState(1)
-        #TODO - get timeout setup - do something with the system to disable said act timeout.
-        print("something to disable errors\n") 
-    elif state == 'Released':
-        button.SetState(0)
-"""
-#Projector
-"""TODO might want to do a subscribe status to keep visual feedback consistent
-        also might want to make these all combined since this is a bit messy
+    button.SetState(1 if state is 'Pressed' else 0)
+    if state == 'Pressed': dvTLPMain.ShowPopup("Advanced Settings")
 
-Center Projector"""
 btn_projOn = Button(dvTLPMain, 24)
 btn_projOff = Button(dvTLPMain, 25)
 

@@ -18,22 +18,28 @@ import variables as var
 import control.advancedControl as adv
 
 #Device Imports
-from devices import dvScalar, dvPRJFront, dvPRJBack
+from devices import dvScalar, dvPRJFront, dvPRJBack, GVEServer, PRJB_ID, PRJF_ID
 
 input_popup_list = ['Instructor computer instructions', 'Laptop Connected popup', 'Wireless insturction popup', 
               'Document camera instruction popup']
 
+src_set = ['INSTRUCTOR PC', 'LAPTOP HDMI', 'WIRELESS', 'DOC CAM']
+
 @eventEx(tlp.input_set.Objects, 'Pressed')
 def ControlInput(button:tlp.Button, state):
     print(button.Name, state, 'Control')
-    dvScalar.SetInput('{}'.format(tlp.input_set.Objects.index(button) + 1), {'Type': 'Audio/Video'})
+    ID = tlp.input_set.Objects.index(button)
+    dvScalar.SetInput('{}'.format(ID + 1), {'Type': 'Audio/Video'})
     dvPRJFront.SetPower('On', None) 
     dvPRJBack.SetPower('On', None) 
     dvPRJFront.Update('Power')
     tlp.dvTLP.HideAllPopups()
-    tlp.dvTLP.ShowPopup(input_popup_list[tlp.input_set.Objects.index(button)])
-    tlp.input_set.SetCurrent(button)
+    tlp.dvTLP.ShowPopup(input_popup_list[ID])
+    tlp.input_set.SetCurrent(ID)
     adv.PRJTimer.Restart()
+    GVEServer.SendStatus(PRJF_ID, 'Source', src_set[ID])
+    GVEServer.SendStatus(PRJB_ID, 'Source', src_set[ID])
+    
     
 @eventEx(tlp.btn_videoMute, 'Pressed')
 def VideoMuteControl(button:tlp.Button, state):

@@ -17,13 +17,14 @@ source_list = ['LAPTOP HDMI', 'WIRELESS', 'DOC CAM', 'BLU RAY']
 @eventEx(tlp.input_set.Objects, 'Pressed')
 def ControlInput(button:tlp.Button, state):
     print(button.Name, state, 'Control')
-    dvScalar.SetInput('{}'.format(tlp.input_set.Objects.index(button) + 2), {'Type': 'Audio/Video'})
+    ID = tlp.input_set.Objects.index(button)
+    dvScalar.SetInput('{}'.format(ID + 2), {'Type': 'Audio/Video'})
     dvPRJ.SetPower('On', None) 
     tlp.dvTLP.HideAllPopups()
-    tlp.dvTLP.ShowPopup(input_popup_list[tlp.input_set.Objects.index(button)])
-    tlp.input_set.SetCurrent(button)
+    tlp.dvTLP.ShowPopup(input_popup_list[ID])
+    tlp.input_set.SetCurrent(ID)
     adv.PRJStatusTimer.Restart()
-    GVEServer.SendStatus(PRJ_ID, 'Source', source_list[tlp.input_set.Objects.index(button)])
+    GVEServer.SendStatus(PRJ_ID, 'Source', source_list[ID])
     
 @eventEx(tlp.btn_videoMute, 'Pressed')
 def VideoMuteControl(button:tlp.Button, state):

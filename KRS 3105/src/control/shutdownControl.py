@@ -8,9 +8,7 @@ from extronlib.system import Clock, Wait
 
 import ui.tlp as tlp
 
-def Startup():
-    print('Startup running')
-    #default audio levels set, turn off mute buttons. Visual feedback handled by SubscribeStatus()
+def DefaultCalls():
     tlp.tlpMainPageAudio.lvl_cMic.SetLevel(-18)
     tlp.tlpMainPageAudio.lvl_cProg.SetLevel(-18)
     dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelSpeech', 'Channel': '1'})
@@ -26,13 +24,25 @@ def Startup():
     tlp.adv.btn_lBlankImg.SetState(0)
     dvRightPRJ.SetAVMute('Off', None)
     tlp.adv.btn_rBlankImg.SetState(0)
-
+    
     for j in ['1', '2', '3', '9', '10']:
         dvMatrix.SetVideoMute('Off', {'Output': j})
         
     tlp.tlpSourceSelect.btn_cVideoMute.SetState(0)
     tlp.tlpSourceSelect.btn_lVideoMute.SetState(0)
     tlp.tlpSourceSelect.btn_rVideoMute.SetState(0)
+    
+    tlp.tlpSourceSelect.left_input_set.SetCurrent(None)
+    tlp.tlpSourceSelect.right_input_set.SetCurrent(None)
+    tlp.tlpSourceSelect.center_board_set.SetCurrent(None)
+    tlp.tlpSourceSelect.center_input_set.SetCurrent(None)
+    tlp.tlpSourceSelect.btn_cBoardCams.SetState(0)
+
+def Startup():
+    DefaultCalls()
+    
+    print('Startup running')
+    #default audio levels set, turn off mute buttons. Visual feedback handled by SubscribeStatus()
     
     dvTLPMain.HidePopup('Login')
     
@@ -42,14 +52,8 @@ def Startup():
     dvTLPMain.ShowPage('room mode select')
     dvMatrix.Set('Relay', 'Close', {'Output': '4', 'Relay': '1'})
     
-def Shutdown():
-    #shut off projectors and update buttons with SubscribeStatus()
-    # dvCenterPRJ.SetAVMute('Off', None)
-    tlp.adv.btn_blankImg.SetState(0)
-    dvLeftPRJ.SetAVMute('Off', None)
-    tlp.adv.btn_lBlankImg.SetState(0)
-    dvRightPRJ.SetAVMute('Off', None)
-    tlp.adv.btn_rBlankImg.SetState(0)
+def Shutdown(): 
+    DefaultCalls()
     
     def PRJShutoff():
         dvCenterPRJ.SetPower('Off', None)
@@ -61,33 +65,10 @@ def Shutdown():
         dvLeftPRJ.Update('Power') 
         
     PRJ_Shutoff = Wait(2, PRJShutoff)
-    
-    #set source buttons to all be deselected
-    tlp.tlpSourceSelect.left_input_set.SetCurrent(None)
-    tlp.tlpSourceSelect.right_input_set.SetCurrent(None)
-    tlp.tlpSourceSelect.center_board_set.SetCurrent(None)
-    tlp.tlpSourceSelect.center_input_set.SetCurrent(None)
-    tlp.tlpSourceSelect.btn_cBoardCams.SetState(0)
 
-    #default audio levels set, turn off mute buttons. Visual feedback handled by SubscribeStatus()
-    tlp.tlpMainPageAudio.lvl_cMic.SetLevel(-18)
-    tlp.tlpMainPageAudio.lvl_cProg.SetLevel(-18)
-    dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelSpeech', 'Channel': '1'})
-    dvBiamp.SetLevelControl(-18, {'Instance Tag': 'LevelProgram', 'Channel': '1'})        
-    dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
-    dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
-    dvBiamp.SetMuteControl('Off', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
-    dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
-    
     #Tie all outputs to 0 except Yuja, handled lower (ties to cynap)
     for i in ['1', '2', '3', '4', '5', '12']:
         dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': i, 'Tie Type': 'Audio/Video'}) 
-    
-    for j in ['1', '2', '3', '9', '10']:
-            dvMatrix.SetVideoMute('Off', {'Output': j})
-    tlp.tlpSourceSelect.btn_cVideoMute.SetState(0)
-    tlp.tlpSourceSelect.btn_lVideoMute.SetState(0)
-    tlp.tlpSourceSelect.btn_rVideoMute.SetState(0)
     
     dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '9', 'Tie Type': 'Audio/Video'}) #Cynap to YuJa
     dvMatrix.SetMatrixTieCommand(None, {'Input': '2', 'Output': '10', 'Tie Type': 'Audio/Video'}) #Cynap to YuJa

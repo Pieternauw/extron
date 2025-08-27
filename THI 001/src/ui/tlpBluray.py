@@ -2,8 +2,6 @@ from extronlib.ui import Button
 from modules.helper.ModuleSupport import eventEx
 from devices import dvTLP
 
-
-
 btn_blurayStop = Button(dvTLP, 51)
 btn_blurayPlay = Button(dvTLP, 60)
 btn_blurayPause = Button(dvTLP, 66)

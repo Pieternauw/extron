@@ -8,27 +8,25 @@ from extronlib.system import File
 
 import ui.tlp as tlp
 
-def Startup():
-    #set input set to nothing
-    #Don't set scalar b/c instructor might be displaying something we want to keep up while system starts up 
+def SharedCommands():
     dvPRJ.SetAVMute('Off', None)
     tlp.adv.btn_blankImg.SetState(0)
     
-    #set default mic and prog volume levels
     tlp.MainAudio.lvl_mic.SetLevel(-18)
     tlp.MainAudio.lvl_prog.SetLevel(-18)
     dvScalar.SetGroupProgramVolume(-18, None)
     dvScalar.SetGroupMicVolume(-18, None)
     
+    dvScalar.SetGlobalVideoMute('Off', None)
+    tlp.btn_videoMute.SetState(0)   
+    
+def Startup():
+    SharedCommands()
     #turn off mic and program mutes
     #visual feedback handled by SubscribeStatus()
     dvScalar.SetGroupProgramMute('Off', None)
     dvScalar.SetGroupMicMute('Off', None)
-    print(dvScalar.ReadStatus('GroupProgramMute'))
-    
-    #turn off video mute
-    dvScalar.SetGlobalVideoMute('Off', None)
-    tlp.btn_videoMute.SetState(0)   
+    print(dvScalar.ReadStatus('GroupProgramMute')) 
     
     dvTLP.HidePopup('Login')
     
@@ -38,23 +36,14 @@ def Startup():
     dvRelay.SetState('Close')
     
 def Shutdown():
-    dvPRJ.SetAVMute('Off', None)
+    SharedCommands()
+    
     dvPRJ.SetPower('Off', None)
     dvPRJ.Update('Power')
-    tlp.adv.btn_blankImg.SetState(0)
         
     tlp.input_set.SetCurrent(None)
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})
     GVEServer.SendStatus(PRJ_ID, 'Source', 'SYSTEM OFF')
-    
-    tlp.MainAudio.lvl_mic.SetLevel(-18)
-    tlp.MainAudio.lvl_prog.SetLevel(-18)
-    
-    dvScalar.SetGroupProgramVolume(-18, None)
-    dvScalar.SetGroupMicVolume(-18, None)
-    
-    dvScalar.SetGlobalVideoMute('Off', None)
-    tlp.btn_videoMute.SetState(0)   
     
     dvTLP.HideAllPopups()
     dvTLP.ShowPage('Start Page')

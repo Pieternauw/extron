@@ -2,7 +2,7 @@ from modules.helper.ModuleSupport import eventEx
 from extronlib.system import MESet
 from extronlib.ui import Button, Label, Slider
 
-from devices import dvTLP, dvPRJ
+from devices import dvTLP
 from variables import ButtonEventList
 
 #advanced settings

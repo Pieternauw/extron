@@ -3,7 +3,7 @@ from modules.helper.ModuleSupport import eventEx
 from extronlib.system import MESet
 from extronlib.ui import Button, Label, Slider
 
-from devices import dvTLP, dvPRJ
+from devices import dvTLP
 from variables import ButtonEventList
 
 #advanced settings
@@ -67,16 +67,14 @@ btn_advSettingsExit = Button(dvTLP, 56)
 @eventEx(btn_advSettingsExit, ButtonEventList)
 def ExitAdvancedSettingsPopup(button:Button, state):
     print(button.Name, state)
+    button.SetState(1 if state is 'Pressed' else 0)
     if state == 'Pressed':
         global techstr
         global techlblstr
-        button.SetState(1)
         techstr = ''
         techlblstr = ''
         LblTechString.SetText(techstr)          #clear the passcode before closing the page so it's empty when the user returns 
         dvTLP.HidePopup("Advanced Settings")
-    elif state == 'Released':
-        button.SetState(0)
 
 sld_lavMic = Slider(dvTLP, 22)
 sld_lavMic.SetRange(-18, 80, 1)

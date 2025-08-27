@@ -6,7 +6,7 @@ from extronlib.ui import Button, Label
 from modules.helper.ModuleSupport import eventEx
 
 #Project Imports
-from devices import dvTLP, dvScalar, dvRelay
+from devices import dvTLP
 from variables import ButtonEventList
 
 #Linking Files
@@ -67,12 +67,13 @@ help_popup = ["mac laptop & tablet help popup", "Windows Laptop Help popup"]
 @eventEx([btn_macHelp, btn_winHelp, btn_exitMacHelp, btn_exitWinHelp], ['Pressed', 'Released'])
 def HelpPopups(button:Button, state):
     print(button.Name, state)
+    ID = help_set.index(button)
     button.SetState(1 if state is 'Pressed' else 0)
     if button in help_set:
-        dvTLP.ShowPopup(help_popup[help_set.index(button)])
+        dvTLP.ShowPopup(help_popup[ID])
         dvTLP.HidePopup('Laptop Connected popup')
     else: 
-        dvTLP.HidePopup(help_popup[close_help.index(button)])
+        dvTLP.HidePopup(help_popup[ID])
         dvTLP.ShowPopup('Laptop Connected popup')
 
 #Shutdown button
