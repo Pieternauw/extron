@@ -28,9 +28,8 @@ dvIPCP = ProcessorDevice('ProcessorAlias')
 dvNBPA = UIDevice('PanelA')
 dvNBPB = UIDevice('PanelB')
 
-dvSW = Scaler.SerialOverEthernetClass('128.114.0.4', 22023, Credentials=('admin', '100%Becknerized'), Model='DTP3 IN2004 DI/DO')
+dvSW = Scaler.SSHClass('128.114.0.4', 22023, Credentials=('admin', '100%Becknerized'), Model='DTP3 IN2004 DI/DO')
 dvSW = GetConnectionHandler(dvSW, 'Temperature', pollFrequency=30)         
-
 
 dvPRJA = GetConnectionHandler(PRJ.SerialOverEthernetClass('128.114.0.4', 2003, Model='EB-690U'), 'LampUsage', pollFrequency=30)
 dvPRJB = GetConnectionHandler(PRJ.SerialClass(dvIPCP, 'COM1', Model='EB-690U'), 'LampUsage', pollFrequency=30)

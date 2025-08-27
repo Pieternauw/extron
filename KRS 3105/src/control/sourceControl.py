@@ -7,7 +7,7 @@ from extronlib.system import Wait
 
 import ui.tlpSourceSelect as tlp
 
-source_list = ['LAPTOP', 'WIRELESS', 'INSTALLED PC', 'DOC CAM', 'DOC CAM', 'BLU RAY', 'CAMERA']
+source_list = ['LAPTOP HDMI', 'WIRELESS', 'INSTALLED PC', 'DOC CAM', 'DOC CAM', 'BLU RAY', 'CAMERA']
 
 @eventEx([tlp.btn_cBoard1, tlp.btn_cBoard2, tlp.btn_cBoard3], 'Pressed')
 def CenterBoardSelectInput(button:Button, state):

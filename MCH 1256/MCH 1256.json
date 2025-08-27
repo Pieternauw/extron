@@ -41,7 +41,7 @@
                 ]
             },
             "ui": {
-                "enable_click_sound": true,
+                "enable_click_sound": false,
                 "press_feedback": "none"
             }
         },
@@ -60,7 +60,7 @@
                 ]
             },
             "ui": {
-                "enable_click_sound": true,
+                "enable_click_sound": false,
                 "press_feedback": "none"
             }
         }
