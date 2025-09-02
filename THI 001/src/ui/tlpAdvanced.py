@@ -40,9 +40,10 @@ def TechButtonPressed(button:Button, state):
     global techstr 
     global techlblstr
     button.SetState(1 if state is 'Pressed' else 0)
-    techstr += button.Name
-    techlblstr += '*'
-    LblTechString.SetText(techlblstr)
+    if state is 'Pressed':
+        techstr += button.Name
+        techlblstr += '*'
+        LblTechString.SetText(techlblstr)
     
 btn_techClear = Button(dvTLP, 117)
 btn_techEnter = Button(dvTLP, 118)
