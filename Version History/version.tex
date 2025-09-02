@@ -68,7 +68,26 @@ from 1.4.2 added to it if 1.4.2 was made for another room. A room will only get 
 was made to it. Rooms where this happens are noted specifically with their changes in each section. If rooms share a version 
 number with different features, it will be marked. 
 
-\section*{v2.3.0 (Deployed)}
+\section*{v2.5.1 (Deployed)}
+
+Version 2.5.1 is a deployment created to converge all rooms to the same version in preparation for the start of the school 
+term. It contains a few minor code readability changes, fixes lack of visual response from the tech access panel, and 
+contains some other minor adjustments. Its main function is to bring all projects to the same version number. It is for 
+all 6 rooms currently using ControlScript code. The version also unifies GVE reporting to use the same set of inputs: 
+\lstinline|['LAPTOP HDMI', 'WIRELESS', 'INSTALLED PC', 'DOC CAM', 'BLURAY', 'CAMERA']|. For rooms without an installed 
+computer or board cams, those inputs are omitted. The previous version had two different lists in use.
+
+\section*{v2.4.1}
+
+This version implements a feature of GVE not previously used. Source reporting allows us to understand what sources 
+are preferred by users in certain rooms. On the GVE Server, there is a page which shows a full breakdown across all GVE
+rooms with the number of hours each source is used in each room. To make these rooms more similar to other Extron rooms, 
+GVE Source Reporting was added in v2.4.1. Each room now has the command \lstinline|GVEServer.SendStatus(PRJ_ID, 'Source', '<source>')|.
+Where the ID is replaced with whatever projector the source is displayed on, and the source is determined with a list of options. 
+This is done in the \lstinline|sourceControl.py| file. In the shutdown command, \lstinline|'SYSTEM OFF'| is sent to remain 
+consistent with the way other Extron rooms behave. 
+
+\section*{v2.3.0}
 
 Version 2.3.0 introduces a new visual effect to help instructors with their microphones. When no microphone is detected
 using the Biamp \lstinline|SignalPresentMeter| command, text changes. If signal is present, the text above the volume control 
@@ -78,14 +97,14 @@ This method is an effective way to display to the instructor that no microphone 
 or use it for it to be captured on YuJa or heard in the room. It is bright enough to be noticed, but not big enough to 
 take over attention. 
 
-\section*{v2.2.0 (Deployed)}
+\section*{v2.2.0}
 
 Version 2.2.0 is a version created for KRS 3101, 3301, 3401, and THI 001. It centers on the projector On/Off functions. 
 The goal of this version was to create a more structured concept for On/Off functions. With this version, there is a 
 standardized timer method to change the states of the On/Off buttons on the advanced settings page. The buttons are 
 now consistent for both pressing them, and selecting Shutdown. 
 
-\section*{v2.1.0 (Deployed)}
+\section*{v2.1.0}
 
 Version 2.1.0 is a complete overhaul of the old code. Each room will get its own version including a few major points:
 
