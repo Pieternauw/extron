@@ -22,6 +22,7 @@ def Initialize():
     devices.dvLeftPRJ.Connect()
     devices.dvRightPRJ.Connect()
     devices.dvCenterPRJ.Connect()
+    devices.dvCynap.Connect()
     print('connecting prj')
     devices.dvBluray.Connect()
     print('connecting bluray')

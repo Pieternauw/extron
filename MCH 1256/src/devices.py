@@ -16,6 +16,7 @@ from extronlib.interface import EthernetClientInterface
 # Project imports
 import modules.device.epsn_vp_BrightLink_BrightLinkPro_CB_EB_69x_14x as PRJ
 import modules.device.extr_scaler_IN2004_Series_v1_0_0_0 as Scaler
+import modules.device.wolf_cs_Cynap_Core_Pure_Pro_v1_1_1_0 as Cynap
 
 from modules.helper.ConnectionHandler import GetConnectionHandler
 from modules.helper.ModuleSupport import eventEx
@@ -34,7 +35,7 @@ dvSW = GetConnectionHandler(dvSW, 'Temperature', pollFrequency=30)
 dvPRJA = GetConnectionHandler(PRJ.SerialOverEthernetClass('128.114.0.4', 2003, Model='EB-690U'), 'LampUsage', pollFrequency=30)
 dvPRJB = GetConnectionHandler(PRJ.SerialClass(dvIPCP, 'COM1', Model='EB-690U'), 'LampUsage', pollFrequency=30)
 
-IPCP_ID = 'IPCP'; NBPA_ID = 'NBPA'; NBPB_ID = 'NBPB'; SW_ID = 'SW'; PRJA_ID = 'PRJA'; PRJB_ID = 'PRJB'
+IPCP_ID = 'IPCP'; NBPA_ID = 'NBPA'; NBPB_ID = 'NBPB'; SW_ID = 'SW'; PRJA_ID = 'PRJA'; PRJB_ID = 'PRJB'; CY_ID = 'Cynap'
 
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
@@ -67,6 +68,16 @@ def LampUpdateB(command, value, qualifier):
     GVEServer.SendStatus(PRJB_ID, 'Lamp 1 Hours', value)
 
 dvPRJB.SubscribeStatus('LampUsage', None, LampUpdateB)
+
+dvCynap = Cynap.EthernetClass('128.114.', 50915, Model='Cynap Pure Pro')
+dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
+
+@eventEx(dvCynap, ['Connected', 'Disconnected'])
+def CynapConnected(client:EthernetClientInterface, state):
+    print('Cynap on IP {0} is {1}'.format(client.IPAddress, state))
+    GVEServer.SendStatus(CY_ID, 'Connection', state)
+    if state is not 'Connected':
+        client.Connect(5)
 
 device_dict = {dvNBPA: NBPA_ID, dvNBPB: NBPB_ID, dvIPCP: IPCP_ID}
 

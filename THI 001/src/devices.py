@@ -18,6 +18,7 @@ import modules.device.extr_Scaler_IN806_IN1808_Series_v1_1_6_0 as modScalar
 import modules.device.epsn_vp_CB_EB_PU100xx_PU2010x_Series_v1_0_2_0 as Projector
 import modules.device.tasc_bluray_BD_MP1_v1_2_0_0 as Bluray
 from modules.device import biam_dsp_TesiraSeries_v1_15_1_0 as Biamp
+from modules.device import wolf_cs_Cynap_Core_Pure_Pro_v1_1_1_0 as Cynap
 
 from modules.helper.ConnectionHandler import GetConnectionHandler
 from modules.helper.ModuleSupport import eventEx
@@ -30,7 +31,7 @@ dvTLP = UIDevice('PanelAlias')
 
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
-TLP_ID = 'Touchpanel'; PRJ_ID = 'Projector'; SW_ID = 'Switcher'; BLU_ID = 'Bluray'; IPCP_ID = 'IPCP'; BMP_ID = 'Biamp'
+TLP_ID = 'Touchpanel'; PRJ_ID = 'Projector'; SW_ID = 'Switcher'; BLU_ID = 'Bluray'; IPCP_ID = 'IPCP'; BMP_ID = 'Biamp'; CY_ID = 'Cynap'
 
 dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
@@ -100,6 +101,16 @@ def BiampConnectionHandler(client:EthernetClientInterface, state):
         dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteProgram', 'Channel': '1'})
         dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteSpeech', 'Channel': '1'})
     else:
+        client.Connect(5)
+        
+dvCynap = Cynap.EthernetClass('128.114.', 50915, Model='Cynap Pure Pro')
+dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
+
+@eventEx(dvCynap, ['Connected', 'Disconnected'])
+def CynapConnected(client:EthernetClientInterface, state):
+    print('Cynap on IP {0} is {1}'.format(client.IPAddress, state))
+    GVEServer.SendStatus(CY_ID, 'Connection', state)
+    if state is not 'Connected':
         client.Connect(5)
 
 device_dict = {dvTLP: TLP_ID, dvIPCP: IPCP_ID}

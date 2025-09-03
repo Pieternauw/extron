@@ -1,4 +1,4 @@
-from devices import dvScalar, dvPRJBack, dvPRJFront, dvTLP, dvRelay, GVEServer, PRJF_ID, PRJB_ID
+from devices import dvScalar, dvPRJBack, dvPRJFront, dvTLP, dvRelay, dvCynap, GVEServer, PRJF_ID, PRJB_ID
 
 from modules.helper.ModuleSupport import eventEx 
 
@@ -46,6 +46,8 @@ def Shutdown():
     dvPRJBack.SetPower('Off', None)
     dvPRJFront.SetPower('Off', None)
     PRJTimer.Restart()
+        
+    dvCynap.Set('EndPresentation', None, {'Deete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
         
     tlp.input_set.SetCurrent(None)
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})

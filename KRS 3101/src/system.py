@@ -23,6 +23,7 @@ def Initialize():
     dev.dvScalar.Connect()
     dev.dvPRJ.Connect()
     dev.dvBluray.Connect()
+    dev.dvCynap.Connect()
     dev.dvTLP.HideAllPopups()
     dev.dvTLP.ShowPage('Start Page')
     # Finish Initialize() with a print()

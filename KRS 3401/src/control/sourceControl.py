@@ -18,7 +18,7 @@ import variables as var
 import control.advancedControl as adv
 
 #Device Imports
-from devices import dvScalar, dvPRJFront, dvPRJBack, GVEServer, PRJB_ID, PRJF_ID
+from devices import dvScalar, dvPRJFront, dvPRJBack, dvCynap, GVEServer, PRJB_ID, PRJF_ID
 
 input_popup_list = ['Instructor computer instructions', 'Laptop Connected popup', 'Wireless insturction popup', 
               'Document camera instruction popup']
@@ -64,3 +64,7 @@ tlp.lblLaptopConnected.SetText('Connected' if dvScalar.ReadStatus('InputSignalSt
         
 dvScalar.SubscribeStatus('InputSignalStatus', {'Input': '2'}, LaptopConnectedFeedback)
 
+@eventEx(tlp.btn_wirelessDisconnect, ['Pressed', 'Released'])
+def DisconnectPresentation(button:tlp.Button, state):
+    dvCynap.Set('EndPresentation', None, {'Deete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
+    

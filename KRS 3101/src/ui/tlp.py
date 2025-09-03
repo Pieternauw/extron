@@ -91,3 +91,5 @@ btn_shdnNo = Button(dvTLP, 7)
 def ShutdownNo(button:Button, state):
     print(button.Name, state)
     dvTLP.ShowPage("Main Page")
+    
+btn_wirelessDisconnect = Button(dvTLP, 31)

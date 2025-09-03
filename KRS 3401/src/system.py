@@ -20,5 +20,6 @@ def Initialize():
     dev.dvPRJFront.Connect()
     dev.dvPRJBack.Connect()
     dev.dvScalar.Connect()
+    dev.dvCynap.Connect()
     # Finish Initialize() with a print()
     print('System Initialized')

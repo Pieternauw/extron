@@ -1,4 +1,4 @@
-from devices import dvMatrix, dvBiamp, dvTLPMain, dvCenterPRJ, dvRightPRJ, dvLeftPRJ, GVEServer, PRJC_ID, PRJL_ID, PRJR_ID
+from devices import dvMatrix, dvBiamp, dvTLPMain, dvCenterPRJ, dvRightPRJ, dvLeftPRJ, GVEServer, dvCynap, PRJC_ID, PRJL_ID, PRJR_ID
 
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button, Label
@@ -65,6 +65,8 @@ def Shutdown():
         dvLeftPRJ.Update('Power') 
         
     PRJ_Shutoff = Wait(2, PRJShutoff)
+
+    dvCynap.Set('EndPresentation', None, {'Deete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
 
     #Tie all outputs to 0 except Yuja, handled lower (ties to cynap)
     for i in ['1', '2', '3', '4', '5', '12']:

@@ -16,7 +16,7 @@ Examples:
 
 # Extron Library imports
 from modules.helper.ModuleSupport import eventEx 
-from devices import dvSW, dvPRJA, dvPRJB, GVEServer, PRJA_ID, PRJB_ID
+from devices import dvSW, dvPRJA, dvPRJB, dvCynap, GVEServer, PRJA_ID, PRJB_ID
 
 import ui.nbp as nbp
 
@@ -65,6 +65,10 @@ def BPRJPressed(button:nbp.Button, state):
     dvPRJB.Set('Power', pwr)
     GVEServer.SendStatus(PRJB_ID, 'Power', pwr)
     nbp.prjB_set.SetCurrent(button)    
+    
+@eventEx([nbp.btn_srcA2, nbp.btn_srcB2], 'Held')
+def WirelessDisconnect(button:nbp.Button, state):
+    dvCynap.Set('EndPresentation', None, {'Deete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
     
 @eventEx([nbp.kb_A, nbp.kb_B], 'Turned')
 def KnobATurned(knob:nbp.Knob, direction):

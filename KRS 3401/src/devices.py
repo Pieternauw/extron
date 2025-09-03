@@ -15,6 +15,7 @@ from extronlib.interface import EthernetClientInterface, RelayInterface
 # Project import
 import modules.device.extr_Scaler_IN806_IN1808_Series_v1_1_6_0 as modScalar
 import modules.device.epsn_vp_CB_EB_PowerLite_L630U_Series_v1_0_4_0 as Projector
+import modules.device.wolf_cs_Cynap_Core_Pure_Pro_v1_1_1_0 as Cynap
 
 from modules.helper.ConnectionHandler import GetConnectionHandler
 from modules.helper.ModuleSupport import eventEx
@@ -27,7 +28,7 @@ dvTLP = UIDevice('PanelAlias')
 
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
-TLP_ID = 'Touchpanel'; PRJF_ID = 'ProjectorFront'; PRJB_ID = 'ProjectorBack'; SW_ID = 'Switcher'; IPCP_ID = 'IPCP'
+TLP_ID = 'Touchpanel'; PRJF_ID = 'ProjectorFront'; PRJB_ID = 'ProjectorBack'; SW_ID = 'Switcher'; IPCP_ID = 'IPCP'; CY_ID = 'Cynap'
 
 dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
@@ -78,6 +79,16 @@ def UpdatePRJBLamp(command, value, qualifier):
 
 dvPRJBack.SubscribeStatus('Power', None, UpdatePRJBStatus)
 dvPRJBack.SubscribeStatus('LampUsage', None, UpdatePRJBLamp)
+
+dvCynap = Cynap.EthernetClass('128.114.', 50915, Model='Cynap Pure Pro')
+dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
+
+@eventEx(dvCynap, ['Connected', 'Disconnected'])
+def CynapConnected(client:EthernetClientInterface, state):
+    print('Cynap on IP {0} is {1}'.format(client.IPAddress, state))
+    GVEServer.SendStatus(CY_ID, 'Connection', state)
+    if state is not 'Connected':
+        client.Connect(5)
 
 device_dict = {dvTLP: TLP_ID, dvIPCP: IPCP_ID}
 

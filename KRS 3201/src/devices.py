@@ -19,6 +19,7 @@ from modules.device import extr_matrix_XTPIICrossPointSeries_v1_12_0_1 as Matrix
 from modules.device import biam_dsp_TesiraSeries_v1_15_1_0 as Biamp
 from modules.device import tasc_bluray_BD_MP4K_v1_0_0_0 as Bluray
 from modules.device import epsn_vp_CB_EB_PU_21xxW_22xxB_Series_v1_0_0_0 as Projector
+from modules.device import wolf_cs_Cynap_Core_Pure_Pro_v1_1_1_0 as Cynap
 from modules.helper.ConnectionHandler import GetConnectionHandler
 from modules.helper.ModuleSupport import eventEx
 from modules.helper.MirrorUI import MirrorUIDevice
@@ -34,7 +35,7 @@ dvTLPMain = MirrorUIDevice([dvTLPFront, dvTLPBooth])
 
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
-TLPF_ID = 'TLPF'; TLPB_ID = 'TLPB'; PRJL_ID = 'PRJL'; PRJC_ID = 'PRJC'; PRJR_ID = 'PRJR'; BMP_ID = 'Biamp'; BLU_ID = 'Bluray'; SW_ID = 'Matrix'; IPCP_ID = 'IPCP'
+TLPF_ID = 'TLPF'; TLPB_ID = 'TLPB'; PRJL_ID = 'PRJL'; PRJC_ID = 'PRJC'; PRJR_ID = 'PRJR'; BMP_ID = 'Biamp'; BLU_ID = 'Bluray'; SW_ID = 'Matrix'; IPCP_ID = 'IPCP'; CY_ID = 'Cynap'
 
 dvMatrix = Matrix.EthernetClass('10.10.2.30', 23, Model='XTP II CrossPoint 1600')
 
@@ -114,6 +115,17 @@ def LampUpdateR(command, value, qualifier):
 dvLeftPRJ.SubscribeStatus('LampUsage', None, LampUpdateL)
 dvCenterPRJ.SubscribeStatus('LampUsage', None, LampUpdateC)
 dvRightPRJ.SubscribeStatus('LampUsage', None, LampUpdateR)
+
+dvCynap = Cynap.EthernetClass('128.114.', 50915, Model='Cynap Pure Pro')
+dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
+
+@eventEx(dvCynap, ['Connected', 'Disconnected'])
+def CynapConnected(client:EthernetClientInterface, state):
+    print('Cynap on IP {0} is {1}'.format(client.IPAddress, state))
+    GVEServer.SendStatus(CY_ID, 'Connection', state)
+    if state is not 'Connected':
+        client.Connect(5)
+
 
 dvBiamp = GetConnectionHandler(dvBiamp, 'MuteControl', keepAliveQueryQualifier={'Instance Tag': 'MuteProgram', 'Channel': '1'}, pollFrequency=30)
 # dvBiamp = GetConnectionHandler(dvBiamp, 'SignalPresentMeter', keepAliveQueryQualifier={'Instance Tag': 'SpeechPresent', 'Channel': '1', 'Meter Name': 'Speech'})

@@ -7,7 +7,7 @@ import variables as var
 import control.advancedControl as adv
 
 #Device Imports
-from devices import dvScalar, dvPRJ, PRJ_ID, GVEServer
+from devices import dvScalar, dvPRJ, dvCynap, PRJ_ID, GVEServer
 
 input_popup_list = ['Laptop Connected popup', 'Wireless insturction popup', 
               'Document camera instruction popup', 'BluRay control popup']
@@ -51,3 +51,8 @@ tlp.btn_laptopConnectedFeedback.SetState(1 if dvScalar.ReadStatus('InputSignalSt
 tlp.lblLaptopConnected.SetText('Connected' if dvScalar.ReadStatus('InputSignalStatus', {'Inpt': '1'}) is 'Active' else 'Not Connected')
         
 dvScalar.SubscribeStatus('InputSignalStatus', {'Input': '2'}, LaptopConnectedFeedback)
+
+@eventEx(tlp.btn_wirelessDisconnect, ['Pressed', 'Released'])
+def DisconnectPresentation(button:tlp.Button, state):
+    dvCynap.Set('EndPresentation', None, {'Deete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
+    

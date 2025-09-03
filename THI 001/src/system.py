@@ -24,6 +24,7 @@ def Initialize():
     dev.dvPRJ.Connect()
     dev.dvBluray.Connect()
     dev.dvBiamp.Connect()
+    dev.dvCynap.Connect()
     dev.dvTLP.HideAllPopups()
     dev.dvTLP.ShowPage('Start Page')
     print("Connections started, system working")

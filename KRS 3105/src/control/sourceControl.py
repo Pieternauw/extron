@@ -1,4 +1,4 @@
-from devices import dvMatrix, dvCenterPRJ, GVEServer, dvRightPRJ, dvLeftPRJ, PRJR_ID, PRJL_ID, PRJC_ID
+from devices import dvMatrix, dvCenterPRJ, GVEServer, dvRightPRJ, dvLeftPRJ, dvCynap, PRJR_ID, PRJL_ID, PRJC_ID
 
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button
@@ -101,4 +101,8 @@ def SwitchSourceSound(button:Button, state):
     tlp.btn_leftSourceSound.SetVisible(True)
     tlp.btn_rightSourceSound.SetVisible(True)
     button.SetVisible(False)
+    
+@eventEx(tlp.btn_wirelessDisconnect, ['Pressed', 'Released'])
+def DisconnectPresentation(button:tlp.Button, state):
+    dvCynap.Set('EndPresentation', None, {'Deete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
     
