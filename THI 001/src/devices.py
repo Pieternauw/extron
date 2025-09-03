@@ -103,7 +103,7 @@ def BiampConnectionHandler(client:EthernetClientInterface, state):
     else:
         client.Connect(5)
         
-dvCynap = Cynap.EthernetClass('128.114.', 50915, Model='Cynap Pure Pro')
+dvCynap = Cynap.EthernetClass('128.114.41.165', 50915, Model='Cynap Pure Pro')
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 
 @eventEx(dvCynap, ['Connected', 'Disconnected'])

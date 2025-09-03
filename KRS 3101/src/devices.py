@@ -86,7 +86,7 @@ def LampUpdate(command, value, qualifier):
 
 dvPRJ.SubscribeStatus('LampUsage', None, LampUpdate)
 
-dvCynap = Cynap.EthernetClass('128.114.', 50915, Model='Cynap Pure Pro')
+dvCynap = Cynap.EthernetClass('128.114.159.233', 50915, Model='Cynap Pure Pro')
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 
 @eventEx(dvCynap, ['Connected', 'Disconnected'])
