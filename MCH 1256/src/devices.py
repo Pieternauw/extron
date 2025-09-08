@@ -17,6 +17,7 @@ from extronlib.interface import EthernetClientInterface
 import modules.device.epsn_vp_BrightLink_BrightLinkPro_CB_EB_69x_14x as PRJ
 import modules.device.extr_scaler_IN2004_Series_v1_0_0_0 as Scaler
 import modules.device.wolf_cs_Cynap_Core_Pure_Pro_v1_1_1_0 as Cynap
+import modules.device.biam_dsp_TesiraSeries_v1_15_1_0 as Biamp
 
 from modules.helper.ConnectionHandler import GetConnectionHandler
 from modules.helper.ModuleSupport import eventEx
@@ -35,7 +36,9 @@ dvSW = GetConnectionHandler(dvSW, 'Temperature', pollFrequency=30)
 dvPRJA = GetConnectionHandler(PRJ.SerialOverEthernetClass('128.114.0.4', 2003, Model='EB-690U'), 'LampUsage', pollFrequency=30)
 dvPRJB = GetConnectionHandler(PRJ.SerialClass(dvIPCP, 'COM1', Model='EB-690U'), 'LampUsage', pollFrequency=30)
 
-IPCP_ID = 'IPCP'; NBPA_ID = 'NBPA'; NBPB_ID = 'NBPB'; SW_ID = 'SW'; PRJA_ID = 'PRJA'; PRJB_ID = 'PRJB'; CY_ID = 'Cynap'
+dvBiamp = Biamp.SSHClass('128.114.0.5', 22, Credentials=('admin', '100%Becknerized'), Model='TesiraFORTE DAN AI')
+
+IPCP_ID = 'IPCP'; NBPA_ID = 'NBPA'; NBPB_ID = 'NBPB'; SW_ID = 'SW'; PRJA_ID = 'PRJA'; PRJB_ID = 'PRJB'; CY_ID = 'Cynap'; BMP_ID = 'Biamp'
 
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
@@ -78,6 +81,17 @@ def CynapConnected(client:EthernetClientInterface, state):
     GVEServer.SendStatus(CY_ID, 'Connection', state)
     if state is not 'Connected':
         client.Connect(5)
+        
+@eventEx(dvBiamp, ['Connected', 'Disconnected'])
+def BiampConnectionHandler(client:EthernetClientInterface, state):
+    print('Biamp on IP {0} is {1}'.format(client.IPAddress, state))
+    GVEServer.SendStatus(BMP_ID, 'Connection', state)
+    if state is 'Connected':    
+        dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteA', 'Channel': '1'})
+        dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteB', 'Channel': '1'})
+    else:
+        client.Connect(5)
+        
 
 device_dict = {dvNBPA: NBPA_ID, dvNBPB: NBPB_ID, dvIPCP: IPCP_ID}
 

@@ -16,7 +16,7 @@ Examples:
 
 # Extron Library imports
 from modules.helper.ModuleSupport import eventEx 
-from devices import dvSW, dvPRJA, dvPRJB, dvCynap, GVEServer, PRJA_ID, PRJB_ID
+from devices import dvSW, dvPRJA, dvPRJB, dvCynap, dvBiamp, GVEServer, PRJA_ID, PRJB_ID
 
 import ui.nbp as nbp
 
@@ -59,12 +59,20 @@ def APRJPressed(button:nbp.Button, state):
     GVEServer.SendStatus(PRJA_ID, 'Power', pwr)
     nbp.prjA_set.SetCurrent(button)    
     
+    dvBiamp.Set('MuteControl', pwr, {'Instance Tag': 'MuteA', 'Channel': '1'})
+    if pwr is 'On':
+        dvBiamp.Set('SourceSelectorSourceSelection', '1', {'Instance Tag': 'MicSelect'})
+    
 @eventEx(nbp.prjB_set.Objects, ['Pressed', 'Released'])
 def BPRJPressed(button:nbp.Button, state):
     pwr = 'On' if button is nbp.btn_prjBOn else 'Off'
     dvPRJB.Set('Power', pwr)
     GVEServer.SendStatus(PRJB_ID, 'Power', pwr)
-    nbp.prjB_set.SetCurrent(button)    
+    nbp.prjB_set.SetCurrent(button)  
+    
+    dvBiamp.Set('MuteControl', pwr, {'Instance Tag': 'MuteB', 'Channel': '1'})
+    if pwr is 'On':
+        dvBiamp.Set('SourceSelectorSourceSelection', '2', {'Instance Tag': 'MicSelect'})
     
 @eventEx([nbp.btn_srcA2, nbp.btn_srcB2], 'Held')
 def WirelessDisconnect(button:nbp.Button, state):
