@@ -60,8 +60,6 @@ def APRJPressed(button:nbp.Button, state):
     nbp.prjA_set.SetCurrent(button)    
     
     dvBiamp.Set('MuteControl', pwr, {'Instance Tag': 'MuteA', 'Channel': '1'})
-    if pwr is 'On':
-        dvBiamp.Set('SourceSelectorSourceSelection', '1', {'Instance Tag': 'MicSelect'})
     
 @eventEx(nbp.prjB_set.Objects, ['Pressed', 'Released'])
 def BPRJPressed(button:nbp.Button, state):
@@ -71,8 +69,6 @@ def BPRJPressed(button:nbp.Button, state):
     nbp.prjB_set.SetCurrent(button)  
     
     dvBiamp.Set('MuteControl', pwr, {'Instance Tag': 'MuteB', 'Channel': '1'})
-    if pwr is 'On':
-        dvBiamp.Set('SourceSelectorSourceSelection', '2', {'Instance Tag': 'MicSelect'})
     
 @eventEx([nbp.btn_srcA2, nbp.btn_srcB2], 'Held')
 def WirelessDisconnect(button:nbp.Button, state):

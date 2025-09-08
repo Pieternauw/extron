@@ -30,13 +30,15 @@ dvIPCP = ProcessorDevice('ProcessorAlias')
 dvNBPA = UIDevice('PanelA')
 dvNBPB = UIDevice('PanelB')
 
-dvSW = Scaler.SSHClass('128.114.0.4', 22023, Credentials=('admin', '100%Becknerized'), Model='DTP3 IN2004 DI/DO')
+dvSW = Scaler.SSHClass('128.114.162.3', 22023, Credentials=('admin', '100%Becknerized'), Model='DTP3 IN2004 DI/DO')
 dvSW = GetConnectionHandler(dvSW, 'Temperature', pollFrequency=30)         
 
-dvPRJA = GetConnectionHandler(PRJ.SerialOverEthernetClass('128.114.0.4', 2003, Model='EB-690U'), 'LampUsage', pollFrequency=30)
+dvPRJA = GetConnectionHandler(PRJ.SerialOverEthernetClass('128.114.162.4', 2003, Model='EB-690U'), 'LampUsage', pollFrequency=30)
 dvPRJB = GetConnectionHandler(PRJ.SerialClass(dvIPCP, 'COM1', Model='EB-690U'), 'LampUsage', pollFrequency=30)
 
-dvBiamp = Biamp.SSHClass('128.114.0.5', 22, Credentials=('admin', '100%Becknerized'), Model='TesiraFORTE DAN AI')
+dvCynap = Cynap.EthernetClass('128.114.162.0', 50915, Model='Cynap Pure Pro')
+
+dvBiamp = Biamp.SSHClass('128.114.162.0', 22, Credentials=('admin', '100%Becknerized'), Model='TesiraFORTE DAN AI')
 
 IPCP_ID = 'IPCP'; NBPA_ID = 'NBPA'; NBPB_ID = 'NBPB'; SW_ID = 'SW'; PRJA_ID = 'PRJA'; PRJB_ID = 'PRJB'; CY_ID = 'Cynap'; BMP_ID = 'Biamp'
 
@@ -72,7 +74,6 @@ def LampUpdateB(command, value, qualifier):
 
 dvPRJB.SubscribeStatus('LampUsage', None, LampUpdateB)
 
-dvCynap = Cynap.EthernetClass('128.114.', 50915, Model='Cynap Pure Pro')
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 
 @eventEx(dvCynap, ['Connected', 'Disconnected'])
@@ -86,10 +87,7 @@ def CynapConnected(client:EthernetClientInterface, state):
 def BiampConnectionHandler(client:EthernetClientInterface, state):
     print('Biamp on IP {0} is {1}'.format(client.IPAddress, state))
     GVEServer.SendStatus(BMP_ID, 'Connection', state)
-    if state is 'Connected':    
-        dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteA', 'Channel': '1'})
-        dvBiamp.Update('MuteControl', {'Instance Tag': 'MuteB', 'Channel': '1'})
-    else:
+    if state is not 'Connected':    
         client.Connect(5)
         
 

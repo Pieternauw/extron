@@ -8,7 +8,7 @@
             "name": "Pieter Nauwelaerts",
             "email": "pnauwela@ucsc.edu"
         },
-        "version": "0.0.1",
+        "version": "1.0.0",
         "primary_device_alias": "ProcessorAlias"
     },
     "devices": [
@@ -20,7 +20,7 @@
                 "host_network_type": "LAN",
                 "interfaces": [
                     {
-                        "address": "128.114.0.3",
+                        "address": "128.114.162.0",
                         "type": "LAN"
                     }
                 ]
@@ -35,7 +35,7 @@
                 "host_network_type": "LAN",
                 "interfaces": [
                     {
-                        "address": "128.114.0.2",
+                        "address": "128.114.162.1",
                         "type": "LAN"
                     }
                 ]
@@ -54,7 +54,7 @@
                 "host_network_type": "LAN",
                 "interfaces": [
                     {
-                        "address": "128.114.0.1",
+                        "address": "128.114.162.3",
                         "type": "LAN"
                     }
                 ]
