@@ -12,6 +12,7 @@ Note: This is for definition only.  Connection and logic defined in system.py (s
 # Extron Library imports
 from extronlib.device import ProcessorDevice, UIDevice
 from extronlib.interface import EthernetClientInterface, RelayInterface
+from extronlib.system import File
 # Project import
 import modules.device.extr_Scaler_IN806_IN1808_Series_v1_1_6_0 as modScalar
 import modules.device.epsn_vp_CB_EB_PowerLite_L630U_Series_v1_0_4_0 as Projector
@@ -26,13 +27,16 @@ import variables as var
 dvIPCP = ProcessorDevice('ProcessorAlias')
 dvTLP = UIDevice('PanelAlias')
 
+passwordFile = File('user/password.txt', 'r')
+password = str(passwordFile.readline())
+
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
 TLP_ID = 'Touchpanel'; PRJF_ID = 'ProjectorFront'; PRJB_ID = 'ProjectorBack'; SW_ID = 'Switcher'; IPCP_ID = 'IPCP'; CY_ID = 'Cynap'
 
 dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
-dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Credentials=('admin', 'wag2748'), Model='IN1808 IPCP MA 70')
+dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Credentials=('admin', password), Model='IN1808 IPCP MA 70')
 dvScalar = GetConnectionHandler(dvScalar, 'Temperature', pollFrequency=30)         
 
 @eventEx(dvScalar, ['Connected', 'Disconnected'])
@@ -80,7 +84,7 @@ def UpdatePRJBLamp(command, value, qualifier):
 dvPRJBack.SubscribeStatus('Power', None, UpdatePRJBStatus)
 dvPRJBack.SubscribeStatus('LampUsage', None, UpdatePRJBLamp)
 
-dvCynap = Cynap.EthernetClass('128.114.106.119', 50915, Model='Cynap Pure Pro')
+dvCynap = Cynap.EthernetClass('128.114.106.119', 50915,  Credentials=('admin', password), Model='Cynap Pure Pro')
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 
 @eventEx(dvCynap, ['Connected', 'Disconnected'])

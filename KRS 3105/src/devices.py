@@ -11,7 +11,7 @@ Note: This is for definition only.  Connection and logic defined in system.py (s
 
 # Extron Library imports
 from extronlib.device import ProcessorDevice, UIDevice
-from extronlib.system import Timer
+from extronlib.system import Timer, File
 from extronlib.interface import EthernetClientInterface
 
 # Project imports
@@ -33,7 +33,9 @@ dvTLPFront = UIDevice('MainPanel')
 dvTLPBooth = UIDevice('MirroredPanel')
 
 dvTLPMain = MirrorUIDevice([dvTLPFront, dvTLPBooth])
-#TODO figure out how mirrored panels take their TLP code 
+
+passwordFile = File('user/password.txt', 'r')
+password = str(passwordFile.readline())
 
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
@@ -46,7 +48,7 @@ CY_ID = 'Cynap'
 
 dvMatrix = Matrix.EthernetClass('10.10.2.30', 23, Model='XTP II CrossPoint 1600')
 
-dvBiamp = Biamp.SSHClass('128.114.159.236', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', 'wag2748'))
+dvBiamp = Biamp.SSHClass('128.114.159.236', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', password))
 
 #TODO - Change to ethernet
 dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP4K') #4k in room
@@ -58,9 +60,9 @@ dvLeftPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2033, Model='CB-PU22
 dvCenterPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2034, Model='CB-PU2220B')
 dvRightPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2035, Model='CB-PU2220B')
 
-dvSSP = SSP.SSHClass('10.10.2.42', 22023, Model='SSP 200', Credentials=('admin', 'wag2748'))
+dvSSP = SSP.SSHClass('10.10.2.42', 22023, Model='SSP 200', Credentials=('admin', password))
 
-dvCynap = Cynap.EthernetClass('128.114.159.232', 50915, Model='Cynap Pure Pro')
+dvCynap = Cynap.EthernetClass('128.114.159.232', 50915, Credentials=('admin', password), Model='Cynap Pure Pro')
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 
 @eventEx(dvCynap, ['Connected', 'Disconnected'])

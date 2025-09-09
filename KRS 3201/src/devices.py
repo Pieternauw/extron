@@ -11,7 +11,7 @@ Note: This is for definition only.  Connection and logic defined in system.py (s
 
 # Extron Library imports
 from extronlib.device import ProcessorDevice, UIDevice
-from extronlib.system import Timer
+from extronlib.system import Timer, File
 from extronlib.interface import EthernetClientInterface
 
 # Project imports
@@ -31,7 +31,9 @@ dvTLPFront = UIDevice('MainPanel')
 dvTLPBooth = UIDevice('MirroredPanel')
 
 dvTLPMain = MirrorUIDevice([dvTLPFront, dvTLPBooth])
-#TODO figure out how mirrored panels take their TLP code 
+
+passwordFile = File('user/password.txt', 'r')
+password = str(passwordFile.readline())
 
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
@@ -39,7 +41,7 @@ TLPF_ID = 'TLPF'; TLPB_ID = 'TLPB'; PRJL_ID = 'PRJL'; PRJC_ID = 'PRJC'; PRJR_ID 
 
 dvMatrix = Matrix.EthernetClass('10.10.2.30', 23, Model='XTP II CrossPoint 1600')
 
-dvBiamp = Biamp.SSHClass('10.10.2.40', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', 'wag2748'))
+dvBiamp = Biamp.SSHClass('10.10.2.40', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', password))
 
 #TODO - Change to ethernet
 dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP4K') #4k in room
@@ -116,7 +118,7 @@ dvLeftPRJ.SubscribeStatus('LampUsage', None, LampUpdateL)
 dvCenterPRJ.SubscribeStatus('LampUsage', None, LampUpdateC)
 dvRightPRJ.SubscribeStatus('LampUsage', None, LampUpdateR)
 
-dvCynap = Cynap.EthernetClass('128.114.159.235', 50915, Model='Cynap Pure Pro')
+dvCynap = Cynap.EthernetClass('128.114.159.235', 50915,  Credentials=('admin', password), Model='Cynap Pure Pro')
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 
 @eventEx(dvCynap, ['Connected', 'Disconnected'])

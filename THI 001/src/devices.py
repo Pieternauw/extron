@@ -11,7 +11,7 @@ Note: This is for definition only.  Connection and logic defined in system.py (s
 
 # Extron Library imports
 from extronlib.device import ProcessorDevice, UIDevice
-from extronlib.system import Timer, ProgramLog
+from extronlib.system import Timer, ProgramLog, File
 from extronlib.interface import EthernetClientInterface, RelayInterface, SerialInterface
 # Project import
 import modules.device.extr_Scaler_IN806_IN1808_Series_v1_1_6_0 as modScalar
@@ -29,15 +29,18 @@ import variables as var
 dvIPCP = ProcessorDevice('ProcessorAlias')
 dvTLP = UIDevice('PanelAlias')
 
+passwordFile = File('user/password.txt', 'r')
+password = str(passwordFile.readline())
+
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
 TLP_ID = 'Touchpanel'; PRJ_ID = 'Projector'; SW_ID = 'Switcher'; BLU_ID = 'Bluray'; IPCP_ID = 'IPCP'; BMP_ID = 'Biamp'; CY_ID = 'Cynap'
 
 dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
-dvBiamp = Biamp.SSHClass('128.114.41.216', 22, Credentials=('admin', 'wag2748'), Model='TesiraFORTE DAN AI')
+dvBiamp = Biamp.SSHClass('128.114.41.216', 22, Credentials=('admin', password), Model='TesiraFORTE DAN AI')
 
-dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Credentials=('admin', 'wag2748'), Model='IN1806')
+dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Credentials=('admin', password), Model='IN1806')
 dvScalar = GetConnectionHandler(dvScalar, 'Temperature', pollFrequency=30)         
 
 @eventEx(dvScalar, ['Connected', 'Disconnected'])
@@ -103,7 +106,7 @@ def BiampConnectionHandler(client:EthernetClientInterface, state):
     else:
         client.Connect(5)
         
-dvCynap = Cynap.EthernetClass('128.114.41.165', 50915, Model='Cynap Pure Pro')
+dvCynap = Cynap.EthernetClass('128.114.41.165', 50915,  Credentials=('admin', password), Model='Cynap Pure Pro')
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 
 @eventEx(dvCynap, ['Connected', 'Disconnected'])

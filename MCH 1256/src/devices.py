@@ -12,6 +12,7 @@ Note: This is for definition only.  Connection and logic defined in system.py (s
 # Extron Library imports
 from extronlib.device import ProcessorDevice, UIDevice
 from extronlib.interface import EthernetClientInterface
+from extronlib.system import File
 
 # Project imports
 import modules.device.epsn_vp_BrightLink_BrightLinkPro_CB_EB_69x_14x as PRJ
@@ -30,15 +31,18 @@ dvIPCP = ProcessorDevice('ProcessorAlias')
 dvNBPA = UIDevice('PanelA')
 dvNBPB = UIDevice('PanelB')
 
-dvSW = Scaler.SSHClass('128.114.162.3', 22023, Credentials=('admin', '100%Becknerized'), Model='DTP3 IN2004 DI/DO')
+# passwordFile = File('user/password.txt', 'r')
+# password = str(passwordFile.readline())
+
+dvSW = Scaler.SSHClass('128.114.162.3', 22023, Credentials=('admin', '100%Becknerized'), Model='DTP3 IN2004 DI/DO') #password
 dvSW = GetConnectionHandler(dvSW, 'Temperature', pollFrequency=30)         
 
 dvPRJA = GetConnectionHandler(PRJ.SerialOverEthernetClass('128.114.162.4', 2003, Model='EB-690U'), 'LampUsage', pollFrequency=30)
 dvPRJB = GetConnectionHandler(PRJ.SerialClass(dvIPCP, 'COM1', Model='EB-690U'), 'LampUsage', pollFrequency=30)
 
-dvCynap = Cynap.EthernetClass('128.114.162.0', 50915, Model='Cynap Pure Pro')
+dvCynap = Cynap.EthernetClass('128.114.162.0', 50915,  Credentials=('admin', '100%Becknerized'), Model='Cynap Pure Pro')    
 
-dvBiamp = Biamp.SSHClass('128.114.162.0', 22, Credentials=('admin', '100%Becknerized'), Model='TesiraFORTE DAN AI')
+dvBiamp = Biamp.SSHClass('128.114.162.0', 22, Credentials=('admin', '100%Becknerized'), Model='TesiraFORTE DAN AI') #password
 
 IPCP_ID = 'IPCP'; NBPA_ID = 'NBPA'; NBPB_ID = 'NBPB'; SW_ID = 'SW'; PRJA_ID = 'PRJA'; PRJB_ID = 'PRJB'; CY_ID = 'Cynap'; BMP_ID = 'Biamp'
 
