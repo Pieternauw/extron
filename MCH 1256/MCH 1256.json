@@ -20,7 +20,7 @@
                 "host_network_type": "LAN",
                 "interfaces": [
                     {
-                        "address": "128.114.162.0",
+                        "address": "128.114.163.181",
                         "type": "LAN"
                     }
                 ]
@@ -35,7 +35,7 @@
                 "host_network_type": "LAN",
                 "interfaces": [
                     {
-                        "address": "128.114.162.1",
+                        "address": "128.114.163.196",
                         "type": "LAN"
                     }
                 ]
@@ -54,7 +54,7 @@
                 "host_network_type": "LAN",
                 "interfaces": [
                     {
-                        "address": "128.114.162.3",
+                        "address": "128.114.163.197",
                         "type": "LAN"
                     }
                 ]
