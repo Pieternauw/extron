@@ -18,8 +18,7 @@ import devices as dev
 def Initialize():
     # Connect all devices
     dev.dvSW.Connect()
-    dev.dvPRJA.Connect()
-    dev.dvPRJB.Connect()
     dev.dvCynap.Connect()
+    dev.dvBiamp.Connect()
     # Finish Initialize() with a print()
     print('System Initialized')
