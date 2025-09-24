@@ -53,10 +53,6 @@ def SourceSelection(button:Button, state):
             dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.yuja_select), 'Tie Type':'Audio/Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '12', 'Tie Type': 'Audio/Video'})
         #for error prevention, tie yuja output from BluRay to a blank screen. HDCP content is not allowed to Yuja so needs to be not sent. 
-        
-        
-    
-
 
 video_mute_list = [tlp.btn_lVideoMute, tlp.btn_cVideoMute, tlp.btn_rVideoMute]
 @eventEx(video_mute_list , 'Pressed')
@@ -97,5 +93,6 @@ def SwitchSourceSound(button:Button, state):
     
 @eventEx(tlp.btn_wirelessDisconnect, ['Pressed', 'Released'])
 def DisconnectPresentation(button:tlp.Button, state):
+    button.SetState(1 if state is 'Pressed' else 0)
     dvCynap.Set('EndPresentation', None, {'Delete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
     
