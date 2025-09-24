@@ -30,6 +30,9 @@ dvTLP = UIDevice('PanelAlias')
 passwordFile = File('user/password.txt', 'r')
 password = str(passwordFile.readline())
 
+newpswfile = File('user/newpsw.txt', 'r')
+newpsw = str(newpswfile.readline())
+
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
 TLP_ID = 'Touchpanel'; PRJF_ID = 'ProjectorFront'; PRJB_ID = 'ProjectorBack'; SW_ID = 'Switcher'; IPCP_ID = 'IPCP'; CY_ID = 'Cynap'
@@ -86,7 +89,7 @@ dvPRJBack.SubscribeStatus('LampUsage', None, UpdatePRJBLamp)
 
 dvCynap = Cynap.EthernetClass('128.114.106.119', 50915, Model='Cynap Pure Pro')
 dvCynap.deviceUsername = 'admin'
-dvCynap.devicePassword = '100%Becknerized' 
+dvCynap.devicePassword = newpsw
 
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 
