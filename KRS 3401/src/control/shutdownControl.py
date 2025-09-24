@@ -33,6 +33,7 @@ def Startup():
     dvScalar.SetVideoMute('Off', {'Output': '1B'})
     dvScalar.SetVideoMute('Off', {'Output': '1A'})
     
+    dvScalar.SetInput('0', {'Type': 'Audio/Video'})
     
     #main page shown, function called after successful passcode entry
     dvTLP.ShowPage('Main Page')
