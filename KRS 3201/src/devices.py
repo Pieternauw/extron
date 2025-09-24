@@ -123,7 +123,7 @@ dvRightPRJ.SubscribeStatus('LampUsage', None, LampUpdateR)
 
 dvCynap = Cynap.EthernetClass('128.114.159.235', 50915, Model='Cynap Pure Pro')
 dvCynap.deviceUsername = 'admin'
-dvCynap.devicePassword = password
+dvCynap.devicePassword = newpsw
 
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 
