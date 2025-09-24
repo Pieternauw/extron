@@ -156,5 +156,3 @@ def WirelessHelpSelect(button:Button, state):
     prev_popup = wireless_popup_set[button]
     dvTLPMain.ShowPopup(wireless_popup_set[button])
     wireless_set.SetCurrent(button)
-
-btn_wirelessDisconnect = Button(dvTLPMain, 64)
