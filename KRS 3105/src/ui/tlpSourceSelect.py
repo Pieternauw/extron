@@ -177,4 +177,5 @@ def SwitchInput(button:Button, state):
         #now sound is from right source, set left source sound button to visible
         btn_leftSourceSound.SetVisible(True)
         btn_rightSourceSound.SetVisible(False)
-        
+    
+btn_wirelessDisconnect = Button(dvTLPMain, 64)

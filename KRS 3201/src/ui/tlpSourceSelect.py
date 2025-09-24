@@ -178,3 +178,4 @@ def SwitchInput(button:Button, state):
         btn_leftSourceSound.SetVisible(True)
         btn_rightSourceSound.SetVisible(False)
         
+btn_wirelessDisconnect = Button(dvTLPMain, 18)
