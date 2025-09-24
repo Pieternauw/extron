@@ -41,7 +41,7 @@ def Shutdown():
     dvPRJ.SetPower('Off', None)
     dvPRJ.Update('Power')
     
-    dvCynap.Set('EndPresentation', None, {'Deete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
+    dvCynap.Set('EndPresentation', None, {'Delete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
         
     tlp.input_set.SetCurrent(None)
     dvScalar.SetInput('3', {'Type': 'Audio/Video'})

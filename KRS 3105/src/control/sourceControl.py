@@ -104,5 +104,5 @@ def SwitchSourceSound(button:Button, state):
     
 @eventEx(tlp.btn_wirelessDisconnect, ['Pressed', 'Released'])
 def DisconnectPresentation(button:tlp.Button, state):
-    dvCynap.Set('EndPresentation', None, {'Deete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
+    dvCynap.Set('EndPresentation', None, {'Delete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
     

@@ -66,7 +66,7 @@ def Shutdown():
         
     PRJ_Shutoff = Wait(2, PRJShutoff)
 
-    dvCynap.Set('EndPresentation', None, {'Deete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
+    dvCynap.Set('EndPresentation', None, {'Delete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
 
     #Tie all outputs to 0 except Yuja, handled lower (ties to cynap)
     for i in ['1', '2', '3', '4', '5', '12']:

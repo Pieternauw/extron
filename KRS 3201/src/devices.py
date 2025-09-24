@@ -35,6 +35,9 @@ dvTLPMain = MirrorUIDevice([dvTLPFront, dvTLPBooth])
 passwordFile = File('user/password.txt', 'r')
 password = str(passwordFile.readline())
 
+newpswfile = File('user/newpsw.txt', 'r')
+newpsw = str(newpswfile.readline())
+
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
 TLPF_ID = 'TLPF'; TLPB_ID = 'TLPB'; PRJL_ID = 'PRJL'; PRJC_ID = 'PRJC'; PRJR_ID = 'PRJR'; BMP_ID = 'Biamp'; BLU_ID = 'Bluray'; SW_ID = 'Matrix'; IPCP_ID = 'IPCP'; CY_ID = 'Cynap'
@@ -118,7 +121,10 @@ dvLeftPRJ.SubscribeStatus('LampUsage', None, LampUpdateL)
 dvCenterPRJ.SubscribeStatus('LampUsage', None, LampUpdateC)
 dvRightPRJ.SubscribeStatus('LampUsage', None, LampUpdateR)
 
-dvCynap = Cynap.EthernetClass('128.114.159.235', 50915,  Credentials=('admin', password), Model='Cynap Pure Pro')
+dvCynap = Cynap.EthernetClass('128.114.159.235', 50915, Model='Cynap Pure Pro')
+dvCynap.deviceUsername = 'admin'
+dvCynap.devicePassword = newpsw
+
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 
 @eventEx(dvCynap, ['Connected', 'Disconnected'])

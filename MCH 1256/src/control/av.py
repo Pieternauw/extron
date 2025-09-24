@@ -72,7 +72,7 @@ def BPRJPressed(button:nbp.Button, state):
     
 @eventEx([nbp.btn_srcA2, nbp.btn_srcB2], 'Held')
 def WirelessDisconnect(button:nbp.Button, state):
-    dvCynap.Set('EndPresentation', None, {'Deete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
+    dvCynap.Set('EndPresentation', None, {'Delete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
     
 @eventEx([nbp.kb_A, nbp.kb_B], 'Turned')
 def KnobATurned(knob:nbp.Knob, direction):

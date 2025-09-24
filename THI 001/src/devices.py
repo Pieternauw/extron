@@ -32,6 +32,9 @@ dvTLP = UIDevice('PanelAlias')
 passwordFile = File('user/password.txt', 'r')
 password = str(passwordFile.readline())
 
+newpswfile = File('user/newpsw.txt', 'r')
+newpsw = str(newpswfile.readline())
+
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
 TLP_ID = 'Touchpanel'; PRJ_ID = 'Projector'; SW_ID = 'Switcher'; BLU_ID = 'Bluray'; IPCP_ID = 'IPCP'; BMP_ID = 'Biamp'; CY_ID = 'Cynap'
@@ -106,7 +109,10 @@ def BiampConnectionHandler(client:EthernetClientInterface, state):
     else:
         client.Connect(5)
         
-dvCynap = Cynap.EthernetClass('128.114.41.165', 50915,  Credentials=('admin', password), Model='Cynap Pure Pro')
+dvCynap = Cynap.EthernetClass('128.114.41.165', 50915, Model='Cynap Pure Pro')
+dvCynap.deviceUsername = 'admin'
+dvCynap.devicePassword = newpsw
+
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 
 @eventEx(dvCynap, ['Connected', 'Disconnected'])

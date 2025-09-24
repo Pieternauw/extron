@@ -37,6 +37,9 @@ dvTLPMain = MirrorUIDevice([dvTLPFront, dvTLPBooth])
 passwordFile = File('user/password.txt', 'r')
 password = str(passwordFile.readline())
 
+newpswfile = File('user/newpsw.txt', 'r')
+newpsw = str(newpswfile.readline())
+
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
 TLPF_ID = 'TLPF'; TLPB_ID = 'TLPB' 
@@ -62,7 +65,10 @@ dvRightPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2035, Model='CB-PU2
 
 dvSSP = SSP.SSHClass('10.10.2.42', 22023, Model='SSP 200', Credentials=('admin', password))
 
-dvCynap = Cynap.EthernetClass('128.114.159.232', 50915, Credentials=('admin', password), Model='Cynap Pure Pro')
+dvCynap = Cynap.EthernetClass('128.114.159.232', 50915, Model='Cynap Pure Pro')
+dvCynap.deviceUsername = 'admin'
+dvCynap.devicePassword = newpsw
+
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 
 @eventEx(dvCynap, ['Connected', 'Disconnected'])
