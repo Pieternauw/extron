@@ -40,7 +40,7 @@ dvSW = GetConnectionHandler(dvSW, 'Temperature', pollFrequency=30)
 dvPRJA = GetConnectionHandler(PRJ.SerialOverEthernetClass('128.114.163.20', 2003, Model='EB-690U'), 'LampUsage', pollFrequency=30)
 dvPRJB = GetConnectionHandler(PRJ.SerialClass(dvIPCP, 'COM1', Model='EB-690U'), 'LampUsage', pollFrequency=30)
 
-dvCynap = Cynap.EthernetClass('128.114.163.198', 50915,  Credentials=('admin', password), Model='Cynap Pure Pro')    
+dvCynap = Cynap.EthernetClass('128.114.163.198', 50915, Credentials=('admin', password), Model='Cynap Pure Pro')    
 
 dvBiamp = Biamp.SSHClass('128.114.163.199', 22, Credentials=('admin', password), Model='TesiraFORTE DAN AI') 
 
