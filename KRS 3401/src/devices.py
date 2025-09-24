@@ -85,6 +85,9 @@ dvPRJBack.SubscribeStatus('Power', None, UpdatePRJBStatus)
 dvPRJBack.SubscribeStatus('LampUsage', None, UpdatePRJBLamp)
 
 dvCynap = Cynap.EthernetClass('128.114.106.119', 50915, Model='Cynap Pure Pro')
+dvCynap.deviceUsername = 'admin'
+dvCynap.devicePassword = '100%Becknerized' 
+
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 
 @eventEx(dvCynap, ['Connected', 'Disconnected'])
