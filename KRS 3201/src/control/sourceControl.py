@@ -1,4 +1,4 @@
-from devices import dvMatrix, dvCenterPRJ, dvRightPRJ, dvLeftPRJ, dvCynap, GVEServer, PRJC_ID, PRJL_ID, PRJR_ID
+from devices import dvMatrix, dvCenterPRJ, dvRightPRJ, dvLeftPRJ, dvCynap, GVEServer, PRJC_ID, PRJL_ID, PRJR_ID # , dvBluray
 
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button
@@ -49,6 +49,7 @@ def SourceSelection(button:Button, state):
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.monitor_select), 'Tie Type': 'Video'})
         if button in [tlp.btn_cBluray, tlp.btn_lBluray, tlp.btn_rBluray]:
             dvMatrix.SetMatrixTieCommand(None, {'Input': '0', 'Output': '{}'.format(tlp.yuja_select), 'Tie Type': 'Audio/Video'})
+            # dvBluray.Set('Power', 'On')
         else:
             dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '{}'.format(tlp.yuja_select), 'Tie Type':'Audio/Video'})
         dvMatrix.SetMatrixTieCommand(None, {'Input': '{}'.format(output), 'Output': '12', 'Tie Type': 'Audio/Video'})

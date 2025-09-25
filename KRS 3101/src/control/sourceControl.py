@@ -7,7 +7,7 @@ import variables as var
 import control.advancedControl as adv
 
 #Device Imports
-from devices import dvScalar, dvPRJ, dvCynap, PRJ_ID, GVEServer
+from devices import dvScalar, dvPRJ, dvCynap, PRJ_ID, GVEServer #, dvBluray
 
 input_popup_list = ['Laptop Connected popup', 'Wireless insturction popup', 
               'Document camera instruction popup', 'BluRay control popup']
@@ -28,6 +28,8 @@ def ControlInput(button:tlp.Button, state):
     tlp.input_set.SetCurrent(button)
     
     adv.PRJStatusTimer.Restart()
+    
+    # if button is tlp.btn_sourceBluray: dvBluray.Set('Power', 'On')
     
 @eventEx(tlp.btn_videoMute, 'Pressed')
 def VideoMuteControl(button:tlp.Button, state):

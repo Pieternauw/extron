@@ -1,4 +1,4 @@
-from devices import dvScalar, dvPRJ, dvTLP, dvRelay, dvBiamp, dvCynap, GVEServer, PRJ_ID
+from devices import dvScalar, dvPRJ, dvTLP, dvRelay, dvBiamp, dvCynap, GVEServer, PRJ_ID # , dvBluray
 
 from modules.helper.ModuleSupport import eventEx 
 
@@ -60,6 +60,7 @@ def Shutdown():
     dvTLP.HideAllPopups()
     dvTLP.ShowPage('Start Page')
     dvRelay.SetState('Open')
+    # dvBluray.Set('Power', 'Off')
     
 @eventEx(tlp.btn_shdnYes, 'Pressed')
 def ShutdownControl(button:tlp.Button, state):

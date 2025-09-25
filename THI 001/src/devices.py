@@ -63,6 +63,7 @@ def SwitcherConnectionHandler(client:EthernetClientInterface, state):
         client.Connect(5)
 
 dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP1')
+# dvBluray = Bluray.SerialClass(dvIPCP, 'COM1', Model='BD-MP1')
 
 def ConnectBluray(timer:Timer, count):
     dvBluray.Connect(5)

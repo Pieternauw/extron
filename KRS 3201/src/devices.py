@@ -46,8 +46,8 @@ dvMatrix = Matrix.EthernetClass('10.10.2.30', 23, Model='XTP II CrossPoint 1600'
 
 dvBiamp = Biamp.SSHClass('128.114.159.243', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', password))
 
-#TODO - Change to ethernet
 dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP4K') #4k in room
+# dvBluray = Bluray.SerialClass(dvIPCP, 'COM1', Model='BD-MP4K')
 
 #dvBoardCam1 = BoardCam.SerialClass(dvIPCP, 'COM2', Model='AT-HDVS-CAM')
 #dvBoardCam2 = BoardCam.SerialClass(dvIPCP, 'COM1', Model='AT-HDVS-CAM')

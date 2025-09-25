@@ -1,4 +1,4 @@
-from devices import dvScalar, dvPRJ, dvTLP, dvRelay, GVEServer, PRJ_ID, dvCynap
+from devices import dvScalar, dvPRJ, dvTLP, dvRelay, GVEServer, PRJ_ID, dvCynap #, dvBluray
 
 from modules.helper.ModuleSupport import eventEx 
 
@@ -22,17 +22,13 @@ def SharedCommands():
     
 def Startup():
     SharedCommands()
-    #turn off mic and program mutes
-    #visual feedback handled by SubscribeStatus()
     dvScalar.SetGroupProgramMute('Off', None)
     dvScalar.SetGroupMicMute('Off', None)
     print(dvScalar.ReadStatus('GroupProgramMute')) 
     
     dvTLP.HidePopup('Login')
     
-    #main page shown, function called after successful passcode entry
     dvTLP.ShowPage('Main Page')
-    #unlock drawer
     dvRelay.SetState('Close')
     
 def Shutdown():
@@ -50,6 +46,7 @@ def Shutdown():
     dvTLP.HideAllPopups()
     dvTLP.ShowPage('Start Page')
     dvRelay.SetState('Open')
+    # dvBluray.Set('Power', 'Off')
     
 @eventEx(tlp.btn_shdnYes, 'Pressed')
 def ShutdownControl(button:tlp.Button, state):
@@ -67,11 +64,8 @@ btn_startScreen = Button(dvTLP, 19)
 def ShowStartPage(button:Button, state):
     print(button.Name, state)
     dvTLP.ShowPage("Main passcode")
-    #may want to auto this to the main page if I can't get the passcode going before deployment
 
 """PASSCODE SCREEN"""
-
-"""TODO - Cancel Button needs to be added"""
 
 #port 22022 in cyberduck
 passcodeFile = File('user/passcode.txt', 'r')

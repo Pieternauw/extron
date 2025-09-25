@@ -1,4 +1,4 @@
-from devices import dvMatrix, dvBiamp, dvTLPMain, dvCenterPRJ, dvRightPRJ, dvLeftPRJ, GVEServer, dvCynap, PRJC_ID, PRJL_ID, PRJR_ID
+from devices import dvMatrix, dvBiamp, dvTLPMain, dvCenterPRJ, dvRightPRJ, dvLeftPRJ, GVEServer, dvCynap, PRJC_ID, PRJL_ID, PRJR_ID # , dvBluray
 
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button, Label
@@ -83,6 +83,7 @@ def Shutdown():
     dvTLPMain.ShowPage('Start Page')
     dvMatrix.Set('Relay', 'Open', {'Output': '4', 'Relay': '1'})
     dvTLPMain.HideAllPopups()
+    # dvBluray.Set('Power', 'Off')
 
 @eventEx(tlp.btn_shutdownYes, 'Pressed')
 def ShutdownConfirm(button:Button, state):
