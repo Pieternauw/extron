@@ -68,7 +68,7 @@ r = True
 
 def FlipLabel(timer:Timer, count):
     global r
-    print(r)
+    # print(r)
     tlp.lbl_micNotR.SetVisible(r)
     r = not r
     if count >= 60:
@@ -82,7 +82,7 @@ SpeechTimer = Timer(1, FlipLabel)
 def SpeechPresent(command, value, qualifier):
     print(value)
     if value == 'Signal Present':
-        SpeechTimer.Stop()
+        SpeechTimer.Pause()
         tlp.lbl_Speech.SetVisible(True)
         tlp.lbl_micNotR.SetVisible(False)
         tlp.lbl_micNotW.SetVisible(False)
