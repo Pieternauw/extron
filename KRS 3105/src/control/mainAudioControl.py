@@ -82,7 +82,7 @@ SpeechTimer = Timer(1, FlipLabel)
 def SpeechPresent(command, value, qualifier):
     print(value)
     if value == 'Signal Present':
-        SpeechTimer.Pause()
+        if SpeechTimer.State is 'Running': SpeechTimer.Stop()
         tlp.lbl_Speech.SetVisible(True)
         tlp.lbl_micNotR.SetVisible(False)
         tlp.lbl_micNotW.SetVisible(False)

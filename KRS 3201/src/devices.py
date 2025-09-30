@@ -90,9 +90,9 @@ def BlurayConnectionHandler(client:EthernetClientInterface, state):
         print('Bluray attempt reconnect')
         BlurayConnectionTimer.Restart()
 
-dvLeftPRJ = GetConnectionHandler(dvLeftPRJ, 'LampUsage', pollFrequency=30)
+dvLeftPRJ = GetConnectionHandler(dvLeftPRJ, 'LampUsage', pollFrequency=10)
 dvCenterPRJ = GetConnectionHandler(dvCenterPRJ, 'LampUsage', pollFrequency=10)
-dvRightPRJ = GetConnectionHandler(dvRightPRJ, 'LampUsage', pollFrequency=30)
+dvRightPRJ = GetConnectionHandler(dvRightPRJ, 'LampUsage', pollFrequency=10)
 
 PRJ_DICT = {dvLeftPRJ: PRJL_ID, dvCenterPRJ: PRJC_ID, dvRightPRJ: PRJR_ID}
 
