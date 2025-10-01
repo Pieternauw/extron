@@ -18,8 +18,7 @@ from extronlib.interface import EthernetClientInterface
 from modules.device import extr_matrix_XTPIICrossPointSeries_v1_12_0_1 as Matrix
 from modules.device import biam_dsp_TesiraSeries_v1_15_1_0 as Biamp
 from modules.device import tasc_bluray_BD_MP4K_v1_0_0_0 as Bluray
-from modules.device import epsn_vp_CB_EB_PU_21xxW_22xxB_Series_v1_0_0_0 as Projector
-# from modules.device import epsn_vp_CB_EB_PU100xx_PU2010x_Series_v1_0_2_0 as Projector
+from modules.device import epsn_vp_CB_EB_PU_21xxW_22xxB_Series_v1_0_1_0 as Projector
 from modules.device import wolf_cs_Cynap_Core_Pure_Pro_v1_1_1_0 as Cynap
 from modules.device import extr_dsp_SSP_200_v1_0_0_0 as SSP
 from modules.helper.ConnectionHandler import GetConnectionHandler

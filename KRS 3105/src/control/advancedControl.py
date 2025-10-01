@@ -27,6 +27,15 @@ def CenterPowerChanged(command, value, qualifier):
 
 dvCenterPRJ.SubscribeStatus('Power', None, CenterPowerChanged)
 
+def CenterTimer(timer:Timer, count):
+    print("Center Timer Count {}".format(count))
+    dvCenterPRJ.Update('Power')
+    if count > 10:
+        timer.Stop()
+        print("Center timer stopped")
+        
+PRJCenterTimer = Timer(5, CenterTimer)
+
 def LeftPowerChanged(command, value, qualifier):
     GVEServer.SendStatus(PRJL_ID, 'Power', value)
     if value is 'On' or value is 'Off':
@@ -36,6 +45,16 @@ def LeftPowerChanged(command, value, qualifier):
         tlp.btn_lPrjOff.SetBlinking('Medium', [0, 1])
 
 dvLeftPRJ.SubscribeStatus('Power', None, LeftPowerChanged)
+
+def LeftTimer(timer:Timer, count):
+    print("Left Timer count {}".format(count))
+    dvLeftPRJ.Update('Power')
+    if count > 10:
+        timer.Stop()
+        print("Left Timer Stopped")
+        
+        
+PRJLeftTimer = Timer(5, LeftTimer)
 
 def RightPowerChanged(command, value, qualifier):
     GVEServer.SendStatus(PRJR_ID, 'Power', value)
@@ -47,6 +66,16 @@ def RightPowerChanged(command, value, qualifier):
         
 dvRightPRJ.SubscribeStatus('Power', None, RightPowerChanged)
 
+def RightTimer(timer:Timer, count):
+    print("Right Timer count {}".format(count))
+    dvRightPRJ.Update('Power')
+    if count > 10:
+        timer.Stop()
+        print("Right Timer Stopped")
+        
+        
+PRJRightTimer = Timer(5, RightTimer)
+
 #might need to be a list instead of *[]
 prj_list = [tlp.btn_projOn, tlp.btn_projOff,
             tlp.btn_lPrjOn, tlp.btn_lPrjOff, 
@@ -57,12 +86,15 @@ def ProjectorOnOff(button:Button, state):
     if button in prj_set.Objects:
         dvCenterPRJ.SetPower('On' if button is tlp.btn_projOn else 'Off', None)
         dvCenterPRJ.Update('Power')
+        PRJCenterTimer.Restart()
     elif button in l_prj_set.Objects:
         dvLeftPRJ.SetPower('On' if button is tlp.btn_lPrjOn else 'Off', None)
         dvLeftPRJ.Update('Power')
+        PRJLeftTimer.Restart()
     elif button in r_prj_set.Objects:
         dvRightPRJ.SetPower('On' if button is tlp.btn_rPrjOn else 'Off', None)
         dvRightPRJ.Update('Power')
+        PRJRightTimer.Restart()
     button.SetBlinking('Medium', [0, 1])
 
 def CenterAVMuteChanged(command, value, qualifier):
