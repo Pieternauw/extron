@@ -168,8 +168,8 @@ def SSPConnectionHandler(client:EthernetClientInterface, state):
     else:
         client.Connect(5)
         
-device_dict = {dvTLPFront: TLPF_ID, dvTLPBooth: TLPB_ID, dvIPCP: IPCP_ID}
+device_dict = {dvTLPFront: TLPF_ID, dvTLPBooth: TLPB_ID, dvIPCP: IPCP_ID, dvSSP: SSP_ID}
     
-@eventEx([dvTLPFront, dvTLPBooth, dvIPCP], ['Offline', 'Online'])
+@eventEx([dvTLPFront, dvTLPBooth, dvIPCP, dvSSP], ['Offline', 'Online'])
 def TLPOff(device, state):
     GVEServer.SendStatus(device_dict[device], 'Connection', state)
