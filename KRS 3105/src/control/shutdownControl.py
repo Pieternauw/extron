@@ -1,4 +1,5 @@
 from devices import dvMatrix, dvBiamp, dvTLPMain, dvCenterPRJ, dvRightPRJ, dvLeftPRJ, GVEServer, dvCynap, PRJC_ID, PRJL_ID, PRJR_ID # , dvBluray
+from control.advancedControl import PRJCenterTimer, PRJLeftTimer, PRJRightTimer
 
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button, Label
@@ -60,9 +61,9 @@ def Shutdown():
         dvRightPRJ.SetPower('Off', None)
         dvLeftPRJ.SetPower('Off', None)
     
-        dvCenterPRJ.Update('Power')
-        dvRightPRJ.Update('Power')
-        dvLeftPRJ.Update('Power') 
+        PRJCenterTimer.Restart()
+        PRJRightTimer.Restart()
+        PRJLeftTimer.Restart()
         
     PRJ_Shutoff = Wait(2, PRJShutoff)
 

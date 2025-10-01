@@ -1,4 +1,5 @@
 from devices import dvMatrix, dvCenterPRJ, GVEServer, dvRightPRJ, dvLeftPRJ, dvCynap, PRJR_ID, PRJL_ID, PRJC_ID #, dvBluray
+from control.advancedControl import PRJCenterTimer, PRJLeftTimer, PRJRightTimer
 
 from modules.helper.ModuleSupport import eventEx 
 from modules.helper.MirrorUI import Button
@@ -23,17 +24,17 @@ def SourceSelection(button:Button, state):
     if tlp.prj_select == 1:
         output = tlp.left_input_set.Objects.index(button) + 1
         dvLeftPRJ.SetPower('On', None)
-        dvLeftPRJ.Update('Power')
+        PRJLeftTimer.Restart()
         GVEServer.SendStatus(PRJL_ID, 'Source', source_list[output - 1])
     elif tlp.prj_select == 2:
         output = tlp.center_input_set.Objects.index(button) + 1
         dvCenterPRJ.SetPower('On', None)
-        dvCenterPRJ.Update('Power')
+        PRJCenterTimer.Restart()
         GVEServer.SendStatus(PRJC_ID, 'Source', source_list[output - 1])
     elif tlp.prj_select == 3:
         output = tlp.right_input_set.Objects.index(button) + 1
         dvRightPRJ.SetPower('On', None)
-        dvRightPRJ.Update('Power')
+        PRJRightTimer.Restart()
         GVEServer.SendStatus(PRJR_ID, 'Source', source_list[output - 1])
         
     
