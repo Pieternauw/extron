@@ -27,6 +27,7 @@ def Initialize():
     devices.dvBluray.Connect()
     print('connecting bluray')
     devices.dvBiamp.Connect()
+    devices.dvSSP.Connect()
     print('connecting biamp')
     devices.dvTLPMain.HideAllPopups()
     devices.dvTLPMain.ShowPage('Start Page')

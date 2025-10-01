@@ -68,6 +68,24 @@ from 1.4.2 added to it if 1.4.2 was made for another room. A room will only get 
 was made to it. Rooms where this happens are noted specifically with their changes in each section. If rooms share a version 
 number with different features, it will be marked. 
 
+\section*{v2.7.4}
+
+\section*{v2.7.3}
+
+This version is created for KRS3105 and KRS3201. The change made is when device ties are made. First, ties to the confidence 
+monitors are now \lstinline|'Video'| only ties. Next, ties to the YuJa for every source is made only once it's determined that 
+the button was not the bluray. Previously, the ties were made and then if it was bluray tied, the tie was removed. Now, bluray 
+never gets tied, but everything else does. This is to hopefully change the HDCP issues the room has had. 
+
+\section*{v2.7.2 (Deployed)}
+
+Version 2.7.2 is a bug fix for the code created in v2.6.1. The code initially created had typos and needed to be adjusted to work 
+properly in the room. The changes made in this version also include the passwords for the device. One of the major changes is 
+removing the \lstinline|Credentials=('', '')| tuple from the device definition. For \lstinline|EthernetClientInterface| the 
+credentials need to be added seperate from the device definition using \lstinline|<device>.deviceUsername| and 
+\lstinline|<device>.devicePassword|. The password is also changed to be the updated password, imported from a new password 
+file included on the controller. 
+
 \section*{v2.7.1}
 
 Version 2.7.1 enables a long awaited change that moves credentials to a file on the controller. This removes in-file credentials 
@@ -83,7 +101,7 @@ Cynap is sent the command to disconnect the current wireless presentation, and r
 to prevent the case where professors walk out of the room while still presenting. This can cause the Cynap to freeze and not 
 allow new presentations. v.6.1 is prepared for the Fall '25 quarter but has not been put into rooms yet. 
 
-\section*{v2.5.1 (Deployed)}
+\section*{v2.5.1}
 
 Version 2.5.1 is a deployment created to converge all rooms to the same version in preparation for the start of the school 
 term. It contains a few minor code readability changes, fixes lack of visual response from the tech access panel, and 
