@@ -56,16 +56,17 @@ def Startup():
 def Shutdown(): 
     DefaultCalls()
     
-    def PRJShutoff():
-        dvCenterPRJ.SetPower('Off', None)
-        dvRightPRJ.SetPower('Off', None)
-        dvLeftPRJ.SetPower('Off', None)
+    dvCenterPRJ.SetPower('Off', None)
+    dvRightPRJ.SetPower('Off', None)
+    dvLeftPRJ.SetPower('Off', None)
+
+    dvCenterPRJ.Update('Power')
+    dvRightPRJ.Update('Power')
+    dvLeftPRJ.Update('Power') 
     
-        dvCenterPRJ.Update('Power')
-        dvRightPRJ.Update('Power')
-        dvLeftPRJ.Update('Power') 
-        
-    PRJ_Shutoff = Wait(2, PRJShutoff)
+    PRJCenterTimer.Restart()
+    PRJLeftTimer.Restart()
+    PRJRightTimer.Restart()
     
     dvCynap.Set('EndPresentation', None, {'Delete Recordings Folder': 'Yes', 'Delete Snapshots Folder': 'Yes', 'Power Off Mode': 'New Presentation'})
 
