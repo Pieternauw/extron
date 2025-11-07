@@ -56,13 +56,16 @@ def Startup():
 def Shutdown(): 
     DefaultCalls()
     
-    dvCenterPRJ.SetPower('Off', None)
-    dvRightPRJ.SetPower('Off', None)
-    dvLeftPRJ.SetPower('Off', None)
-
-    dvCenterPRJ.Update('Power')
-    dvRightPRJ.Update('Power')
-    dvLeftPRJ.Update('Power') 
+    def PRJShutoff():
+        dvCenterPRJ.SetPower('Off', None)
+        dvRightPRJ.SetPower('Off', None)
+        dvLeftPRJ.SetPower('Off', None)
+    
+        dvCenterPRJ.Update('Power')
+        dvRightPRJ.Update('Power')
+        dvLeftPRJ.Update('Power') 
+        
+    PRJ_Shutoff = Wait(2, PRJShutoff)
     
     PRJCenterTimer.Restart()
     PRJLeftTimer.Restart()
