@@ -70,6 +70,10 @@ number with different features, it will be marked.
 
 \section*{v2.7.4} 
 
+This version creates visual feedback representing whether or not speech is present for rooms with Biamps. By adjusting the Biamp program, a signal present meter can be added to the mic inputs that triggers on a very low level of signal. This level simply reports if the mic transmitter is turned on or not. A timer was created to flash red and white text reporting "MIC NOT DETECTED" when there is no signal present. Once the mic is turned on, the text returns to saying "Speech". 
+
+A weird error was also fixed with this version. The 3105 projector logic previously used no timers. The projector status was updated without need for timers and only used subscribe status. This was the only large room that was able to work this way. That stopped working recently without any reason. The timers were added slightly after the first deployment of this version but is still included in this version number as it is just bringing 3105 up to date with 3201.
+
 \section*{v2.7.3}
 
 This version is created for KRS3105 and KRS3201. The change made is when device ties are made. First, ties to the confidence 
@@ -82,7 +86,7 @@ never gets tied, but everything else does. This is to hopefully change the HDCP 
 Version 2.7.2 is a bug fix for the code created in v2.6.1. The code initially created had typos and needed to be adjusted to work 
 properly in the room. The changes made in this version also include the passwords for the device. One of the major changes is 
 removing the \lstinline|Credentials=('', '')| tuple from the device definition. For \lstinline|EthernetClientInterface| the 
-credentials need to be added seperate from the device definition using \lstinline|<device>.deviceUsername| and 
+credentials need to be added separate from the device definition using \lstinline|<device>.deviceUsername| and 
 \lstinline|<device>.devicePassword|. The password is also changed to be the updated password, imported from a new password 
 file included on the controller. 
 
