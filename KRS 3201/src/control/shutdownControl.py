@@ -43,13 +43,9 @@ def Startup():
     DefaultCalls()
     
     print('Startup running')
-    #default audio levels set, turn off mute buttons. Visual feedback handled by SubscribeStatus()
     
     dvTLPMain.HidePopup('Login')
-    
-    #No ties for matrix, there might already be ties in place. Plus if they reselect 
-    #then ties will be made. 
-    #send to room select page and open up the relay drawer
+
     dvTLPMain.ShowPage('room mode select')
     dvMatrix.Set('Relay', 'Close', {'Output': '4', 'Relay': '1'})
     
@@ -60,7 +56,7 @@ def Shutdown():
         dvCenterPRJ.SetPower('Off', None)
         dvRightPRJ.SetPower('Off', None)
         dvLeftPRJ.SetPower('Off', None)
-    
+        
         dvCenterPRJ.Update('Power')
         dvRightPRJ.Update('Power')
         dvLeftPRJ.Update('Power') 
@@ -108,8 +104,6 @@ btn_startScreen = Button(dvTLPMain, 19)
 def ShowStartPage(button:Button, state):
     print(button.Name, button.Host, state)
     dvTLPMain.ShowPage("Main passcode")
-    #may want to auto this to the main page if I can't get the passcode going before deployment
-
 
 passcodeFile = File('user/passcode.txt', 'r')
 passcode = str(passcodeFile.readline())

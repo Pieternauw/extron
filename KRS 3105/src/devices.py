@@ -50,7 +50,7 @@ CY_ID = 'Cynap'
 
 dvMatrix = Matrix.EthernetClass('10.10.2.30', 23, Model='XTP II CrossPoint 1600')
 
-dvBiamp = Biamp.SSHClass('128.114.159.236', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', password))
+dvBiamp = Biamp.SSHClass('128.114.159.236', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', newpsw))
 
 #TODO - Change to ethernet
 dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP4K') #4k in room

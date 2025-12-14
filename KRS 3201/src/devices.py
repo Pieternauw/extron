@@ -44,7 +44,7 @@ TLPF_ID = 'TLPF'; TLPB_ID = 'TLPB'; PRJL_ID = 'PRJL'; PRJC_ID = 'PRJC'; PRJR_ID 
 
 dvMatrix = Matrix.EthernetClass('10.10.2.30', 23, Model='XTP II CrossPoint 1600')
 
-dvBiamp = Biamp.SSHClass('128.114.159.243', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', password))
+dvBiamp = Biamp.SSHClass('128.114.159.243', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', newpsw))
 
 dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP4K') #4k in room
 # dvBluray = Bluray.SerialClass(dvIPCP, 'COM1', Model='BD-MP4K')

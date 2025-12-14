@@ -15,7 +15,7 @@ from extronlib.interface import EthernetClientInterface
 from extronlib.system import File
 
 # Project imports
-import modules.device.epsn_vp_BrightLink_BrightLinkPro_CB_EB_69x_14x as PRJ
+"""WRONG MODULE FOR PROJECTOR - Module request sent out"""
 import modules.device.extr_scaler_IN2004_Series_v1_0_0_0 as Scaler
 import modules.device.wolf_cs_Cynap_Core_Pure_Pro_v1_1_1_0 as Cynap
 import modules.device.biam_dsp_TesiraSeries_v1_15_1_0 as Biamp
