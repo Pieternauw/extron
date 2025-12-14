@@ -78,7 +78,7 @@ def FlipLabel(timer:Timer, count):
         
 SpeechTimer = Timer(1, FlipLabel)
 
-def SpeechPresent(command, value, qualifier);
+def SpeechPresent(command, value, qualifier):
     print(value)
     if value == "Signal Present":
         SpeechTimer.Stop()
