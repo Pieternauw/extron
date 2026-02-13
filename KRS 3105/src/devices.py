@@ -33,11 +33,23 @@ dvTLPBooth = UIDevice('MirroredPanel')
 
 dvTLPMain = MirrorUIDevice([dvTLPFront, dvTLPBooth])
 
-passwordFile = File('user/password.txt', 'r')
-password = str(passwordFile.readline())
+# passwordFile = File('user/password.txt', 'r')
+# password = str(passwordFile.readline())
 
-newpswfile = File('user/newpsw.txt', 'r')
-newpsw = str(newpswfile.readline())
+# newpswfile = File('user/newpsw.txt', 'r')
+# newpsw = str(newpswfile.readline())
+
+cynapFile = File('user/cynap.txt', 'r')
+passwordCynap = str(cynapFile.readline())
+
+matrixFile = File('user/matrix.txt', 'r')
+passwordMatrix = str(matrixFile.readline())
+
+biampFile = File('user/biamp.txt', 'r')
+passwordBiamp = str(biampFile.readline())
+
+sspFile = File('user/ssp.txt', 'r')
+passwordSSP = str(sspFile.readline())
 
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
@@ -49,8 +61,11 @@ BMP_ID = 'Biamp'; BLU_ID = 'Bluray'; SW_ID = 'Matrix'; IPCP_ID = 'IPCP'; SSP_ID 
 CY_ID = 'Cynap'
 
 dvMatrix = Matrix.EthernetClass('10.10.2.30', 23, Model='XTP II CrossPoint 1600')
+#Is this needed??
+dvMatrix.deviceUsername = 'admin'
+dvMatrix.devicePassword = passwordMatrix  
 
-dvBiamp = Biamp.SSHClass('128.114.159.236', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', newpsw))
+dvBiamp = Biamp.SSHClass('128.114.159.236', 22, Model='TesiraFORTE DAN AI', Credentials=('admin', passwordBiamp))
 
 #TODO - Change to ethernet
 dvBluray = Bluray.EthernetClass('10.10.2.70', 9030, Model='BD-MP4K') #4k in room
@@ -63,11 +78,11 @@ dvLeftPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2033, Model='CB-PU22
 dvCenterPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2034, Model='CB-PU2220B')
 dvRightPRJ = Projector.SerialOverEthernetClass('10.10.2.30', 2035, Model='CB-PU2220B')
 
-dvSSP = SSP.SSHClass('10.10.2.42', 22023, Model='SSP 200', Credentials=('admin', password))
+dvSSP = SSP.SSHClass('10.10.2.42', 22023, Model='SSP 200', Credentials=('admin', passwordSSP))
 
 dvCynap = Cynap.EthernetClass('128.114.159.232', 50915, Model='Cynap Pure Pro')
 dvCynap.deviceUsername = 'admin'
-dvCynap.devicePassword = newpsw
+dvCynap.devicePassword = passwordCynap
 
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 

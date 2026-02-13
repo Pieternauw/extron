@@ -27,11 +27,17 @@ import variables as var
 dvIPCP = ProcessorDevice('ProcessorAlias')
 dvTLP = UIDevice('PanelAlias')
 
-passwordFile = File('user/password.txt', 'r')
-password = str(passwordFile.readline())
+# passwordFile = File('user/password.txt', 'r')
+# password = str(passwordFile.readline())
 
-newpswfile = File('user/newpsw.txt', 'r')
-newpsw = str(newpswfile.readline())
+# newpswfile = File('user/newpsw.txt', 'r')
+# newpsw = str(newpswfile.readline())
+
+cynapFile = File('user/cynap.txt', 'r')
+passwordCynap = str(cynapFile.readline())
+
+switcherFile = File('user/switcher.txt', 'r')
+passowrdSwitcher = str(switcherFile.readline())
 
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
@@ -39,7 +45,7 @@ TLP_ID = 'Touchpanel'; PRJF_ID = 'ProjectorFront'; PRJB_ID = 'ProjectorBack'; SW
 
 dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
-dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Credentials=('admin', password), Model='IN1808 IPCP MA 70')
+dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Credentials=('admin', passowrdSwitcher), Model='IN1808 IPCP MA 70')
 dvScalar = GetConnectionHandler(dvScalar, 'Temperature', pollFrequency=30)         
 
 @eventEx(dvScalar, ['Connected', 'Disconnected'])
@@ -89,7 +95,7 @@ dvPRJBack.SubscribeStatus('LampUsage', None, UpdatePRJBLamp)
 
 dvCynap = Cynap.EthernetClass('128.114.106.119', 50915, Model='Cynap Pure Pro')
 dvCynap.deviceUsername = 'admin'
-dvCynap.devicePassword = newpsw
+dvCynap.devicePassword = passwordCynap
 
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 

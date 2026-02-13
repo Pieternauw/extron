@@ -29,11 +29,20 @@ import variables as var
 dvIPCP = ProcessorDevice('ProcessorAlias')
 dvTLP = UIDevice('PanelAlias')
 
-passwordFile = File('user/password.txt', 'r')
-password = str(passwordFile.readline())
+# passwordFile = File('user/password.txt', 'r')
+# password = str(passwordFile.readline())
 
-newpswfile = File('user/newpsw.txt', 'r')
-newpsw = str(newpswfile.readline())
+# newpswfile = File('user/newpsw.txt', 'r')
+# newpsw = str(newpswfile.readline())
+
+cynapFile = File('user/cynap.txt', 'r')
+passwordCynap = str(cynapFile.readline())
+
+switcherFile = File('user/switcher.txt', 'r')
+passwordSwitcher = str(switcherFile.readline())
+
+biampFile = File('user/biamp.txt', 'r')
+passwordBiamp = str(biampFile.readline())
 
 GVEServer = gveClient('128.114.104.109', dvIPCP)
 
@@ -41,9 +50,9 @@ TLP_ID = 'Touchpanel'; PRJ_ID = 'Projector'; SW_ID = 'Switcher'; BLU_ID = 'Blura
 
 dvRelay = RelayInterface(dvIPCP, 'RLY1')
 
-dvBiamp = Biamp.SSHClass('128.114.41.216', 22, Credentials=('admin', password), Model='TesiraFORTE DAN AI')
+dvBiamp = Biamp.SSHClass('128.114.41.216', 22, Credentials=('admin', passwordBiamp), Model='TesiraFORTE DAN AI')
 
-dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Credentials=('admin', password), Model='IN1806')
+dvScalar = modScalar.SSHClass('10.10.2.30', 22023, Credentials=('admin', passwordSwitcher), Model='IN1806')
 dvScalar = GetConnectionHandler(dvScalar, 'Temperature', pollFrequency=30)         
 
 @eventEx(dvScalar, ['Connected', 'Disconnected'])
@@ -112,7 +121,7 @@ def BiampConnectionHandler(client:EthernetClientInterface, state):
         
 dvCynap = Cynap.EthernetClass('128.114.41.165', 50915, Model='Cynap Pure Pro')
 dvCynap.deviceUsername = 'admin'
-dvCynap.devicePassword = newpsw
+dvCynap.devicePassword = passwordCynap
 
 dvCynap = GetConnectionHandler(dvCynap, 'BYODPinDisplay', pollFrequency=30)
 

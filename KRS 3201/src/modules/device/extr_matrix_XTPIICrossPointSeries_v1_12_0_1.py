@@ -20,8 +20,8 @@ class DeviceClass:
         self.Debug = False
         self.numOfInputs = 4
         self.numOfOutputs = 4
-        self.deviceUsername = 'admin'
-        self.devicePassword = 'wag2748'
+        self.deviceUsername = ''
+        self.devicePassword = ''
         self.Models = {
             'XTP II CrossPoint 1600': self.extr_15_1269_1600,
             'XTP II CrossPoint 3200': self.extr_15_1269_3200,
