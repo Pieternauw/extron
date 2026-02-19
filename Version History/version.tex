@@ -53,20 +53,15 @@
 
 \section*{Introduction}\label{sec:Intro}
 
-This is the collection point of every change made to the Extron ControlScript Code. It is a detailed changelog containing 
-version numbers, information on what changed, and background information on why changes needed to be made. It collects 
-all of the Git commit messages into one comprehensible document with more details. For more in depth line by line changes, go 
-to the Git repository here: \url{https://git.ucsc.edu/pnauwela/extron}. Each commit has a line by line comparison of what 
-was added or removed. The structure of this document has the most recent commits listed at the very top. Version number structure 
-is as follows: \lstinline|vX.Y.Z|. X refers to the system components like Switchers or Projectors. When these items are changed out, 
-the number will tick up by 1. This number will also change for large code base structure changes, including file structure changes, 
-or function overhauls. Y refers to big code or UI concepts like adding a new page, or changing code structures and functions. 
-Z refers to small line changes, like changing the range on an audio level, or making something work slightly different then it 
-did in the previous versions. Another thing to note is that not every room will be on the same version at the same time. Some 
-rooms don't get changes in one version but do get the next. Even if a room is at 1.4.3, that doesn't mean it got the change 
-from 1.4.2 added to it if 1.4.2 was made for another room. A room will only get a new version number if that version change 
-was made to it. Rooms where this happens are noted specifically with their changes in each section. If rooms share a version 
-number with different features, it will be marked. 
+This is the collection point of every change made to the Extron ControlScript Code. It is a detailed changelog containing version numbers, information on what changed, and background information on why changes needed to be made. It collects all of the Git commit messages into one comprehensible document with more details. For more in depth line by line changes, go to the Git repository here: \url{https://git.ucsc.edu/pnauwela/extron}. Each commit has a line by line comparison of what was added or removed. The structure of this document has the most recent commits listed at the very top. Version number structure is as follows: \lstinline|vX.Y.Z|. X refers to the system components like Switchers or Projectors. When these items are changed out, the number will tick up by 1. This number will also change for large code base structure changes, including file structure changes, or function overhauls. Y refers to big code or UI concepts like adding a new page, or changing code structures and functions. Z refers to small line changes, like changing the range on an audio level, or making something work slightly different then it did in the previous versions. Another thing to note is that not every room will be on the same version at the same time. Some rooms don't get changes in one version but do get the next. Even if a room is at 1.4.3, that doesn't mean it got the change from 1.4.2 added to it if 1.4.2 was made for another room. A room will only get a new version number if that version change was made to it. Rooms where this happens are noted specifically with their changes in each section. If rooms share a version number with different features, it will be marked. 
+
+\section*{v2.8.1}
+
+This version change is for ALL rooms. It is a major change involving the method of setting device credentials. Now, device credentials are no longer hard coded in. Instead, the IPCP will have a file for every device requiring a password. That file will be read in, and the password assigned based on the first line. 
+
+Each device requiring a password gets a file assigned to it. If another device is added that requires a password, all that needs to be done is to copy the format of other device password files, defined at the top of the devices.py script. Once these definitions are assigned and variable names are changed, simply upload a new text file to the specified path on the IPCP containing only the device password.  
+
+The goal of this version is to make it easier to change passwords periodically. Like with the definition for the touch panel passcode which changes every quarter, this makes it far simpler to change a controlled device password. It also removes the need to know what each password variable such as \lstinline|newpsw| versus \lstinline|password| refers to, and which device has which password currently. With this new method both of these issues are solved and no code needs to change when passwords get updated. 
 
 \section*{v2.7.4} 
 
