@@ -30,7 +30,7 @@ dvCenterPRJ.SubscribeStatus('Power', None, CenterPowerChanged)
 def CenterTimer(timer:Timer, count):
     print("Center Timer Count {}".format(count))
     dvCenterPRJ.Update('Power')
-    if count > 10:
+    if count > 15:
         timer.Stop()
         print("Center timer stopped")
         
@@ -49,7 +49,7 @@ dvLeftPRJ.SubscribeStatus('Power', None, LeftPowerChanged)
 def LeftTimer(timer:Timer, count):
     print("Left Timer count {}".format(count))
     dvLeftPRJ.Update('Power')
-    if count > 10:
+    if count > 15:
         timer.Stop()
         print("Left Timer Stopped")
         
@@ -69,7 +69,7 @@ dvRightPRJ.SubscribeStatus('Power', None, RightPowerChanged)
 def RightTimer(timer:Timer, count):
     print("Right Timer count {}".format(count))
     dvRightPRJ.Update('Power')
-    if count > 10:
+    if count > 15:
         timer.Stop()
         print("Right Timer Stopped")
         
