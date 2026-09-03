@@ -1,0 +1,44 @@
+"""
+The main file for the project. This file includes a lot of main page buttons such as the shutdown buttons,
+the advanced settings button, and help buttons. It also includes the shutdown routine which in rev 1.0.1 will 
+be moved to a control file. This is the collection point for all other touch panels as well. Any file that's 
+created seperately needs to be imported into this one for the compiler to recognize it. 
+"""
+"""
+This is the advanced settings page. It contains the references to the 3 projector control buttons
+as well as the number pad to access the advanced audio sliders page. Projector buttons are defined 
+in the control file matching this one. The subscribe status method is used to keep the visual 
+feedback consistent throughout the whole UI. 
+"""
+"""
+These are the sliders used to control the audio levels of every device and mic in the system. 
+The control of the biamp is located in the matching control file. This file only handles the 
+visual feedback and definition of the UI objects. 
+"""
+"""
+This file only creates every button object and assigns the basic feedback on 
+press and release to every button. 
+"""
+"""
+This file contains the definition for the main page mic and program volume controls. It only 
+defines the objects and the states of the up or down buttons. Control and state based feedback
+is defined in the control file matching this one
+"""
+"""
+This file is the definiton of every source selection button. It includes both center, left, and right 
+input sets and uses the MESet class to combine them all. With the MESet, only one of the groups buttons
+can be selected at a time. This allows for visual feedback to acurately represent the current selcted 
+source. 
+
+The final piece of this is the event when any button is pressed. Depending on which set its in, different 
+variables are set for the control file. The variables include:
+1. prj_select -> referneces which projector to tie inputs too. Also determines wich to turn on and what set 
+to pull the button index from for source selection
+2. monitor_select -> refers to the confidence monitor on the podium. Center and left use the same monitor
+3. yuja_select -> refers to which yuja input gets tied to the input source. Center and left use the same 
+number. Also used for board camera selection as of rev 1.0.0
+
+These numbers are used in the control file matching this one. This method simplifies the logic needed in 
+switching sources and allows me to treat all input buttons as one big set of buttons. That way only one 
+method is needed to control any input button selection. 
+"""

@@ -1,0 +1,72 @@
+"""
+This is the place to put control code for various types of systems (e.g. AV, Building Management).
+The core purpose is for separation of concerns. Each concern should be as isolated as possible,
+taking advantage of the framework structure and helper modules.
+
+Examples:
+
+* AV devices
+* Building management systems
+  * Lighting
+  * HVAC
+* Cloud Services
+"""
+"""
+This file contains the control for the advanced settings page. Included are the instructions to the projectors 
+for when the on or off button is pressed. These buttons utilize the subscribe status method to stay consistent with
+the projector's power state. They are initialized with the current state at device connection via the readstatus() 
+method call after their definitions. When any power command is sent (either on or off here, or on in the source 
+selection page) the power status is updated using the update('power') this causes the subscribe status method 
+to be activated and keeps the buttons consistent with th eactual status.
+
+AV Mute uses a similar method but the only thing that changes the states is the advance settings blank image button. 
+"""
+"""
+This file defines the BluRay control response. When a button is pressed, the matching command
+is sent out. Buttons are named by commands to simplify the logic. Certain set commands take 
+different arguments such as SetTransport() or SetMenuControl(). Using button names simplifies
+the program and allows me to define different lists of buttons. If a matching button is found, 
+it takes the name of that button and sends the command. The same goes for subtitle with my own defined 
+SetSubtitle() command in the module file for the BluRay device. 
+
+The disk tray is a special case. There is only an open and close command, but no way for me to know 
+if the tray is already open or closed in the extron module. To work around this I define my own 
+Tray commands, using the disk tray commands provided but based on status the device sends me. 
+
+Using SendAndWait() I can ask the device for its status on some command, and assign the response to a variable. 
+By decoding the variable I can check if a certain string is in the response and do something if it is. 
+In this case if the tray is open, the device sends back a string with TTO included. There are more parts to the
+string but that's the only difference between open and closed. Closed responds TTC. If the string returned 
+has TTO in it, I send the tray command to close. Otherwise, I send the open command. 
+"""
+"""
+This file is the biamp interfacing for the main page audio control. The up or down arrows will increment the level 
+and the mute buttons mute it. The Biamp code has everything grouped together so only channel 1 needs to be affected. 
+The instance tag refers to which type in the biamp program it is. For this code we use "MuteProgram" for program 
+and "MuteSpeech" for speech reinforcement. The up or down arrows change "LevelProgram" and 
+"LevelSpeech" in the biamp code. 
+
+Using SubscribeStatus() keeps the consistency of the visual feedback. If the program is still 
+muted after the user presses the button, the visual feedback will still display muted. The command 
+to mute or unmute is sent on press, and the commands to change the state are handled by the 
+feedback handler of the subscribe status call. There is no need to call update on press because 
+this module handles updating its dictionary on its own. 
+"""
+"""
+Source control: This file takes in the variables assigned values in the previous tlp file and makes all of the matrix 
+tie commands.
+The structure is as follows:
+1. turn on the correct projector. Update the state for visual feedback in advanced settings. Output variable is the 
+corresponding index of the button pressed from within the left right or center set. + 1 is added because index 0 
+represents input 1 on the matrix. 
+2. If the left or right board cams were selected, tie yuja (9 for left 10 for right) to projector, monitor, and yuja.
+Yuja is used because left cam is on input 9 and right is on input 10
+3. If the button is one of the center board cam set, add 9 to the index (0 or 1) and tie it to the same things
+4. Otherwise it's one of the other inputs. Tie the output assigned to the projector, monitor, yuja, and surround sound
+5. Finally, if the button is a bluray button, tie yuja to input 0 to handle errors caused by trying to send HDCP 
+content to the yuja device. 
+
+There is also the laptop connected feedback which is a SubscribeStatus() method call following the enpoint status 
+of input 1. This changes the button to green and the text to connected when there's a connection made at the 
+winder cable. Sub input 1 refers to input 1 on the transmitter box which is where the HDMI cable is plugged in. 
+"""

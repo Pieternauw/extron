@@ -1,0 +1,339 @@
+\newcommand*{\NAME}{Pieter Nauwelaerts}
+\newcommand*{\TITLE}{Extron Version Control} 
+\newcommand*{\OFFICE}{UCSC Media Systems Engineering}
+
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{underscore}
+\usepackage{subcaption}
+\usepackage{fancyvrb}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{xurl}
+\hypersetup{ colorlinks=true,
+    linkcolor=blue,
+    urlcolor=cyan}
+\lstset{ 
+    basicstyle=\small\ttfamily,
+    columns=flexible,
+    breaklines=true,
+    numbers=left,
+    commentstyle=\itshape\color{gray},
+    keywordstyle=\bfseries\color{keywordsColor},
+    language=Python,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    stringstyle=\color{green!40!black},
+    frame=single
+}
+
+\usepackage{xcolor}
+\definecolor{commentsColor}{rgb}{0.497495, 0.495464, 0.497464}
+\definecolor{keywordsColor}{rgb}{0.500000, 0.000000, 0.635294}
+\definecolor{stringColor}{rgb}{0.558215, 0.000000, 0.135316}
+
+\title{\TITLE}
+\author{\NAME}
+\date{\OFFICE}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyfoot{}
+\fancyhead{}
+\fancyfoot[L]{\TITLE\ -- \OFFICE}
+\fancyfoot[R]{\thepage}
+
+\maketitle
+
+\section*{Introduction}\label{sec:Intro}
+
+This is the collection point of every change made to the Extron ControlScript Code. It is a detailed changelog containing version numbers, information on what changed, and background information on why changes needed to be made. It collects all of the Git commit messages into one comprehensible document with more details. For more in depth line by line changes, go to the Git repository here: \url{https://git.ucsc.edu/pnauwela/extron}. Each commit has a line by line comparison of what was added or removed. The structure of this document has the most recent commits listed at the very top. Version number structure is as follows: \lstinline|vX.Y.Z|. X refers to the system components like Switchers or Projectors. When these items are changed out, the number will tick up by 1. This number will also change for large code base structure changes, including file structure changes, or function overhauls. Y refers to big code or UI concepts like adding a new page, or changing code structures and functions. Z refers to small line changes, like changing the range on an audio level, or making something work slightly different then it did in the previous versions. Another thing to note is that not every room will be on the same version at the same time. Some rooms don't get changes in one version but do get the next. Even if a room is at 1.4.3, that doesn't mean it got the change from 1.4.2 added to it if 1.4.2 was made for another room. A room will only get a new version number if that version change was made to it. Rooms where this happens are noted specifically with their changes in each section. If rooms share a version number with different features, it will be marked. 
+
+\section*{v2.8.2}
+
+Version created for KRS3105 as a timer adjustment. GVE displays the projector in a perpetual "Warming" state meaning timers are not long enough to catch the proper status. Updated value should give the projector enough time to finish the warming cycle and output "ON" status. 
+
+\section*{v2.8.1}
+
+This version change is for ALL rooms. It is a major change involving the method of setting device credentials. Now, device credentials are no longer hard coded in. Instead, the IPCP will have a file for every device requiring a password. That file will be read in, and the password assigned based on the first line. 
+
+Each device requiring a password gets a file assigned to it. If another device is added that requires a password, all that needs to be done is to copy the format of other device password files, defined at the top of the devices.py script. Once these definitions are assigned and variable names are changed, simply upload a new text file to the specified path on the IPCP containing only the device password.  
+
+The goal of this version is to make it easier to change passwords periodically. Like with the definition for the touch panel passcode which changes every quarter, this makes it far simpler to change a controlled device password. It also removes the need to know what each password variable such as \lstinline|newpsw| versus \lstinline|password| refers to, and which device has which password currently. With this new method both of these issues are solved and no code needs to change when passwords get updated. 
+
+\section*{v2.7.4} 
+
+This version creates visual feedback representing whether or not speech is present for rooms with Biamps. By adjusting the Biamp program, a signal present meter can be added to the mic inputs that triggers on a very low level of signal. This level simply reports if the mic transmitter is turned on or not. A timer was created to flash red and white text reporting "MIC NOT DETECTED" when there is no signal present. Once the mic is turned on, the text returns to saying "Speech". 
+
+A weird error was also fixed with this version. The 3105 projector logic previously used no timers. The projector status was updated without need for timers and only used subscribe status. This was the only large room that was able to work this way. That stopped working recently without any reason. The timers were added slightly after the first deployment of this version but is still included in this version number as it is just bringing 3105 up to date with 3201.
+
+\section*{v2.7.3}
+
+This version is created for KRS3105 and KRS3201. The change made is when device ties are made. First, ties to the confidence 
+monitors are now \lstinline|'Video'| only ties. Next, ties to the YuJa for every source is made only once it's determined that 
+the button was not the bluray. Previously, the ties were made and then if it was bluray tied, the tie was removed. Now, bluray 
+never gets tied, but everything else does. This is to hopefully change the HDCP issues the room has had. 
+
+\section*{v2.7.2 (Deployed)}
+
+Version 2.7.2 is a bug fix for the code created in v2.6.1. The code initially created had typos and needed to be adjusted to work 
+properly in the room. The changes made in this version also include the passwords for the device. One of the major changes is 
+removing the \lstinline|Credentials=('', '')| tuple from the device definition. For \lstinline|EthernetClientInterface| the 
+credentials need to be added separate from the device definition using \lstinline|<device>.deviceUsername| and 
+\lstinline|<device>.devicePassword|. The password is also changed to be the updated password, imported from a new password 
+file included on the controller. 
+
+\section*{v2.7.1}
+
+Version 2.7.1 enables a long awaited change that moves credentials to a file on the controller. This removes in-file credentials 
+and allows for easier password management. Now, a file is opened like with the passcodes for the login pages. This removes the need
+to have passwords in a string that is readable and instead hides it within the controller. 
+
+\section*{v2.6.1}
+
+Version 2.6.1 includes the new methods of Cynap disconnection. A new device module has been added for the WolfVision Cynap. 
+Each room now includes a device file entry for the Cynap connection using the \lstinline|EthernetClientInterface|. The Cynaps
+also report to GVE for system management. There are two places where Cynap commands are called. On system shutdown, the 
+Cynap is sent the command to disconnect the current wireless presentation, and return to New Presentation mode. This is meant
+to prevent the case where professors walk out of the room while still presenting. This can cause the Cynap to freeze and not 
+allow new presentations. v.6.1 is prepared for the Fall '25 quarter but has not been put into rooms yet. 
+
+\section*{v2.5.1}
+
+Version 2.5.1 is a deployment created to converge all rooms to the same version in preparation for the start of the school 
+term. It contains a few minor code readability changes, fixes lack of visual response from the tech access panel, and 
+contains some other minor adjustments. Its main function is to bring all projects to the same version number. It is for 
+all 6 rooms currently using ControlScript code. The version also unifies GVE reporting to use the same set of inputs: 
+\lstinline|['LAPTOP HDMI', 'WIRELESS', 'INSTALLED PC', 'DOC CAM', 'BLURAY', 'CAMERA']|. For rooms without an installed 
+computer or board cams, those inputs are omitted. The previous version had two different lists in use.
+
+\section*{v2.4.1}
+
+This version implements a feature of GVE not previously used. Source reporting allows us to understand what sources 
+are preferred by users in certain rooms. On the GVE Server, there is a page which shows a full breakdown across all GVE
+rooms with the number of hours each source is used in each room. To make these rooms more similar to other Extron rooms, 
+GVE Source Reporting was added in v2.4.1. Each room now has the command \lstinline|GVEServer.SendStatus(PRJ_ID, 'Source', '<source>')|.
+Where the ID is replaced with whatever projector the source is displayed on, and the source is determined with a list of options. 
+This is done in the \lstinline|sourceControl.py| file. In the shutdown command, \lstinline|'SYSTEM OFF'| is sent to remain 
+consistent with the way other Extron rooms behave. 
+
+\section*{v2.3.0}
+
+Version 2.3.0 introduces a new visual effect to help instructors with their microphones. When no microphone is detected
+using the Biamp \lstinline|SignalPresentMeter| command, text changes. If signal is present, the text above the volume control 
+is set to speech. If there is no speech present, for 1 minute, the text flashes red and white saying "NO MIC DETECTED". 
+
+This method is an effective way to display to the instructor that no microphone is detected and they need to turn it on 
+or use it for it to be captured on YuJa or heard in the room. It is bright enough to be noticed, but not big enough to 
+take over attention. 
+
+\section*{v2.2.0}
+
+Version 2.2.0 is a version created for KRS 3101, 3301, 3401, and THI 001. It centers on the projector On/Off functions. 
+The goal of this version was to create a more structured concept for On/Off functions. With this version, there is a 
+standardized timer method to change the states of the On/Off buttons on the advanced settings page. The buttons are 
+now consistent for both pressing them, and selecting Shutdown. 
+
+\section*{v2.1.0}
+
+Version 2.1.0 is a complete overhaul of the old code. Each room will get its own version including a few major points:
+
+\begin{itemize}
+    \item Password page, and admin passcode function changes.
+    \item Inline statements used in button events. 
+    \item Button to popup name dictionaries whenever possible.
+    \item Combining slider files with advanced settings files.
+    \item Text files with descriptions of file structure and methods. 
+    \item Redundant code removed.
+\end{itemize}
+
+The different types of rooms have some variation of implementation, but each room gets these changes. 
+
+\subsubsection*{Passwords}
+
+The password touch panel and control files, as well as the functions in the advanced settings page files have been simplified.
+Each includes a new function \lstinline|clear_code()| which resets global variables and clears the label. This function is 
+used by 3 button events, removing redundant code and decluttering functions. 
+
+Password button definitions are now simplified by changing how the correct input is calculated. Previously, the name of the 
+button in the GUI needed to be changed to match its number, making changing a GUI difficult if one needed to be copied over
+for a quick deployment. Now, by using the list index for the total button set, with \lstinline|[0 - 9]| in order, the list 
+index can be directly called and added to the entered password for comparison. This change also simplifies the code, removing
+the need for the \lstinline|button.Name| function call. 
+
+Other simplifications such as changing button states to inline if-statements simplify function design. 
+
+\subsubsection*{Inline Statements}
+
+All touch panel files now feature inline if statements for setting button feedback. 
+
+\subsubsection*{Popup Dictionaries}
+
+Open and close buttons for popup pages are now tied to a dictionary for their page reference. Previously, buttons and page 
+names had separate lists. Now, they have been combined into a dictionary, making opening and closing a page possible through 
+one simple command. The exception is the Mac and Windows help pages. Two keys for one item isn't possible, so the open and 
+close buttons would need their own index referring to the same popup page. I deemed this to be cluttered as the popup names 
+are long. Instead, the open and close buttons are in a list, with \lstinline|[mac, windows]|. The button event is for both
+sets, checking if it's in the open or close first, then calling the correct popup function, using the index of the current 
+button as the index for the correct popup reference. This is simplified, but is possible to be simplified more with time. 
+
+A notable replacement of lists with dictionaries is in rooms with Biamps. Now, Biamp commands, specifically tags, are sent 
+with a dictionary reference. 
+
+\subsubsection*{Sliders}
+
+Previous versions had two files covering the advanced settings page functionality. The first was a pair of touch panel 
+and control files covering the main functions of the page. The second was an extra popup page with audio level sliders.
+This new version removes the extra file pair and puts the slider definitions into the same file as the rest of the
+functions. The slider event has also been condensed into one function instead of one per slider. 
+
+Sliders still do not control Biamp rooms. This function was deemed necessary as the only time these values should be adjusted 
+is if we change the Biamp program. Sliders do work in rooms where there is only an Extron switcher controlling the mix of 
+program and speech
+
+\subsubsection*{Text Files}
+
+Each project now has a text file in the \lstinline|tlp| folder and \lstinline|control| folder. This text file now contains 
+all of the large instruction comments which explain what each file in the folder does. It also includes some function 
+specific information which may be useful when reading through the code. This change was made to clean up and shorten files,
+removing long blocks of text breaking up function flow. 
+
+\subsubsection*{Redundancy}
+
+Matrix rooms originally had multiple variables set by the button event. This number has been reduced, using the projector 
+output to refer to left right or center when turning on the correct device. This change reduces the number of global variables 
+that require definition and verification of value, instead opting to use a number variable that refers to the same thing that 
+is necessary for functionality.
+
+Inline statements handling button states are now included wherever possible. The exception is for buttons requiring response 
+from a device like audio mutes or the projector on/off. Button events have been reduced with many functions being able to
+be collapsed together. 
+
+\section*{v1.6.4}
+
+Version 1.6.4 was a quick bandaid fix for an issue with THI 001. The projector would not turn off during the shutdown command
+despite waiting for the warming process to finish. By adding a delayed second shutdown command, the projector was given 
+duplicate commands to shut down, meaning if the first didn't work, the second, coming 3 seconds later, would. This quick fix 
+is hopefully temporary until we know why it does this. The current theory is that the projector stops communicating until the 
+first command is sent, meaning the second one will confirm the shutdown before the connection is lost again. 
+
+\section*{v1.6.3}
+
+This version was created for THI 001. This version for THI 001 also includes a fix to turn off the confidence monitor 
+on system shutdown. Monitors should not be displaying the Cynap when the system is shut down, so by disabling its output we 
+effectively turn off the monitor. The output is re-enabled when the system passcode is entered correctly. 
+
+\section*{v1.6.2}
+
+The first functional deployment version of THI 001. This version includes the custom \lstinline|SetDiskTray()| method in 
+the bluray module, Biamp connection using campus LAN, video mute turning off only YuJa and projector, while leaving the 
+confidence monitor displaying the connected source, and a more robust shutdown function. It fixed a long standing issue 
+with the wireless help buttons not being enabled. Now, they have a new method of opening using a \lstinline|MESet([])| 
+to handle button feedback, and a dictionary of popup names, opening based on the button selection. Audio values have been 
+tuned to the correct numbers to match the Biamp program levels. 
+
+\section*{v1.6.0}
+
+This is the initial development version of THI 001. The code for this room is based on a large room GUI with only the center 
+projection page used. The room also includes a Biamp which was experimented with multiple control forms. This version uses
+campus LAN to communicate with the Biamp and is the first room to do so.
+
+\section*{1.5.6}
+
+This version has two types.First, for KRS 3201 and 3105, the version fixes the buttons on the wireless instruction popup. It uses a
+\lstinline|MESet([])| to control button functions. The popup references have now been added to a dictionary that is used to 
+show the most recent pressed button's popup. There is also an empty string used to hold the name of the current popup, used
+to close the correct one when a new button is pressed. This method is used because there are multiple popups stacked when in 
+this state, so this allows only the correct one to be closed. 
+
+For the small rooms KRS 3101, and KRS 3301, The version changes the login popup slightly. It adds in a new text box reminding 
+professors to wear the lapel mic in the room. Often times professors, who don't know there's a speech device in ther room, 
+will forget to wear it meaning YuJa records no audio. This reminder is hopefully to help them realize they need to wear it. 
+The delay is now 3 seconds, increased from 1. 
+
+\section*{v1.5.5}
+
+Version 1.5.5 is a version for every room. This version changes all projectors from being connected with 'Power' to 
+being connected with 'LampUpdate'. This allows GVE to be updated with the current lamp hours of every room. Power commands 
+are sent often enough to be updating the information on GVE, and their status is already being sent over. We want GVE to have 
+Lamp Hours in the information section, so this is how that will be accomplished. Rooms that are not on larger version 1.5 will 
+be incremented in their current version by 1 (for example KRS 3401 is on v1.4.0, so now is on 1.4.1)
+
+\section*{v1.5.4}
+
+Version 1.5.4 is a quick fix for KRS3105 and KRS3201. The version was created to fix a strange matrix tie issue. When looking
+into the XTP ties, we found the audio from a selected source remained tied to the YuJa output. This issue is not a major problem 
+because we don't pull audio from the HDMI inputs to the YuJa, but it still is something that needed to be fixed. The error is caused
+by any source being tied to YuJa with Audio/Video. When the shutdown command is sent, the Video portion of that tie gets taken 
+over by the Cynap, but the Audio portion remains from whichever source was previously used. When the system is used again, the 
+selected source takes over both Audio and Video again. Now, when the system is shutdown, both Audio and Video are tied to the Cynap,
+removing this issue. 
+
+\section*{v1.5.3}
+
+Version 1.5.3 was for KRS3105 and KRS3201. The version removed YuJa blank image ties from the YuJa output on both shutdown and
+startup. In an edge case not originally considered, a user can turn on the video mute before shutting down the system. The 
+shutdown and startup were set up to handle this case for the projector outputs, but did not unmute the YuJa outputs. 
+This resulted in an error where the Video Mute button was visually turned off and the projector would display content, but the 
+YuJa device would not receive any output. Version 1.5.3 fixed this issue for the two rooms. This is not an issue for the smaller 
+room type and the IN1808 switchers use a Global Video Mute which gets disabled on startup and shutdown. 
+
+\section*{v1.5.2}
+
+Version 1.5.2 was for KRS3105 and KRS3201. The main change this version made was to add in new matrix tie commands to mute 
+YuJa outputs when a video mute button was pressed. The button now mutes the corresponding projector and YuJa output while 
+leaving the confidence monitor unmuted. This allows instructors to type in passwords or sensitive information without
+students seeing in the room on on recordings. This version was required because the original video mute changes made during 
+the rework of Shutdown and Startup did not include YuJa mutes. 
+
+\section*{v1.5.1}
+
+This version is the deployment version of v1.5.0 in which a new login popup was added while waiting for the system to initialize.
+A small fix was needed for deployment to the room.  
+
+\section*{v1.5.0}
+
+Version 1.5.0 was developed because of a time delay
+The Startup function includes a 1 second delay because of the number commands it contains. This meant the login page was held 
+for a second but the passcode cleared making it look like an incorrect pin was put in. This version adds a new UI element which 
+lets the user know the system is starting up. This prevents a user from trying to enter the code in the delay. This version is 
+a UI change meaning any room needing this version needs a full deployment. A code-only deployment will still work for any future
+versions, if the UI change hasn't been made yet. The code to show the popup is included in every room past v1.5.0 even if they 
+haven't gotten the full deployment. 
+
+\section*{v1.4.1} 
+
+Version 1.4.1 is a fixed version of v1.4.0. The version added a few new projector commands to the startup and shutdown 
+routines created by v1.4.0. The version also removed some of the default audio level variables, instead using direct 
+numbers and not allowing them to be changed dynamically. On startup and shutdown, the system sets both mic and program
+to an exact default which is fairly low in the range. Users can still raise the audio on the main page. v1.4.1 was initially
+prepped for THI001.
+
+\section*{v1.4.0}
+
+\section*{v1.3.2}
+
+\section*{v1.3.0}
+
+\section*{v1.2.2}
+
+\section*{v1.2.1}
+
+\section*{v1.2.0}
+
+\section*{v1.1.1}
+
+\section*{v1.1.0}
+
+\section*{v1.0.1}
+
+\section*{v1.0.0}
+
+
+\end{document}
