@@ -1,0 +1,69 @@
+{
+    "system": {
+        "name": "MCH 1256",
+        "code_folder_path": "src",
+        "code_entry_file": "main.py",
+        "system_id": "6199",
+        "author": {
+            "name": "Pieter Nauwelaerts",
+            "email": "pnauwela@ucsc.edu"
+        },
+        "version": "1.0.1",
+        "primary_device_alias": "ProcessorAlias"
+    },
+    "devices": [
+        {
+            "name": "IPCP Pro 250 xi",
+            "part_number": "60-1911-01",
+            "alias": "ProcessorAlias",
+            "network": {
+                "host_network_type": "LAN",
+                "interfaces": [
+                    {
+                        "address": "128.114.163.181",
+                        "type": "LAN"
+                    }
+                ]
+            }
+        },
+        {
+            "name": "NBP 100 A",
+            "part_number": "60-1794-01",
+            "alias": "NBPA",
+            "extron_control_web_id": "9e49f645-2976-4eb3-814a-a46f87674966",
+            "network": {
+                "host_network_type": "LAN",
+                "interfaces": [
+                    {
+                        "address": "128.114.163.196",
+                        "type": "LAN"
+                    }
+                ]
+            },
+            "ui": {
+                "enable_click_sound": false,
+                "press_feedback": "none"
+            }
+        },
+        {
+            "name": "NBP 100 B",
+            "part_number": "60-1794-01",
+            "alias": "NBPB",
+            "extron_control_web_id": "141b3057-63aa-4a54-8f2b-5ac694518b11",
+            "network": {
+                "host_network_type": "LAN",
+                "interfaces": [
+                    {
+                        "address": "128.114.163.197",
+                        "type": "LAN"
+                    }
+                ]
+            },
+            "ui": {
+                "enable_click_sound": false,
+                "press_feedback": "none"
+            }
+        }
+    ],
+    "schemaVersion": "1.0.0"
+}
